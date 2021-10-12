@@ -1,0 +1,48 @@
+package gr7.discexchange.model;
+
+public class User {
+
+    private String name;
+    private String address;
+    private int feedback;
+    private double storeCredit;
+
+    public User(String name, String address, int feedback, double storeCredit) {
+        this.name = name;
+        this.address = address;
+        this.feedback = feedback;
+        this.storeCredit = storeCredit;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public int getFeedback() {
+        return feedback;
+    }
+
+    public void setFeedback(int feedback) {
+        this.feedback = feedback;
+    }
+
+    public double getStoreCredit() {
+        return storeCredit;
+    }
+
+    public void setStoreCredit(double storeCredit) {
+        this.storeCredit = storeCredit;
+    }
+}
