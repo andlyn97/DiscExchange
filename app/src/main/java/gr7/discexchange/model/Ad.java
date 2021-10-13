@@ -1,11 +1,18 @@
 package gr7.discexchange.model;
 
+import android.media.Image;
+
+import java.util.ArrayList;
 import java.util.Date;
+
+import javax.xml.transform.Source;
+
+import gr7.discexchange.R;
 
 public class Ad {
 
     private String name;
-    // private Img picture;
+     private int image;
     private String brand;
     private int condition;
     private String flight;
@@ -18,19 +25,11 @@ public class Ad {
     private Date archived;
     private User user;
 
-    public Ad(String name, String brand, int condition, String flight, String color, boolean ink, String description, String wish, double price, Date published, Date archived, User user) {
+    public Ad(String name, String brand, String color, int image) {
         this.name = name;
         this.brand = brand;
-        this.condition = condition;
-        this.flight = flight;
         this.color = color;
-        this.ink = ink;
-        this.description = description;
-        this.wish = wish;
-        this.price = price;
-        this.published = published;
-        this.archived = archived;
-        this.user = user;
+        this.image = image;
     }
 
     public String getName() {
@@ -49,22 +48,6 @@ public class Ad {
         this.brand = brand;
     }
 
-    public int getCondition() {
-        return condition;
-    }
-
-    public void setCondition(int condition) {
-        this.condition = condition;
-    }
-
-    public String getFlight() {
-        return flight;
-    }
-
-    public void setFlight(String flight) {
-        this.flight = flight;
-    }
-
     public String getColor() {
         return color;
     }
@@ -73,59 +56,31 @@ public class Ad {
         this.color = color;
     }
 
-    public boolean isInk() {
-        return ink;
+    public int getImage() {
+        return image;
     }
 
-    public void setInk(boolean ink) {
-        this.ink = ink;
+    public void setImage(int image) {
+        this.image = image;
     }
 
-    public String getDescription() {
-        return description;
+    public static ArrayList<Ad> getData() {
+        ArrayList<Ad> adList = new ArrayList<>();
+
+        int imgId = R.drawable.firebird;
+
+
+        Ad one = new Ad("Firebird", "P2", "Green", imgId);
+        Ad two = new Ad("Firebird", "P2", "Green", imgId);
+        Ad three = new Ad("Firebird", "P2", "Green", imgId);
+        Ad four = new Ad("Firebird", "P2", "Green", imgId);
+
+        adList.add(one);
+        adList.add(two);
+        adList.add(three);
+        adList.add(four);
+
+        return adList;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getWish() {
-        return wish;
-    }
-
-    public void setWish(String wish) {
-        this.wish = wish;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public Date getPublished() {
-        return published;
-    }
-
-    public void setPublished(Date published) {
-        this.published = published;
-    }
-
-    public Date getArchived() {
-        return archived;
-    }
-
-    public void setArchived(Date archived) {
-        this.archived = archived;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 }
