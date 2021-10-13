@@ -1,5 +1,6 @@
 package gr7.discexchange;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -8,7 +9,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+
 public class MainActivity extends AppCompatActivity {
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,5 +30,6 @@ public class MainActivity extends AppCompatActivity {
         myFeedBtn.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), MyFeedActivity.class)));
 
     }
+
 
 }
