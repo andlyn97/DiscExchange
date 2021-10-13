@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener authStateListener;
 
     Button login;
+    Button toFeed;
+
 
     private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
             new FirebaseAuthUIActivityResultContract(),
@@ -58,6 +60,10 @@ public class MainActivity extends AppCompatActivity {
                 signInLauncher.launch(signInIntent);
             }
         });
+
+
+        toFeed = findViewById(R.id.feedBtn);
+        toFeed.setOnClickListener(view -> setContentView(R.layout.activity_my_feed));
 
 
     }

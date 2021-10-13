@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">DiscExchange</string>
+    <string name="a_disc">A Disc</string>
+    <string name="a_disc_description">a disc</string>
 </resources>
