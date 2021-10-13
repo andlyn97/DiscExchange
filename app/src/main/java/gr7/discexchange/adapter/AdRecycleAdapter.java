@@ -35,7 +35,7 @@ public class AdRecycleAdapter extends RecyclerView.Adapter<AdRecycleAdapter.AdVi
 
         Log.d(TAG, "onCreateViewModel");
 
-        View itemView = inflater.inflate(R.layout.ad_list_item, parent);
+        View itemView = inflater.inflate(R.layout.ad_list_item, parent, false);
 
         return new AdViewHolder(itemView);
     }
