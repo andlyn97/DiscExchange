@@ -56,17 +56,23 @@ public class AdRecycleAdapter extends RecyclerView.Adapter<AdRecycleAdapter.AdVi
 
     public class AdViewHolder extends RecyclerView.ViewHolder {
         private TextView typeTextView;
+        private TextView produsentTextView;
+        private TextView fargeTextView;
         private ImageView thumbnailImageView;
 
         public AdViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            typeTextView = itemView.findViewById(R.id.typeTextView);
             thumbnailImageView = itemView.findViewById(R.id.thumbnailImageView);
+            typeTextView = itemView.findViewById(R.id.typeTextView);
+            produsentTextView = itemView.findViewById(R.id.produsentTextView);
+            fargeTextView = itemView.findViewById(R.id.fargeTextView);
         }
 
         public void setAd(Ad adToDisplay) {
             typeTextView.setText(adToDisplay.getName());
+            produsentTextView.setText(adToDisplay.getBrand());
+            fargeTextView.setText(adToDisplay.getColor());
             thumbnailImageView.setImageResource(adToDisplay.getImage());
         }
 

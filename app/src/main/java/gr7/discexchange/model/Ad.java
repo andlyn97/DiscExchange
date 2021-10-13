@@ -70,10 +70,10 @@ public class Ad {
         int imgId = R.drawable.firebird;
 
 
-        Ad one = new Ad("Firebird", "P2", "Green", imgId);
-        Ad two = new Ad("Firebird", "P2", "Green", imgId);
-        Ad three = new Ad("Firebird", "P2", "Green", imgId);
-        Ad four = new Ad("Firebird", "P2", "Green", imgId);
+        Ad one = new Ad("Navn: Firebird", "Produsent: P2", "Farge: Rød", imgId);
+        Ad two = new Ad("Navn: Firebird", "Produsent: P2", "Farge: Rød", imgId);
+        Ad three = new Ad("Navn: Firebird", "Produsent: P2", "Farge: Rød", imgId);
+        Ad four = new Ad("Navn: Firebird", "Produsent: P2", "Farge: Rød", imgId);
 
         adList.add(one);
         adList.add(two);
