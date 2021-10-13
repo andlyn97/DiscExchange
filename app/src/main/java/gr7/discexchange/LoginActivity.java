@@ -78,6 +78,7 @@ public class LoginActivity extends AppCompatActivity {
 
         createSignInIntent();
 
+
     }
 
     @Override
