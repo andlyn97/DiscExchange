@@ -1,22 +1,20 @@
 package gr7.discexchange;
 
-import androidx.activity.result.ActivityResultCallback;
+
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
+
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -62,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
             FirebaseUser currentUser = auth.getCurrentUser();
             if (currentUser != null) {
                 Toast.makeText(getApplicationContext(), "Signed in as " + currentUser.getDisplayName(), Toast.LENGTH_LONG).show();
-                setContentView(R.layout.activity_main);
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
         } else {
             Toast.makeText(getApplicationContext(), "Signed in cancelled", Toast.LENGTH_LONG).show();
@@ -87,7 +85,7 @@ public class LoginActivity extends AppCompatActivity {
         auth.addAuthStateListener(authStateListener);
 
         if(auth.getCurrentUser() != null) {
-            setContentView(R.layout.activity_main);
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
         }
     }
 
@@ -97,7 +95,7 @@ public class LoginActivity extends AppCompatActivity {
         auth.removeAuthStateListener(authStateListener);
 
         if(auth.getCurrentUser() != null) {
-            setContentView(R.layout.activity_main);
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
         }
     }
 
