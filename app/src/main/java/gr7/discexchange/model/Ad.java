@@ -14,10 +14,10 @@ public class Ad {
     private String name;
      private int image;
     private String brand;
-    private int condition;
+    private String condition; // int
     private String flight;
     private String color;
-    private boolean ink;
+    private String ink; // boolean?
     private String description;
     private String wish;
     private double price;
@@ -25,10 +25,12 @@ public class Ad {
     private Date archived;
     private User user;
 
-    public Ad(String name, String brand, String color, int image) {
+    public Ad(String name, String condition, String color, String ink, String wish, int image) {
         this.name = name;
-        this.brand = brand;
+        this.condition = condition;
         this.color = color;
+        this.ink = ink;
+        this.wish = wish;
         this.image = image;
     }
 
@@ -60,6 +62,78 @@ public class Ad {
         return image;
     }
 
+    public String getCondition() {
+        return condition;
+    }
+
+    public void setCondition(String condition) {
+        this.condition = condition;
+    }
+
+    public String getFlight() {
+        return flight;
+    }
+
+    public void setFlight(String flight) {
+        this.flight = flight;
+    }
+
+    public String getInk() {
+        return ink;
+    }
+
+    public void setInk(String ink) {
+        this.ink = ink;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getWish() {
+        return wish;
+    }
+
+    public void setWish(String wish) {
+        this.wish = wish;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public Date getPublished() {
+        return published;
+    }
+
+    public void setPublished(Date published) {
+        this.published = published;
+    }
+
+    public Date getArchived() {
+        return archived;
+    }
+
+    public void setArchived(Date archived) {
+        this.archived = archived;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public void setImage(int image) {
         this.image = image;
     }
@@ -70,10 +144,10 @@ public class Ad {
         int imgId = R.drawable.firebird;
 
 
-        Ad one = new Ad("Navn: Firebird", "Produsent: P2", "Farge: Rød", imgId);
-        Ad two = new Ad("Navn: Firebird", "Produsent: P2", "Farge: Rød", imgId);
-        Ad three = new Ad("Navn: Firebird", "Produsent: P2", "Farge: Rød", imgId);
-        Ad four = new Ad("Navn: Firebird", "Produsent: P2", "Farge: Rød", imgId);
+        Ad one = new Ad("Navn: Firebird", "Tilstand: 7/10", "Farge: Rød", "Ink:Ingen", "Ønsker: P2 C-line", imgId);
+        Ad two = new Ad("Navn: Firebird", "Tilstand: 7/10", "Farge: Rød", "Ink:Ingen", "Ønsker: P2 C-line", imgId);
+        Ad three = new Ad("Navn: Firebird", "Tilstand: 7/10", "Farge: Rød", "Ink:Ingen", "Ønsker: P2 C-line", imgId);
+        Ad four = new Ad("Navn: Firebird", "Tilstand: 7/10", "Farge: Rød", "Ink:Ingen", "Ønsker: P2 C-line", imgId);
 
         adList.add(one);
         adList.add(two);

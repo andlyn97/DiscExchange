@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 import gr7.discexchange.R;
@@ -55,25 +57,31 @@ public class AdRecycleAdapter extends RecyclerView.Adapter<AdRecycleAdapter.AdVi
     }
 
     public class AdViewHolder extends RecyclerView.ViewHolder {
-        private TextView typeTextView;
-        private TextView produsentTextView;
-        private TextView fargeTextView;
+        private TextView nameTextView;
+        private TextView conditionTextView;
+        private TextView colorTextView;
+        private TextView inkTextView;
+        private TextView wishTextView;
         private ImageView thumbnailImageView;
 
         public AdViewHolder(@NonNull View itemView) {
             super(itemView);
 
             thumbnailImageView = itemView.findViewById(R.id.thumbnailImageView);
-            typeTextView = itemView.findViewById(R.id.typeTextView);
-            produsentTextView = itemView.findViewById(R.id.produsentTextView);
-            fargeTextView = itemView.findViewById(R.id.fargeTextView);
+            nameTextView = itemView.findViewById(R.id.tvName);
+            conditionTextView = itemView.findViewById(R.id.tvCondition);
+            colorTextView = itemView.findViewById(R.id.tvColor);
+            inkTextView = itemView.findViewById(R.id.tvInk);
+            wishTextView = itemView.findViewById(R.id.tvWish);
         }
 
         public void setAd(Ad adToDisplay) {
-            typeTextView.setText(adToDisplay.getName());
-            produsentTextView.setText(adToDisplay.getBrand());
-            fargeTextView.setText(adToDisplay.getColor());
+            nameTextView.setText(adToDisplay.getName());
+            conditionTextView.setText(adToDisplay.getCondition());
+            colorTextView.setText(adToDisplay.getColor());
             thumbnailImageView.setImageResource(adToDisplay.getImage());
+            inkTextView.setText(adToDisplay.getInk());
+            wishTextView.setText(adToDisplay.getWish());
         }
 
     }

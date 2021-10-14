@@ -2,4 +2,6 @@
     <string name="app_name">DiscExchange</string>
     <string name="a_disc">A Disc</string>
     <string name="a_disc_description">a disc</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -24,12 +24,6 @@
         <activity
             android:name=".MainActivity"
             android:exported="true" />
-        <activity
-            android:name=".DetailedAdActivity"
-            android:exported="true" />
-        <activity
-            android:name=".MyFeedActivity"
-            android:exported="true" />
     </application>
 
 </manifest>
