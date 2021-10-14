@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
 
     Fragment detailedAdFragment = new DetailedAdFragment();
     Fragment myFeedFragment = new MyFeedFragment();
+    Fragment profileFragment = new ProfileFragment();
 
 
     @Override
