@@ -34,6 +34,12 @@ public class Ad {
         this.image = image;
     }
 
+    public Ad(String name, int image, String brand) {
+        this.name = name;
+        this.image = image;
+        this.brand = brand;
+    }
+
     public String getName() {
         return name;
     }
@@ -155,6 +161,31 @@ public class Ad {
         adList.add(four);
 
         return adList;
+    }
+
+    public static ArrayList<Ad> getPopular() {
+
+        ArrayList<Ad> popList = new ArrayList<>();
+
+        int img1 = R.drawable.firebird;
+        int img2 = R.drawable.explorer;
+        int img3 = R.drawable.hydra;
+        int img4 = R.drawable.moab;
+        int img5 = R.drawable.keystone;
+
+        Ad one = new Ad("Firebird", img1, "Innova");
+        Ad two = new Ad("Explorer", img2, "Latitude 64");
+        Ad three = new Ad("Hydra", img3, "Innova");
+        Ad four = new Ad("MOAB", img4, "Hyzer Bomb");
+        Ad five = new Ad("Keystone", img5, "Latitude 64");
+
+        popList.add(one);
+        popList.add(two);
+        popList.add(three);
+        popList.add(four);
+        popList.add(five);
+
+        return popList;
     }
 
 }

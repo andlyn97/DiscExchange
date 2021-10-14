@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
     Fragment detailedAdFragment = new DetailedAdFragment();
     Fragment myFeedFragment = new MyFeedFragment();
     Fragment profileFragment = new ProfileFragment();
+    Fragment popularFragment = new PopularFragment();
 
 
     @Override
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
         detailedAdBtn.setOnClickListener(view -> {
             FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
-            trans.replace(R.id.fragment, detailedAdFragment);
+            trans.replace(R.id.fragment, popularFragment);
             trans.commit();
         });
         myFeedBtn.setOnClickListener(view -> {
