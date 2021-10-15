@@ -8,15 +8,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.DiscExchange">
-        <activity
-            android:name=".NavDrawer"
-            android:exported="true"
-            android:label="@string/title_activity_nav_drawer"
-            android:theme="@style/Theme.DiscExchange.NoActionBar" />
-        <activity
-            android:name=".Profile"
-            android:exported="true" />
+        android:theme="@style/Theme.DiscExchange.NoActionBar">
         <activity
             android:name=".LoginActivity"
             android:exported="true">
