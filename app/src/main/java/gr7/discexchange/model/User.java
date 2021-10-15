@@ -2,6 +2,7 @@ package gr7.discexchange.model;
 
 public class User {
 
+    private String uid;
     private String name;
     private String address;
     private int feedback;
@@ -12,6 +13,14 @@ public class User {
         this.address = address;
         this.feedback = feedback;
         this.storeCredit = storeCredit;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getName() {

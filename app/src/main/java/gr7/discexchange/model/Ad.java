@@ -1,16 +1,12 @@
 package gr7.discexchange.model;
 
-import android.media.Image;
-
+import com.google.firebase.firestore.Exclude;
 import java.util.ArrayList;
-import java.util.Date;
-
-import javax.xml.transform.Source;
 
 import gr7.discexchange.R;
 
 public class Ad {
-
+    @Exclude
     private String uid;
     private String name;
     private int image;
@@ -22,9 +18,41 @@ public class Ad {
     private String description;
     private String wish;
     private double price;
-    private Date published;
-    private Date archived;
-    private User user;
+    private String published;
+    private String archived;
+    private String userUid;
+
+    public Ad(String uid, String name, int image, String brand, int condition, String flight, String color, String ink, String description, String wish, double price, String published, String archived, String userUid) {
+        this.uid = uid;
+        this.name = name;
+        this.image = image;
+        this.brand = brand;
+        this.condition = condition;
+        this.flight = flight;
+        this.color = color;
+        this.ink = ink;
+        this.description = description;
+        this.wish = wish;
+        this.price = price;
+        this.published = published;
+        this.archived = archived;
+        this.userUid = userUid;
+    }
+    public Ad( String name, int image, String brand, int condition, String flight, String color, String ink, String description, String wish, double price, String published, String archived, String userUid) {
+        this.name = name;
+        this.image = image;
+        this.brand = brand;
+        this.condition = condition;
+        this.flight = flight;
+        this.color = color;
+        this.ink = ink;
+        this.description = description;
+        this.wish = wish;
+        this.price = price;
+        this.published = published;
+        this.archived = archived;
+        this.userUid = userUid;
+    }
 
     public Ad(String name, int condition, String color, String ink, String wish, int image) {
         this.name = name;
@@ -125,28 +153,28 @@ public class Ad {
         this.price = price;
     }
 
-    public Date getPublished() {
+    public String getPublished() {
         return published;
     }
 
-    public void setPublished(Date published) {
+    public void setPublished(String published) {
         this.published = published;
     }
 
-    public Date getArchived() {
+    public String getArchived() {
         return archived;
     }
 
-    public void setArchived(Date archived) {
+    public void setArchived(String archived) {
         this.archived = archived;
     }
 
-    public User getUser() {
-        return user;
+    public String getUserUid() {
+        return userUid;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(String userUid) {
+        this.userUid = userUid;
     }
 
     public void setImage(int image) {

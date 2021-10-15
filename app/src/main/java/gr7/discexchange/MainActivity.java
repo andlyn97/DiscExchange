@@ -20,6 +20,13 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+import java.util.Date;
+
+import gr7.discexchange.model.Ad;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     Fragment myFeedFragment = new MyFeedFragment();
     Fragment profileFragment = new ProfileFragment();
     Fragment popularFragment = new PopularFragment();
+    private FirebaseFirestore firestoreDb;
+    private CollectionReference adCollectionReference;
 
 
     @Override
@@ -58,28 +67,27 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        /*FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment, myFeedFragment);
-        transaction.commit();
+
+        // Test mot firestore
+
+        firestoreDb = FirebaseFirestore.getInstance();
+        adCollectionReference = firestoreDb.collection("ad");
 
 
-        Button detailedAdBtn = findViewById(R.id.detailedAdBtn);
-        Button myFeedBtn = findViewById(R.id.myFeedBtn);
+        //generateTestDataToDb();
 
-
-        detailedAdBtn.setOnClickListener(view -> {
-            FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
-            trans.replace(R.id.fragment, popularFragment);
-            trans.commit();
-        });
-        myFeedBtn.setOnClickListener(view -> {
-            FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
-            trans.replace(R.id.fragment, myFeedFragment);
-            trans.commit();
-        });*/
     }
 
+    private void generateTestDataToDb() {
+        ArrayList<Ad> ads = new ArrayList<>();
+        ads.add(new Ad("Explorer", R.drawable.explorer, "Latitude 64", 9, "7 5 0 2", "Hvit", "Ingen", "Aldri kastet, bare oppbevaringsskader.", "P2 C-line < 7/10", 0.0, "2021-10-15", "", ""));
+        ads.add(new Ad("Firebird", R.drawable.firebird, "Innova", 7, "9 3 0 4", "Rød", "I rim", "Ingen store skader annet enn vanlig slitasje.", "River Opto-X", 0.0, "2021-10-15", "", ""));
 
+
+        for (Ad ad : ads) {
+            adCollectionReference.add(ad);
+        }
+    }
 
 
 }
