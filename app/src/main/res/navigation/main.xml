@@ -13,11 +13,11 @@
     <fragment
         android:id="@+id/menuProfile"
         android:name="gr7.discexchange.ProfileFragment"
-        android:label="Profile"
+        android:label="Profil"
         tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/menuPopular"
         android:name="gr7.discexchange.PopularFragment"
-        android:label="Popular"
+        android:label="Populære"
         tools:layout="@layout/fragment_popular" />
 </navigation>
