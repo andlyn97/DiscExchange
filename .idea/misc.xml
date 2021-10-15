@@ -6,10 +6,12 @@
         <entry key="..\:/Temp/DiscExchangeTest/app/src/main/res/layout/activity_main.xml" value="0.18085106382978725" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3921875" />
         <entry key="app/src/main/res/layout/activity_my_feed.xml" value="0.3921875" />
+        <entry key="app/src/main/res/layout/activity_nav_drawer.xml" value="0.3921875" />
         <entry key="app/src/main/res/layout/activity_profile 2.xml" value="0.3921875" />
         <entry key="app/src/main/res/layout/activity_profile.xml" value="0.3921875" />
         <entry key="app/src/main/res/layout/activity_store.xml" value="0.3921875" />
         <entry key="app/src/main/res/layout/ad_list_item.xml" value="0.3921875" />
+        <entry key="app/src/main/res/layout/app_bar_nav_drawer.xml" value="0.3921875" />
         <entry key="app/src/main/res/layout/content_nav_drawer.xml" value="0.3921875" />
         <entry key="app/src/main/res/layout/fragment_detailed_ad.xml" value="0.3921875" />
         <entry key="app/src/main/res/layout/fragment_gallery.xml" value="0.3921875" />
@@ -24,6 +26,7 @@
         <entry key="app/src/main/res/layout/popular_list_item.xml" value="0.3921875" />
         <entry key="app/src/main/res/menu/activity_main_drawer.xml" value="0.3921875" />
         <entry key="app/src/main/res/menu/nav_drawer.xml" value="0.3921875" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.23854166666666668" />
       </map>
     </option>
   </component>
