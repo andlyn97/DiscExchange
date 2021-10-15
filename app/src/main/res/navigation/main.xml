@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    app:startDestination="@id/menuFeed">
+
+    <fragment
+        android:id="@+id/menuFeed"
+        android:name="gr7.discexchange.MyFeedFragment"
+        android:label="Feed"
+        tools:layout="@layout/fragment_my_feed" />
+    <fragment
+        android:id="@+id/menuProfile"
+        android:name="gr7.discexchange.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/menuPopular"
+        android:name="gr7.discexchange.PopularFragment"
+        android:label="Popular"
+        tools:layout="@layout/fragment_popular" />
+</navigation>

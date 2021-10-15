@@ -1,4 +1,4 @@
-package gr7.discexchange;
+/*package gr7.discexchange;
 
 import android.os.Bundle;
 import android.view.View;
@@ -62,4 +62,4 @@ public class NavDrawer extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
-}
+}*/

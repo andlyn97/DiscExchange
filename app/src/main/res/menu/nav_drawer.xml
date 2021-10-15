@@ -18,7 +18,7 @@
         android:title="@string/mine_annonser" />
 
     <item
-        android:id="@+id/menuShop"
+        android:id="@+id/menuPopular"
         android:title="@string/popul_re" />
 
     <item
