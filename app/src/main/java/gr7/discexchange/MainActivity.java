@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -33,7 +34,7 @@ import java.util.Date;
 
 import gr7.discexchange.model.Ad;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity {
 
     Fragment detailedAdFragment = new DetailedAdFragment();
     Fragment myFeedFragment = new MyFeedFragment();
@@ -42,6 +43,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private FirebaseFirestore firestoreDb;
     private CollectionReference adCollectionReference;
 
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.menuLogout) {
+            Toast.makeText(getApplicationContext(), "User logged out", Toast.LENGTH_LONG).show();
+            AuthUI.getInstance()
+                    .signOut(this)
+                    .addOnCompleteListener(task -> startActivity(new Intent(getApplicationContext(), LoginActivity.class)));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +93,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //generateTestDataToDb();
 
+
+
     }
 
     private void generateTestDataToDb() {
@@ -87,20 +102,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ads.add(new Ad("Explorer", R.drawable.explorer, "Latitude 64", 9, "7 5 0 2", "Hvit", "Ingen", "Aldri kastet, bare oppbevaringsskader.", "P2 C-line < 7/10", 0.0, "2021-10-15", "", ""));
         ads.add(new Ad("Firebird", R.drawable.firebird, "Innova", 7, "9 3 0 4", "Rød", "I rim", "Ingen store skader annet enn vanlig slitasje.", "River Opto-X", 0.0, "2021-10-15", "", ""));
 
-
         for (Ad ad : ads) {
             adCollectionReference.add(ad);
         }
-    }
-
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == R.id.menuLogout) {
-           AuthUI.getInstance()
-                .signOut(this)
-                .addOnCompleteListener(task -> startActivity(new Intent(getApplicationContext(), LoginActivity.class)));
-        }
-        return true;
     }
 }

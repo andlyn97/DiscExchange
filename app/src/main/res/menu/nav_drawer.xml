@@ -30,10 +30,10 @@
         android:title="@string/handlekurv" />
 
 
-    <group>
-        <item android:id="@+id/menuLogout"
+    <item
+        android:id="@+id/menuLogout"
         android:title="@string/logg_ut" />
-    </group>
+
 
 </menu>
 
