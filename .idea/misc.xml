@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Temp/DiscExchangeTest/app/src/main/res/layout/activity_main.xml" value="0.18085106382978725" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.3921875" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3921875" />
         <entry key="app/src/main/res/layout/activity_my_feed.xml" value="0.3921875" />
         <entry key="app/src/main/res/layout/activity_nav_drawer.xml" value="0.3921875" />
@@ -21,6 +22,7 @@
         <entry key="app/src/main/res/layout/fragment_popular.xml" value="0.378125" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.378125" />
         <entry key="app/src/main/res/layout/fragment_slideshow.xml" value="0.3921875" />
+        <entry key="app/src/main/res/layout/fragment_store.xml" value="0.3921875" />
         <entry key="app/src/main/res/layout/layout_navigation_header.xml" value="0.3921875" />
         <entry key="app/src/main/res/layout/nav_header_nav_drawer.xml" value="0.3921875" />
         <entry key="app/src/main/res/layout/popular_list_item.xml" value="0.3921875" />
