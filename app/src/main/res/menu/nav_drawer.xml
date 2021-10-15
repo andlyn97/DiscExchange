@@ -29,7 +29,6 @@
         android:id="@+id/menuShoppingCart"
         android:title="@string/handlekurv" />
 
-
     <item
         android:id="@+id/menuLogout"
         android:title="@string/logg_ut" />

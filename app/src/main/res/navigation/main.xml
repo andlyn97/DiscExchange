@@ -24,8 +24,4 @@
         android:id="@+id/menuStore"
         android:name="gr7.discexchange.StoreFragment"
         android:label="Butikk" />
-    <activity
-        android:id="@+id/menuLogout"
-        android:name="gr7.discexchange.LoginActivity"
-        android:label="Logg ut" />
 </navigation>

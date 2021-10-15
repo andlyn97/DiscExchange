@@ -36,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
         authStateListener = firebaseAuth -> {
             FirebaseUser currentUser = auth.getCurrentUser();
             if (currentUser != null) {
-                Toast.makeText(getApplicationContext(), "Signed in as " + currentUser.getDisplayName(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Logget inn som " + currentUser.getDisplayName(), Toast.LENGTH_LONG).show();
             } else {
                 // Choose authentication providers
                 List<AuthUI.IdpConfig> providers = Arrays.asList(
@@ -59,11 +59,11 @@ public class LoginActivity extends AppCompatActivity {
         if (result.getResultCode() == RESULT_OK) {
             FirebaseUser currentUser = auth.getCurrentUser();
             if (currentUser != null) {
-                Toast.makeText(getApplicationContext(), "Signed in as " + currentUser.getDisplayName(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Logget inn som " + currentUser.getDisplayName(), Toast.LENGTH_LONG).show();
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
         } else {
-            Toast.makeText(getApplicationContext(), "Signed in cancelled", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Innlogging kansellert", Toast.LENGTH_LONG).show();
         }
     }
 
