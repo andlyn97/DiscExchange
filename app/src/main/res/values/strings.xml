@@ -22,4 +22,5 @@
     <string name="popul_re">Populære</string>
     <string name="butikk">Butikk</string>
     <string name="handlekurv">Handlekurv</string>
+    <string name="logg_ut">Logg ut</string>
 </resources>

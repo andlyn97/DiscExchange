@@ -44,13 +44,13 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="storeFragment">
+                  <entry key="menuStore">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="288" />
-                            <option name="y" value="373" />
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
                           </Point>
                         </option>
                       </LayoutPositions>
