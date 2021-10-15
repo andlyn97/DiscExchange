@@ -11,13 +11,14 @@ import gr7.discexchange.R;
 
 public class Ad {
 
+    private String uid;
     private String name;
-     private int image;
+    private int image;
     private String brand;
-    private String condition; // int
+    private int condition;
     private String flight;
     private String color;
-    private String ink; // boolean?
+    private String ink;
     private String description;
     private String wish;
     private double price;
@@ -25,7 +26,7 @@ public class Ad {
     private Date archived;
     private User user;
 
-    public Ad(String name, String condition, String color, String ink, String wish, int image) {
+    public Ad(String name, int condition, String color, String ink, String wish, int image) {
         this.name = name;
         this.condition = condition;
         this.color = color;
@@ -38,6 +39,14 @@ public class Ad {
         this.name = name;
         this.image = image;
         this.brand = brand;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getName() {
@@ -68,11 +77,11 @@ public class Ad {
         return image;
     }
 
-    public String getCondition() {
+    public int getCondition() {
         return condition;
     }
 
-    public void setCondition(String condition) {
+    public void setCondition(int condition) {
         this.condition = condition;
     }
 
@@ -150,10 +159,10 @@ public class Ad {
         int imgId = R.drawable.firebird;
 
 
-        Ad one = new Ad("Navn: Firebird", "Tilstand: 7/10", "Farge: Rød", "Ink:Ingen", "Ønsker: P2 C-line", imgId);
-        Ad two = new Ad("Navn: Firebird", "Tilstand: 7/10", "Farge: Rød", "Ink:Ingen", "Ønsker: P2 C-line", imgId);
-        Ad three = new Ad("Navn: Firebird", "Tilstand: 7/10", "Farge: Rød", "Ink:Ingen", "Ønsker: P2 C-line", imgId);
-        Ad four = new Ad("Navn: Firebird", "Tilstand: 7/10", "Farge: Rød", "Ink:Ingen", "Ønsker: P2 C-line", imgId);
+        Ad one = new Ad("Navn: Firebird", 7, "Farge: Rød", "Ink:Ingen", "Ønsker: P2 C-line", imgId);
+        Ad two = new Ad("Navn: Firebird", 7, "Farge: Rød", "Ink:Ingen", "Ønsker: P2 C-line", imgId);
+        Ad three = new Ad("Navn: Firebird", 7, "Farge: Rød", "Ink:Ingen", "Ønsker: P2 C-line", imgId);
+        Ad four = new Ad("Navn: Firebird", 7, "Farge: Rød", "Ink:Ingen", "Ønsker: P2 C-line", imgId);
 
         adList.add(one);
         adList.add(two);

@@ -77,7 +77,7 @@ public class AdRecycleAdapter extends RecyclerView.Adapter<AdRecycleAdapter.AdVi
 
         public void setAd(Ad adToDisplay) {
             nameTextView.setText(adToDisplay.getName());
-            conditionTextView.setText(adToDisplay.getCondition());
+            conditionTextView.setText(String.valueOf(adToDisplay.getCondition()));
             colorTextView.setText(adToDisplay.getColor());
             thumbnailImageView.setImageResource(adToDisplay.getImage());
             inkTextView.setText(adToDisplay.getInk());
