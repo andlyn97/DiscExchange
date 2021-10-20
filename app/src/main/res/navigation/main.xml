@@ -5,6 +5,7 @@
     android:id="@+id/main"
     app:startDestination="@id/menuFeed">
 
+
     <fragment
         android:id="@+id/menuFeed"
         android:name="gr7.discexchange.MyFeedFragment"

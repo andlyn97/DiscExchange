@@ -31,7 +31,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import gr7.discexchange.model.Ad;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends AppCompatActivity{
 
     private FirebaseFirestore firestoreDb;
     private CollectionReference adCollectionReference;
@@ -52,6 +52,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = findViewById(R.id.navigationView);
         navigationView.setItemIconTintList(null);
+        navigationView.getMenu().findItem(R.id.menuLogout).setOnMenuItemClickListener(item -> {
+            AuthUI.getInstance()
+                    .signOut(this)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Toast.makeText(getApplicationContext(), "Logger ut", Toast.LENGTH_LONG).show();
+                            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                        }
+                    });
+            return true;
+        });
 
 
 
@@ -67,8 +78,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         adCollectionReference = firestoreDb.collection("ad");
         //generateTestDataToDb();
 
-        // Logg ut fungere ikke sammen med resten av navigasjonen enda.
-        //navigationView.setNavigationItemSelectedListener(this);
+
+
 
     }
 
@@ -81,44 +92,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         for (Ad ad : ads) {
             adCollectionReference.add(ad);
         }
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-
-        switch (id) {
-            case R.id.menuFeed:
-                getSupportFragmentManager().beginTransaction().replace(R.id.navHostFragment, new MyFeedFragment()).commit();
-                break;
-            case R.id.menuChat:
-                break;
-            case R.id.menuProfile:
-                getSupportFragmentManager().beginTransaction().replace(R.id.navHostFragment, new ProfileFragment()).commit();
-                break;
-            case R.id.menuMyAds:
-                break;
-            case R.id.menuPopular:
-                getSupportFragmentManager().beginTransaction().replace(R.id.navHostFragment, new PopularFragment()).commit();
-                break;
-            case R.id.menuStore:
-                getSupportFragmentManager().beginTransaction().replace(R.id.navHostFragment, new StoreFragment()).commit();
-                break;
-            case R.id.menuShoppingCart:
-                break;
-            case R.id.menuLogout:
-                AuthUI.getInstance()
-                        .signOut(this)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            public void onComplete(@NonNull Task<Void> task) {
-                                Toast.makeText(getApplicationContext(), "Logger ut", Toast.LENGTH_LONG).show();
-                                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                            }
-                        });
-        }
-
-        drawerLayout.closeDrawer(GravityCompat.START);
-
-        return true;
     }
 }
