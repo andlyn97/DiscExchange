@@ -33,6 +33,10 @@
         android:id="@+id/menuLogout"
         android:title="@string/logg_ut" />
 
+    <item
+        android:id="@+id/menuCreateAd"
+        android:title="Opprett annonse" />
+
 
 </menu>
 

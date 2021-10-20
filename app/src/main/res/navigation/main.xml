@@ -25,4 +25,9 @@
         android:id="@+id/menuStore"
         android:name="gr7.discexchange.StoreFragment"
         android:label="Butikk" />
+    <fragment
+        android:id="@+id/menuCreateAd"
+        android:name="gr7.discexchange.CreateAdFragment"
+        android:label="Opprett annonse" />
+
 </navigation>
