@@ -33,10 +33,10 @@ import gr7.discexchange.model.Ad;
 
 public class MyFeedFragment extends Fragment {
 
-    private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    private CollectionReference adCollectionReference = firebaseFirestore.collection("ad");
-    private List<Ad> ads = new ArrayList<>();
-    private List<String> adsUids = new ArrayList<>();
+    private FirebaseFirestore firebaseFirestore;
+    private CollectionReference adCollectionReference;
+    private List<Ad> ads;
+    private List<String> adsUids;
 
     private RecyclerView adRecyclerView;
     private AdRecycleAdapter adAdapter;
@@ -49,6 +49,11 @@ public class MyFeedFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        adCollectionReference = firebaseFirestore.collection("ad");
+        ads = new ArrayList<>();
+        adsUids = new ArrayList<>();
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_my_feed, container, false);
     }
@@ -59,14 +64,7 @@ public class MyFeedFragment extends Fragment {
         setupRecyclerView(view);
     }
 
-    private void setupRecyclerView(View view) {
-        adRecyclerView = view.findViewById(R.id.adRecyclerView);
-        adAdapter = new AdRecycleAdapter(view.getContext(), ads);
 
-        adRecyclerView.setAdapter(adAdapter);
-
-        adRecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-    }
 
     private void createFirestoreReadListner() {
         /*adCollectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -102,22 +100,19 @@ public class MyFeedFragment extends Fragment {
                         case ADDED:
                             ads.add(ad);
                             adsUids.add(ad.getUid());
-                            adAdapter.notifyItemChanged(ads.size()-1);
+                            adAdapter.notifyItemInserted(ads.size()-1);
                             break;
                         case REMOVED:
                             ads.remove(pos);
                             adsUids.remove(pos);
-                            adAdapter.notifyItemChanged(pos);
+                            adAdapter.notifyItemRemoved(pos);
                             break;
                         case MODIFIED:
                             ads.set(pos, ad);
                             adAdapter.notifyItemChanged(pos);
                             break;
                     }
-
-
                 }
-
             }
         });
 
@@ -139,6 +134,15 @@ public class MyFeedFragment extends Fragment {
             firestoreListenerRegistration.remove();
         }
 
+    }
+
+    private void setupRecyclerView(View view) {
+        adRecyclerView = view.findViewById(R.id.adRecyclerView);
+        adAdapter = new AdRecycleAdapter(view.getContext(), ads);
+
+        adRecyclerView.setAdapter(adAdapter);
+
+        adRecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
     }
 
 

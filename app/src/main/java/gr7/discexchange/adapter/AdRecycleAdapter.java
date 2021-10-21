@@ -78,11 +78,11 @@ public class AdRecycleAdapter extends RecyclerView.Adapter<AdRecycleAdapter.AdVi
         }
 
         public void setAd(Ad adToDisplay) {
-            nameTextView.setText(adToDisplay.getName());
-            conditionTextView.setText(String.valueOf(adToDisplay.getCondition()));
-            colorTextView.setText(adToDisplay.getColor());
-            inkTextView.setText(adToDisplay.getInk());
-            wishTextView.setText(adToDisplay.getWish());
+            nameTextView.setText("Navn: " + adToDisplay.getName());
+            conditionTextView.setText("Tilstand: " + String.valueOf(adToDisplay.getCondition() + "/10"));
+            colorTextView.setText("Farge: " + adToDisplay.getColor());
+            inkTextView.setText("Ink: " + adToDisplay.getInk());
+            wishTextView.setText("Ønsker: " + adToDisplay.getWish());
 
             if(adToDisplay.getImageUrl() != null) {
                 Glide.with(thumbnailImageView.getContext())
