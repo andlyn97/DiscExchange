@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import org.w3c.dom.Text;
 
 import java.util.List;
@@ -79,9 +81,14 @@ public class AdRecycleAdapter extends RecyclerView.Adapter<AdRecycleAdapter.AdVi
             nameTextView.setText(adToDisplay.getName());
             conditionTextView.setText(String.valueOf(adToDisplay.getCondition()));
             colorTextView.setText(adToDisplay.getColor());
-            thumbnailImageView.setImageResource(adToDisplay.getImage());
             inkTextView.setText(adToDisplay.getInk());
             wishTextView.setText(adToDisplay.getWish());
+
+            if(adToDisplay.getImageUrl() != null) {
+                Glide.with(thumbnailImageView.getContext())
+                        .load(adToDisplay.getImageUrl())
+                        .into(thumbnailImageView);
+            }
         }
 
     }

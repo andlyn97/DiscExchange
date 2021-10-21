@@ -1,9 +1,22 @@
 package gr7.discexchange.model;
 
 import android.net.Uri;
+import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.Exclude;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import gr7.discexchange.R;
 
@@ -11,8 +24,7 @@ public class Ad {
     @Exclude
     private String uid;
     private String name;
-    private int image;
-    private Uri imageUri;
+    private String imageUrl;
     private String brand;
     private int condition;
     private String flight;
@@ -25,10 +37,9 @@ public class Ad {
     private String archived;
     private String userUid;
 
-    public Ad(String uid, String name, int image, String brand, int condition, String flight, String color, String ink, String description, String wish, double price, String published, String archived, String userUid) {
+    public Ad(String uid, String name, String brand, int condition, String flight, String color, String ink, String description, String wish, double price, String published, String archived, String userUid) {
         this.uid = uid;
         this.name = name;
-        this.image = image;
         this.brand = brand;
         this.condition = condition;
         this.flight = flight;
@@ -42,9 +53,8 @@ public class Ad {
         this.userUid = userUid;
     }
 
-    public Ad(String name, Uri imageUri, String brand, int condition, String flight, String color, String ink, String description, String wish, String published, String userUid) {
+    public Ad(String name, String brand, int condition, String flight, String color, String ink, String description, String wish, String published, String userUid) {
         this.name = name;
-        this.imageUri = imageUri;
         this.brand = brand;
         this.condition = condition;
         this.flight = flight;
@@ -56,9 +66,8 @@ public class Ad {
         this.userUid = userUid;
     }
 
-    public Ad(String name, int image, String brand, int condition, String flight, String color, String ink, String description, String wish, double price, String published, String archived, String userUid) {
+    public Ad(String name, String brand, int condition, String flight, String color, String ink, String description, String wish, double price, String published, String archived, String userUid) {
         this.name = name;
-        this.image = image;
         this.brand = brand;
         this.condition = condition;
         this.flight = flight;
@@ -72,19 +81,20 @@ public class Ad {
         this.userUid = userUid;
     }
 
-    public Ad(String name, int condition, String color, String ink, String wish, int image) {
+    public Ad(String name, int condition, String color, String ink, String wish) {
         this.name = name;
         this.condition = condition;
         this.color = color;
         this.ink = ink;
         this.wish = wish;
-        this.image = image;
     }
 
-    public Ad(String name, int image, String brand) {
+    public Ad(String name, String brand) {
         this.name = name;
-        this.image = image;
         this.brand = brand;
+    }
+
+    public Ad() {
     }
 
     public String getUid() {
@@ -93,6 +103,14 @@ public class Ad {
 
     public void setUid(String uid) {
         this.uid = uid;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public String getName() {
@@ -117,10 +135,6 @@ public class Ad {
 
     public void setColor(String color) {
         this.color = color;
-    }
-
-    public int getImage() {
-        return image;
     }
 
     public int getCondition() {
@@ -191,31 +205,32 @@ public class Ad {
         return userUid;
     }
 
-    public void setUser(String userUid) {
+    public void setUserUid(String userUid) {
         this.userUid = userUid;
     }
 
-    public void setImage(int image) {
-        this.image = image;
-    }
+    public static List<Ad> getData() {
+        List<Ad> ads = new ArrayList<>();
 
-    public static ArrayList<Ad> getData() {
-        ArrayList<Ad> adList = new ArrayList<>();
+        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+        CollectionReference adReference = firebaseFirestore.collection("ad");
 
-        int imgId = R.drawable.firebird;
+        adReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()) {
+                    for(QueryDocumentSnapshot adDocumentSnapshot : task.getResult()) {
+                        Ad ad = adDocumentSnapshot.toObject(Ad.class);
+                        ad.setUid(adDocumentSnapshot.getId());
+                        ads.add(ad);
+                    }
+                } else {
+                    Log.d("Debug12", "Error:" + task.getException());
+                }
+            }
+        });
 
-
-        Ad one = new Ad("Navn: Firebird", 7, "Farge: Rød", "Ink:Ingen", "Ønsker: P2 C-line", imgId);
-        Ad two = new Ad("Navn: Firebird", 7, "Farge: Rød", "Ink:Ingen", "Ønsker: P2 C-line", imgId);
-        Ad three = new Ad("Navn: Firebird", 7, "Farge: Rød", "Ink:Ingen", "Ønsker: P2 C-line", imgId);
-        Ad four = new Ad("Navn: Firebird", 7, "Farge: Rød", "Ink:Ingen", "Ønsker: P2 C-line", imgId);
-
-        adList.add(one);
-        adList.add(two);
-        adList.add(three);
-        adList.add(four);
-
-        return adList;
+        return ads;
     }
 
     public static ArrayList<Ad> getPopular() {
@@ -228,11 +243,11 @@ public class Ad {
         int img4 = R.drawable.moab;
         int img5 = R.drawable.keystone;
 
-        Ad one = new Ad("Firebird", img1, "Innova");
-        Ad two = new Ad("Explorer", img2, "Latitude 64");
-        Ad three = new Ad("Hydra", img3, "Innova");
-        Ad four = new Ad("MOAB", img4, "Hyzer Bomb");
-        Ad five = new Ad("Keystone", img5, "Latitude 64");
+        Ad one = new Ad("Firebird", "Innova");
+        Ad two = new Ad("Explorer", "Latitude 64");
+        Ad three = new Ad("Hydra", "Innova");
+        Ad four = new Ad("MOAB", "Hyzer Bomb");
+        Ad five = new Ad("Keystone", "Latitude 64");
 
         popList.add(one);
         popList.add(two);

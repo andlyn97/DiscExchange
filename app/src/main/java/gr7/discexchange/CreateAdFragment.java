@@ -15,6 +15,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.provider.MediaStore;
 import android.util.Log;
@@ -30,6 +33,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -65,7 +69,6 @@ public class CreateAdFragment extends Fragment {
                     Log.d("Debug12", "" + result.getData().getData());
 
                     currentUri = result.getData().getData();
-
 
                     if(result.getData().getExtras() != null) {
                         currentBitmap = (Bitmap)result.getData().getExtras().get("data");
@@ -118,34 +121,24 @@ public class CreateAdFragment extends Fragment {
             String ink = textInputInk.getEditableText().toString();
             String description = textInputDescription.getEditableText().toString();
             String wish = textInputWish.getEditableText().toString();
+            String published = String.valueOf(System.currentTimeMillis());
 
             // TODO: Legge inn at man kan laste opp bilde som er hentet fra "Ta bilde".
 
 
+            Ad ad = new Ad(name, brand, condition, flight, color, ink, description, wish, published, FirebaseAuth.getInstance().getCurrentUser().getUid());
 
-            Ad ad = new Ad(name, currentUri, brand, condition, flight, color, ink, description, wish, "2021-10-21", FirebaseAuth.getInstance().getCurrentUser().getUid());
 
-            FirebaseFirestore.getInstance().collection("ad").add(ad);
-            StorageReference firebaseStorage = FirebaseStorage.getInstance().getReference().child("ad-images").child("2021-10-21");
-            firebaseStorage.putFile(currentUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                    Log.d("Debug12", "Uploading");
-                    firebaseStorage.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            String url = uri.toString();
-
-                            Log.d("Debug12", "Downloadurl = " + url);
-                        }
-                    });
-
-                }
+            StorageReference firebaseStorage = FirebaseStorage.getInstance().getReference().child("ad-images").child(published);
+            firebaseStorage.putFile(currentUri).addOnCompleteListener(task -> {
+                Log.d("Debug12", "Uploaded");
+                firebaseStorage.getDownloadUrl().addOnSuccessListener(uri -> {
+                    ad.setImageUrl(uri.toString());
+                    Log.d("Debug12", "Downloadurl = " + uri.toString());
+                    FirebaseFirestore.getInstance().collection("ad").add(ad).addOnCompleteListener(task1 -> Navigation.findNavController(view).popBackStack());
+                });
             });
         });
-
-
-
     }
 
     private void setOnClickListeners(Button takeImageBtn, Button selectImageBtn) {

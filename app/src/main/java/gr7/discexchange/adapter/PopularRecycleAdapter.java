@@ -72,7 +72,7 @@ public class PopularRecycleAdapter extends RecyclerView.Adapter<PopularRecycleAd
         public void setPopular(Ad popularToDisplay) {
             name.setText(popularToDisplay.getName());
             manifacturer.setText(popularToDisplay.getBrand());
-            thumbnailImageView.setImageResource(popularToDisplay.getImage());
+            //thumbnailImageView.setImageResource(popularToDisplay.getImage());
         }
 
     }
