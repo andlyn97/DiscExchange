@@ -38,7 +38,7 @@ public class CreateAdFragment extends Fragment {
     }
 
 
-    ActivityResultLauncher<Intent> cameraActivityResultLauncher = registerForActivityResult(
+    ActivityResultLauncher<Intent> handleImageActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
@@ -87,20 +87,14 @@ public class CreateAdFragment extends Fragment {
         Button takeImageBtn = view.findViewById(R.id.createTakeImage);
         Button selectImageBtn = view.findViewById(R.id.createSelectImage);
 
-        takeImageBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                cameraActivityResultLauncher.launch(cameraIntent);
-            }
+        takeImageBtn.setOnClickListener(view1 -> {
+            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            handleImageActivityResultLauncher.launch(cameraIntent);
         });
 
-        selectImageBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                cameraActivityResultLauncher.launch(galleryIntent);
-            }
+        selectImageBtn.setOnClickListener(view12 -> {
+            Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            handleImageActivityResultLauncher.launch(galleryIntent);
         });
 
 
