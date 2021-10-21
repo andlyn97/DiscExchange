@@ -1,8 +1,5 @@
 package gr7.discexchange;
 
-import static android.app.Activity.RESULT_OK;
-
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -11,11 +8,9 @@ import android.os.Bundle;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
@@ -25,6 +20,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+
+import gr7.discexchange.model.Ad;
 
 
 public class CreateAdFragment extends Fragment {
@@ -86,9 +86,40 @@ public class CreateAdFragment extends Fragment {
 
         Button takeImageBtn = view.findViewById(R.id.createTakeImage);
         Button selectImageBtn = view.findViewById(R.id.createSelectImage);
+        Button createBtnCreate = view.findViewById(R.id.createBtnCreate);
 
 
         setOnClickListeners(takeImageBtn, selectImageBtn);
+
+        // Handle form
+        TextInputEditText textInputName =  view.findViewById(R.id.createName);
+        TextInputEditText textInputBrand = view.findViewById(R.id.createBrand);
+        TextInputEditText textInputFlight = view.findViewById(R.id.createFlight);
+        TextInputEditText textInputColor = view.findViewById(R.id.createColor);
+        TextInputEditText textInputInk = view.findViewById(R.id.createInk);
+        TextInputEditText textInputDescription = view.findViewById(R.id.createDescription);
+        TextInputEditText textInputWish = view.findViewById(R.id.createWish);
+
+
+
+
+
+        createBtnCreate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String name = textInputName.getEditableText().toString();
+                String brand = textInputBrand.getEditableText().toString();
+                String flight = textInputFlight.getEditableText().toString();
+                String color = textInputColor.getEditableText().toString();
+                String ink = textInputInk.getEditableText().toString();
+                String description = textInputDescription.getEditableText().toString();
+                String wish = textInputWish.getEditableText().toString();
+
+
+                Log.d("Debug12", "Variabler:" + name + brand + flight + color + ink + description + wish);
+            }
+        });
+
 
 
     }

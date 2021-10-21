@@ -71,8 +71,6 @@
             android:layout_height="match_parent"
             android:layout_marginHorizontal="50dp">
 
-            <!--TODO: Opprett Image-->
-
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/createBrand"
                 android:layout_width="match_parent"
@@ -85,7 +83,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginHorizontal="50dp">
-            <!-- TODO: Bytte denne til en "color picker"? -->
+
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/createFlight"
@@ -100,6 +98,7 @@
             android:layout_height="match_parent"
             android:layout_marginHorizontal="50dp">
 
+            <!-- TODO: Bytte denne til en "color picker"? -->
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/createColor"
                 android:layout_width="match_parent"
