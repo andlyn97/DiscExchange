@@ -87,6 +87,13 @@ public class CreateAdFragment extends Fragment {
         Button takeImageBtn = view.findViewById(R.id.createTakeImage);
         Button selectImageBtn = view.findViewById(R.id.createSelectImage);
 
+
+        setOnClickListeners(takeImageBtn, selectImageBtn);
+
+
+    }
+
+    private void setOnClickListeners(Button takeImageBtn, Button selectImageBtn) {
         takeImageBtn.setOnClickListener(view1 -> {
             Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             handleImageActivityResultLauncher.launch(cameraIntent);
@@ -96,7 +103,5 @@ public class CreateAdFragment extends Fragment {
             Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             handleImageActivityResultLauncher.launch(galleryIntent);
         });
-
-
     }
 }
