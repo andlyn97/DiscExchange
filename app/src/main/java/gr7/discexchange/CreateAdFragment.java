@@ -24,10 +24,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -112,14 +118,30 @@ public class CreateAdFragment extends Fragment {
             String ink = textInputInk.getEditableText().toString();
             String description = textInputDescription.getEditableText().toString();
             String wish = textInputWish.getEditableText().toString();
+
             // TODO: Legge inn at man kan laste opp bilde som er hentet fra "Ta bilde".
+
 
 
             Ad ad = new Ad(name, currentUri, brand, condition, flight, color, ink, description, wish, "2021-10-21", FirebaseAuth.getInstance().getCurrentUser().getUid());
 
             FirebaseFirestore.getInstance().collection("ad").add(ad);
+            StorageReference firebaseStorage = FirebaseStorage.getInstance().getReference().child("ad-images").child("2021-10-21");
+            firebaseStorage.putFile(currentUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                    Log.d("Debug12", "Uploading");
+                    firebaseStorage.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            String url = uri.toString();
 
-            Log.d("Debug12", "Variabler:" + name + brand + flight + color + ink + description + wish);
+                            Log.d("Debug12", "Downloadurl = " + url);
+                        }
+                    });
+
+                }
+            });
         });
 
 
