@@ -78,9 +78,6 @@ public class MainActivity extends AppCompatActivity{
         adCollectionReference = firestoreDb.collection("ad");
         //generateTestDataToDb();
 
-
-
-
     }
 
     private void generateTestDataToDb() {
