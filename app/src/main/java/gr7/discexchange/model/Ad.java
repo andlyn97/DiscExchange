@@ -1,5 +1,7 @@
 package gr7.discexchange.model;
 
+import android.net.Uri;
+
 import com.google.firebase.firestore.Exclude;
 import java.util.ArrayList;
 
@@ -10,6 +12,7 @@ public class Ad {
     private String uid;
     private String name;
     private int image;
+    private Uri imageUri;
     private String brand;
     private int condition;
     private String flight;
@@ -38,7 +41,22 @@ public class Ad {
         this.archived = archived;
         this.userUid = userUid;
     }
-    public Ad( String name, int image, String brand, int condition, String flight, String color, String ink, String description, String wish, double price, String published, String archived, String userUid) {
+
+    public Ad(String name, Uri imageUri, String brand, int condition, String flight, String color, String ink, String description, String wish, String published, String userUid) {
+        this.name = name;
+        this.imageUri = imageUri;
+        this.brand = brand;
+        this.condition = condition;
+        this.flight = flight;
+        this.color = color;
+        this.ink = ink;
+        this.description = description;
+        this.wish = wish;
+        this.published = published;
+        this.userUid = userUid;
+    }
+
+    public Ad(String name, int image, String brand, int condition, String flight, String color, String ink, String description, String wish, double price, String published, String archived, String userUid) {
         this.name = name;
         this.image = image;
         this.brand = brand;
