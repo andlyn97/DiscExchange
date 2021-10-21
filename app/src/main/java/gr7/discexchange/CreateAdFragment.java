@@ -1,8 +1,10 @@
 package gr7.discexchange;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResult;
@@ -11,6 +13,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
@@ -23,6 +26,11 @@ import android.widget.ImageView;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 
 import gr7.discexchange.model.Ad;
 
@@ -30,6 +38,8 @@ import gr7.discexchange.model.Ad;
 public class CreateAdFragment extends Fragment {
 
     private ImageView currentImage;
+    Bitmap currentBitmap;
+    Uri currentUri;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -46,34 +56,25 @@ public class CreateAdFragment extends Fragment {
                         return;
                     }
 
-                    Uri currentUri = result.getData().getData();
-                    Bitmap currentBitmap;
+                    Log.d("Debug12", "" + result.getData().getData());
+
+                    currentUri = result.getData().getData();
+
+
                     if(result.getData().getExtras() != null) {
                         currentBitmap = (Bitmap)result.getData().getExtras().get("data");
-
 
                         if(currentBitmap != null) {
                             currentImage.setImageBitmap(currentBitmap);
                             Log.d("Debug12 Bitmap",currentBitmap.toString());
                         }
+
                     }
 
                     if(currentUri != null) {
                         currentImage.setImageURI(currentUri);
                         Log.d("Debug12 Uri",currentUri.toString());
                     }
-
-
-
-
-
-
-
-
-
-
-
-
 
                 }
             }
@@ -94,6 +95,7 @@ public class CreateAdFragment extends Fragment {
         // Handle form
         TextInputEditText textInputName =  view.findViewById(R.id.createName);
         TextInputEditText textInputBrand = view.findViewById(R.id.createBrand);
+        TextInputEditText textInputCondition = view.findViewById(R.id.createCondition);
         TextInputEditText textInputFlight = view.findViewById(R.id.createFlight);
         TextInputEditText textInputColor = view.findViewById(R.id.createColor);
         TextInputEditText textInputInk = view.findViewById(R.id.createInk);
@@ -101,23 +103,23 @@ public class CreateAdFragment extends Fragment {
         TextInputEditText textInputWish = view.findViewById(R.id.createWish);
 
 
+        createBtnCreate.setOnClickListener(view1 -> {
+            String name = textInputName.getEditableText().toString();
+            String brand = textInputBrand.getEditableText().toString();
+            int condition = Integer.parseInt(textInputCondition.getEditableText().toString());
+            String flight = textInputFlight.getEditableText().toString();
+            String color = textInputColor.getEditableText().toString();
+            String ink = textInputInk.getEditableText().toString();
+            String description = textInputDescription.getEditableText().toString();
+            String wish = textInputWish.getEditableText().toString();
+            // TODO: Legge inn at man kan laste opp bilde som er hentet fra "Ta bilde".
 
 
+            Ad ad = new Ad(name, currentUri, brand, condition, flight, color, ink, description, wish, "2021-10-21", FirebaseAuth.getInstance().getCurrentUser().getUid());
 
-        createBtnCreate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String name = textInputName.getEditableText().toString();
-                String brand = textInputBrand.getEditableText().toString();
-                String flight = textInputFlight.getEditableText().toString();
-                String color = textInputColor.getEditableText().toString();
-                String ink = textInputInk.getEditableText().toString();
-                String description = textInputDescription.getEditableText().toString();
-                String wish = textInputWish.getEditableText().toString();
+            FirebaseFirestore.getInstance().collection("ad").add(ad);
 
-
-                Log.d("Debug12", "Variabler:" + name + brand + flight + color + ink + description + wish);
-            }
+            Log.d("Debug12", "Variabler:" + name + brand + flight + color + ink + description + wish);
         });
 
 
