@@ -118,7 +118,7 @@
                 android:id="@+id/createColor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Color" />
+                android:hint="Farge" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
