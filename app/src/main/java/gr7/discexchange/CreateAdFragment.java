@@ -1,45 +1,30 @@
 package gr7.discexchange;
 
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 
-import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 
 import gr7.discexchange.model.Ad;
@@ -56,38 +41,6 @@ public class CreateAdFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_create_ad, container, false);
     }
-
-
-    ActivityResultLauncher<Intent> handleImageActivityResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    if (result.getData() == null) {
-                        return;
-                    }
-
-                    Log.d("Debug12", "" + result.getData().getData());
-
-                    currentUri = result.getData().getData();
-
-                    if(result.getData().getExtras() != null) {
-                        currentBitmap = (Bitmap)result.getData().getExtras().get("data");
-
-                        if(currentBitmap != null) {
-                            currentImage.setImageBitmap(currentBitmap);
-                            Log.d("Debug12 Bitmap",currentBitmap.toString());
-                        }
-
-                    }
-
-                    if(currentUri != null) {
-                        currentImage.setImageURI(currentUri);
-                        Log.d("Debug12 Uri",currentUri.toString());
-                    }
-
-                }
-            }
-    );
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -123,33 +76,46 @@ public class CreateAdFragment extends Fragment {
             String wish = textInputWish.getEditableText().toString();
             String published = String.valueOf(System.currentTimeMillis());
 
-            // TODO: Legge inn at man kan laste opp bilde som er hentet fra "Ta bilde".
-
-
             Ad ad = new Ad(name, brand, condition, flight, color, ink, description, wish, published, FirebaseAuth.getInstance().getCurrentUser().getUid());
-
 
             StorageReference firebaseStorage = FirebaseStorage.getInstance().getReference().child("ad-images").child(published);
             firebaseStorage.putFile(currentUri).addOnCompleteListener(task -> {
-                Log.d("Debug12", "Uploaded");
                 firebaseStorage.getDownloadUrl().addOnSuccessListener(uri -> {
                     ad.setImageUrl(uri.toString());
-                    Log.d("Debug12", "Downloadurl = " + uri.toString());
                     FirebaseFirestore.getInstance().collection("ad").add(ad).addOnCompleteListener(task1 -> Navigation.findNavController(view).popBackStack());
                 });
             });
         });
+
+        File file = new File(getContext().getFilesDir(), "picFromCamera");
+        currentUri = FileProvider.getUriForFile(view.getContext(), BuildConfig.APPLICATION_ID + ".provider", file );
     }
+
+    ActivityResultLauncher<String> handleGetContent = registerForActivityResult(
+            new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
+                @Override
+                public void onActivityResult(Uri result) {
+                    currentUri = result;
+                    currentImage.setImageURI(currentUri);
+                }
+            });
+
+    ActivityResultLauncher<Uri> handleTakePicture = registerForActivityResult(new ActivityResultContracts.TakePicture(), new ActivityResultCallback<Boolean>() {
+        @Override
+        public void onActivityResult(Boolean result) {
+            currentImage.setImageURI(currentUri);
+        }
+    });
 
     private void setOnClickListeners(Button takeImageBtn, Button selectImageBtn) {
         takeImageBtn.setOnClickListener(view1 -> {
-            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            handleImageActivityResultLauncher.launch(cameraIntent);
+            handleTakePicture.launch(currentUri);
         });
 
         selectImageBtn.setOnClickListener(view12 -> {
-            Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            handleImageActivityResultLauncher.launch(galleryIntent);
+            handleGetContent.launch("image/*");
         });
     }
+
 }
+
