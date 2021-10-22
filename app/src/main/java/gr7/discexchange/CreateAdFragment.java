@@ -32,9 +32,18 @@ import gr7.discexchange.model.Ad;
 
 public class CreateAdFragment extends Fragment {
 
+    private Uri currentUri;
     private ImageView currentImage;
-    Bitmap currentBitmap;
-    Uri currentUri;
+    private TextInputEditText textInputName;
+    private TextInputEditText textInputBrand;
+    private TextInputEditText textInputCondition;
+    private TextInputEditText textInputFlight;
+    private TextInputEditText textInputColor;
+    private TextInputEditText textInputInk;
+    private TextInputEditText textInputDescription;
+    private TextInputEditText textInputWish;
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -50,64 +59,29 @@ public class CreateAdFragment extends Fragment {
         Button takeImageBtn = view.findViewById(R.id.createTakeImage);
         Button selectImageBtn = view.findViewById(R.id.createSelectImage);
         Button createBtnCreate = view.findViewById(R.id.createBtnCreate);
+        textInputName = view.findViewById(R.id.createName);
+        textInputBrand = view.findViewById(R.id.createBrand);
+        textInputCondition = view.findViewById(R.id.createCondition);
+        textInputFlight = view.findViewById(R.id.createFlight);
+        textInputColor = view.findViewById(R.id.createColor);
+        textInputInk = view.findViewById(R.id.createInk);
+        textInputDescription = view.findViewById(R.id.createDescription);
+        textInputWish = view.findViewById(R.id.createWish);
 
-
-        setOnClickListeners(takeImageBtn, selectImageBtn);
-
-        // Handle form
-        TextInputEditText textInputName =  view.findViewById(R.id.createName);
-        TextInputEditText textInputBrand = view.findViewById(R.id.createBrand);
-        TextInputEditText textInputCondition = view.findViewById(R.id.createCondition);
-        TextInputEditText textInputFlight = view.findViewById(R.id.createFlight);
-        TextInputEditText textInputColor = view.findViewById(R.id.createColor);
-        TextInputEditText textInputInk = view.findViewById(R.id.createInk);
-        TextInputEditText textInputDescription = view.findViewById(R.id.createDescription);
-        TextInputEditText textInputWish = view.findViewById(R.id.createWish);
-
-
-        createBtnCreate.setOnClickListener(view1 -> {
-            String name = textInputName.getEditableText().toString();
-            String brand = textInputBrand.getEditableText().toString();
-            int condition = Integer.parseInt(textInputCondition.getEditableText().toString());
-            String flight = textInputFlight.getEditableText().toString();
-            String color = textInputColor.getEditableText().toString();
-            String ink = textInputInk.getEditableText().toString();
-            String description = textInputDescription.getEditableText().toString();
-            String wish = textInputWish.getEditableText().toString();
-            String published = String.valueOf(System.currentTimeMillis());
-
-            Ad ad = new Ad(name, brand, condition, flight, color, ink, description, wish, published, FirebaseAuth.getInstance().getCurrentUser().getUid());
-
-            StorageReference firebaseStorage = FirebaseStorage.getInstance().getReference().child("ad-images").child(published);
-            firebaseStorage.putFile(currentUri).addOnCompleteListener(task -> {
-                firebaseStorage.getDownloadUrl().addOnSuccessListener(uri -> {
-                    ad.setImageUrl(uri.toString());
-                    FirebaseFirestore.getInstance().collection("ad").add(ad).addOnCompleteListener(task1 -> Navigation.findNavController(view).popBackStack());
+        ActivityResultLauncher<String> handleGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(), result -> {
+                    currentUri = result;
+                    currentImage.setImageURI(currentUri);
                 });
-            });
-        });
+
+        ActivityResultLauncher<Uri> handleTakePicture = registerForActivityResult(new ActivityResultContracts.TakePicture(), result -> currentImage.setImageURI(currentUri));
+
+        setOnClickListeners(view, takeImageBtn, selectImageBtn, createBtnCreate, handleGetContent, handleTakePicture);
 
         File file = new File(getContext().getFilesDir(), "picFromCamera");
         currentUri = FileProvider.getUriForFile(view.getContext(), BuildConfig.APPLICATION_ID + ".provider", file );
     }
 
-    ActivityResultLauncher<String> handleGetContent = registerForActivityResult(
-            new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
-                @Override
-                public void onActivityResult(Uri result) {
-                    currentUri = result;
-                    currentImage.setImageURI(currentUri);
-                }
-            });
-
-    ActivityResultLauncher<Uri> handleTakePicture = registerForActivityResult(new ActivityResultContracts.TakePicture(), new ActivityResultCallback<Boolean>() {
-        @Override
-        public void onActivityResult(Boolean result) {
-            currentImage.setImageURI(currentUri);
-        }
-    });
-
-    private void setOnClickListeners(Button takeImageBtn, Button selectImageBtn) {
+    private void setOnClickListeners(@NonNull View view, Button takeImageBtn, Button selectImageBtn, Button createBtnCreate, ActivityResultLauncher<String> handleGetContent, ActivityResultLauncher<Uri> handleTakePicture) {
         takeImageBtn.setOnClickListener(view1 -> {
             handleTakePicture.launch(currentUri);
         });
@@ -115,7 +89,38 @@ public class CreateAdFragment extends Fragment {
         selectImageBtn.setOnClickListener(view12 -> {
             handleGetContent.launch("image/*");
         });
+
+        createBtnCreate.setOnClickListener(view1 -> {
+            handleForm(view);
+        });
     }
+
+    private void handleForm(@NonNull View view) {
+        String name = textInputName.getEditableText().toString();
+        String brand = textInputBrand.getEditableText().toString();
+        int condition = Integer.parseInt(textInputCondition.getEditableText().toString());
+        String flight = textInputFlight.getEditableText().toString();
+        String color = textInputColor.getEditableText().toString();
+        String ink = textInputInk.getEditableText().toString();
+        String description = textInputDescription.getEditableText().toString();
+        String wish = textInputWish.getEditableText().toString();
+        String published = String.valueOf(System.currentTimeMillis());
+
+        Ad ad = new Ad(name, brand, condition, flight, color, ink, description, wish, published, FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+        uploadToFirestore(view, published, ad);
+    }
+
+    private void uploadToFirestore(@NonNull View view, String published, Ad ad) {
+        StorageReference firebaseStorage = FirebaseStorage.getInstance().getReference().child("ad-images").child(published);
+        firebaseStorage.putFile(currentUri).addOnCompleteListener(task -> {
+            firebaseStorage.getDownloadUrl().addOnSuccessListener(uri -> {
+                ad.setImageUrl(uri.toString());
+                FirebaseFirestore.getInstance().collection("ad").add(ad).addOnCompleteListener(task1 -> Navigation.findNavController(view).popBackStack());
+            });
+        });
+    }
+
 
 }
 
