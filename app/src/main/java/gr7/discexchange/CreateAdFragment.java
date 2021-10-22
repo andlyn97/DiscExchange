@@ -42,6 +42,9 @@ public class CreateAdFragment extends Fragment {
     private TextInputEditText textInputInk;
     private TextInputEditText textInputDescription;
     private TextInputEditText textInputWish;
+    private Button takeImageBtn;
+    private Button selectImageBtn;
+    private Button createBtnCreate;
 
 
     @Override
@@ -56,9 +59,7 @@ public class CreateAdFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         currentImage = view.findViewById(R.id.createImageView);
 
-        Button takeImageBtn = view.findViewById(R.id.createTakeImage);
-        Button selectImageBtn = view.findViewById(R.id.createSelectImage);
-        Button createBtnCreate = view.findViewById(R.id.createBtnCreate);
+
         textInputName = view.findViewById(R.id.createName);
         textInputBrand = view.findViewById(R.id.createBrand);
         textInputCondition = view.findViewById(R.id.createCondition);
@@ -75,13 +76,17 @@ public class CreateAdFragment extends Fragment {
 
         ActivityResultLauncher<Uri> handleTakePicture = registerForActivityResult(new ActivityResultContracts.TakePicture(), result -> currentImage.setImageURI(currentUri));
 
-        setOnClickListeners(view, takeImageBtn, selectImageBtn, createBtnCreate, handleGetContent, handleTakePicture);
+        setOnClickListeners(view, handleGetContent, handleTakePicture);
 
         File file = new File(getContext().getFilesDir(), "picFromCamera");
         currentUri = FileProvider.getUriForFile(view.getContext(), BuildConfig.APPLICATION_ID + ".provider", file );
     }
 
-    private void setOnClickListeners(@NonNull View view, Button takeImageBtn, Button selectImageBtn, Button createBtnCreate, ActivityResultLauncher<String> handleGetContent, ActivityResultLauncher<Uri> handleTakePicture) {
+    private void setOnClickListeners(@NonNull View view, ActivityResultLauncher<String> handleGetContent, ActivityResultLauncher<Uri> handleTakePicture) {
+        takeImageBtn = view.findViewById(R.id.createTakeImage);
+        selectImageBtn = view.findViewById(R.id.createSelectImage);
+        createBtnCreate = view.findViewById(R.id.createBtnCreate);
+
         takeImageBtn.setOnClickListener(view1 -> {
             handleTakePicture.launch(currentUri);
         });
