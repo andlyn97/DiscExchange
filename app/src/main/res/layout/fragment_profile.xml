@@ -23,7 +23,7 @@
             app:riv_oval="true" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/profileName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="20dp"
@@ -36,7 +36,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/profileAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="20dp"
@@ -48,7 +48,7 @@
             android:textStyle="italic" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/profileUserRating"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="60dp"
@@ -58,13 +58,23 @@
             android:textStyle="bold" />
 
         <RatingBar
-            android:id="@+id/ratingBar"
+            android:id="@+id/profileUserRatingBar"
             style="@style/Widget.AppCompat.RatingBar.Indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:isIndicator="true"
             android:numStars="5"
             android:rating="3" />
+
+        <TextView
+            android:id="@+id/profileStoreCredit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="60dp"
+            android:text="Brukerrating:"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textStyle="bold" />
 
     </LinearLayout>
 </FrameLayout>

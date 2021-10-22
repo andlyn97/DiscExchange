@@ -15,6 +15,9 @@ public class User {
         this.storeCredit = storeCredit;
     }
 
+    public User() {
+    }
+
     public String getUid() {
         return uid;
     }
