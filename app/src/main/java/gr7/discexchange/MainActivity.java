@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -61,10 +62,12 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
-        NavigationView navigationView = findViewById(R.id.navigationView);
-        navigationView.setItemIconTintList(null);
+        NavigationView drawerNavView = findViewById(R.id.navigationView);
+        BottomNavigationView bottomNavView = findViewById(R.id.bottomNav);
+        drawerNavView.setItemIconTintList(null);
 
-        View headerView = navigationView.getHeaderView(0);
+
+        View headerView = drawerNavView.getHeaderView(0);
 
         navUserNameTextView = headerView.findViewById(R.id.navUserName);
         navAddressTextView = headerView.findViewById(R.id.navAddress);
@@ -79,7 +82,7 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
-        navigationView.getMenu().findItem(R.id.menuLogout).setOnMenuItemClickListener(item -> {
+        drawerNavView.getMenu().findItem(R.id.menuLogout).setOnMenuItemClickListener(item -> {
             AuthUI.getInstance()
                     .signOut(this)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -97,7 +100,9 @@ public class MainActivity extends AppCompatActivity{
         NavGraph navGraph = navController.getNavInflater().inflate(R.navigation.main);
         navGraph.setStartDestination(R.id.menuFeed);
         navController.setGraph(navGraph);
-        NavigationUI.setupWithNavController(navigationView, navController);
+        NavigationUI.setupWithNavController(drawerNavView, navController);
+        NavigationUI.setupWithNavController(bottomNavView, navController);
+
 
         final TextView textTitle = findViewById(R.id.textTitle);
 
