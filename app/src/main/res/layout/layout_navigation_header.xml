@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -25,10 +26,11 @@
         app:layout_constraintTop_toTopOf="@+id/imageProfilePic"/>
 
     <TextView
+        android:id="@+id/navUserName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:text="Andreas Lyngnes"
+        android:text="Placeholder"
         android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -36,10 +38,11 @@
         app:layout_constraintStart_toEndOf="@+id/imageProfilePic" />
 
     <TextView
+        android:id="@+id/navAddress"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:text="Halden"
+        android:text="Placeholder"
         android:textColor="@color/colorAccent"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/imageProfilePic"

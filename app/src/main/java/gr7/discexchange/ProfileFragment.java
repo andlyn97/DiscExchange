@@ -18,9 +18,11 @@ import android.widget.TextView;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import gr7.discexchange.model.User;
-import gr7.discexchange.viewmodel.ProfileViewModel;
+import gr7.discexchange.viewmodel.CurrentUserViewModel;
 
 public class ProfileFragment extends Fragment {
+
+    MainActivity mainActivity;
 
     public ProfileFragment() {
 
@@ -36,7 +38,7 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ProfileViewModel viewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
+        mainActivity = (MainActivity) getActivity();
 
         RoundedImageView pictureTextView = view.findViewById(R.id.profilePic);
         TextView nameTextView = view.findViewById(R.id.profileName);
@@ -44,8 +46,7 @@ public class ProfileFragment extends Fragment {
         RatingBar ratingBar= view.findViewById(R.id.profileUserRatingBar);
         TextView storeCreditTextView = view.findViewById(R.id.profileStoreCredit);
 
-
-        viewModel.getUser().observe((LifecycleOwner) view.getContext(), new Observer<User>() {
+        mainActivity.currentUserViewModel.getUser().observe((LifecycleOwner) view.getContext(), new Observer<User>() {
             @Override
             public void onChanged(User user) {
                 nameTextView.setText(user.getName());
@@ -54,6 +55,9 @@ public class ProfileFragment extends Fragment {
                 storeCreditTextView.setText("Butikk kredit: " + user.getStoreCredit());
             }
         });
+
+
+
 
     }
 }

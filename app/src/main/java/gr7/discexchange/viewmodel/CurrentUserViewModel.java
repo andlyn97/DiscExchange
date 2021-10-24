@@ -1,6 +1,7 @@
 package gr7.discexchange.viewmodel;
 
 import android.util.Log;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
@@ -15,12 +16,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import gr7.discexchange.R;
 import gr7.discexchange.model.User;
 
-public class ProfileViewModel extends ViewModel {
+public class CurrentUserViewModel extends ViewModel {
     private MutableLiveData<User> user;
 
-    public ProfileViewModel() {
+
+    public CurrentUserViewModel() {
         if(user != null) {return;}
         user = new MutableLiveData<>();
         loadUser();
