@@ -29,7 +29,7 @@
             android:paddingLeft="20dp"
             android:paddingTop="30dp"
             android:paddingBottom="10dp"
-            android:text="Andreas Lyngnes"
+            android:text="Placeholder"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:textSize="30sp"
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="20dp"
             android:paddingBottom="20dp"
-            android:text="B R A Veien 6D, 1783 Halden"
+            android:text="Placeholder"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textSize="16sp"
@@ -71,10 +71,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="60dp"
-            android:text="Brukerrating:"
+            android:text="Placeholder"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textStyle="bold" />
 
     </LinearLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/profileFAB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:fabSize="normal"
+        android:contentDescription="Edit profile"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="20dp"
+        app:srcCompat="@drawable/ic_baseline_edit_24"
+        />
 </FrameLayout>

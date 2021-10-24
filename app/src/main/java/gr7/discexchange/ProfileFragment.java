@@ -14,7 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import gr7.discexchange.model.User;
@@ -53,6 +55,15 @@ public class ProfileFragment extends Fragment {
                 addressTextView.setText(user.getAddress());
                 ratingBar.setRating(user.getFeedback());
                 storeCreditTextView.setText("Butikk kredit: " + user.getStoreCredit());
+            }
+        });
+
+        FloatingActionButton fab = view.findViewById(R.id.profileFAB);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(view.getContext(), "FAB CLICKED!", Toast.LENGTH_LONG).show();
             }
         });
 
