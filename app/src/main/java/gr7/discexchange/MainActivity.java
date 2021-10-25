@@ -5,6 +5,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -26,6 +28,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.makeramen.roundedimageview.RoundedImageView;
 
 import org.w3c.dom.Text;
 
@@ -40,6 +43,7 @@ public class MainActivity extends AppCompatActivity{
 
     private TextView navUserNameTextView;
     private TextView navAddressTextView;
+    private RoundedImageView imageProfilePic;
 
 
 
@@ -82,14 +86,14 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
+
+
         drawerNavView.getMenu().findItem(R.id.menuLogout).setOnMenuItemClickListener(item -> {
             AuthUI.getInstance()
                     .signOut(this)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        public void onComplete(@NonNull Task<Void> task) {
-                            Toast.makeText(getApplicationContext(), "Logger ut", Toast.LENGTH_LONG).show();
-                            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                        }
+                    .addOnCompleteListener(task -> {
+                        Toast.makeText(getApplicationContext(), "Logger ut", Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                     });
             return true;
         });
@@ -100,6 +104,19 @@ public class MainActivity extends AppCompatActivity{
         NavGraph navGraph = navController.getNavInflater().inflate(R.navigation.main);
         navGraph.setStartDestination(R.id.menuFeed);
         navController.setGraph(navGraph);
+
+
+
+        imageProfilePic = headerView.findViewById(R.id.imageProfilePic);
+        imageProfilePic.setOnClickListener(view -> {
+            navController.navigate(R.id.menuProfile);
+            drawerLayout.closeDrawer(GravityCompat.START);
+        });
+        navUserNameTextView.setOnClickListener(view -> {
+            navController.navigate(R.id.menuProfile);
+            drawerLayout.closeDrawer(GravityCompat.START);
+        });
+
         NavigationUI.setupWithNavController(drawerNavView, navController);
         NavigationUI.setupWithNavController(bottomNavView, navController);
 
@@ -107,6 +124,8 @@ public class MainActivity extends AppCompatActivity{
         final TextView textTitle = findViewById(R.id.textTitle);
 
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> textTitle.setText(destination.getLabel()));
+
+
 
 
     }

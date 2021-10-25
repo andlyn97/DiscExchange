@@ -14,7 +14,7 @@
         android:id="@+id/menuProfile"
         android:name="gr7.discexchange.ProfileFragment"
         android:label="Profil"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile"/>
     <fragment
         android:id="@+id/menuPopular"
         android:name="gr7.discexchange.PopularFragment"
@@ -28,5 +28,13 @@
         android:id="@+id/menuCreateAd"
         android:name="gr7.discexchange.CreateAdFragment"
         android:label="Opprett annonse" />
+
+
+    <fragment
+        android:id="@+id/notMenuEditProfile"
+        android:name="gr7.discexchange.EditProfileFragment"
+        tools:layout="@layout/fragment_edit_profile" />
+
+
 
 </navigation>

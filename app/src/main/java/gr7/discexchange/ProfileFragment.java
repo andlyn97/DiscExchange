@@ -1,13 +1,19 @@
 package gr7.discexchange;
 
+import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,12 +66,9 @@ public class ProfileFragment extends Fragment {
 
         FloatingActionButton fab = view.findViewById(R.id.profileFAB);
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(view.getContext(), "FAB CLICKED!", Toast.LENGTH_LONG).show();
-            }
-        });
+        fab.setOnClickListener(view1 -> Navigation.findNavController(mainActivity, R.id.navHostFragment).navigate(R.id.notMenuEditProfile));
+
+
 
 
 

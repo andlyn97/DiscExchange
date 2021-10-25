@@ -8,15 +8,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class MyAdsFragment extends Fragment {
+public class EditProfileFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_my_ads, container, false);
+        return inflater.inflate(R.layout.fragment_edit_profile, container, false);
+
+
+
+
     }
-
-
-
 }
