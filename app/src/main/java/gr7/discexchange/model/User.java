@@ -7,6 +7,7 @@ public class User {
     private String address;
     private int feedback;
     private double storeCredit;
+    private String imageUrl;
 
     public User(String name, String address, int feedback, double storeCredit) {
         this.name = name;
@@ -56,5 +57,13 @@ public class User {
 
     public void setStoreCredit(double storeCredit) {
         this.storeCredit = storeCredit;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

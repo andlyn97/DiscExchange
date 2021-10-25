@@ -42,7 +42,7 @@ public class CurrentUserViewModel extends ViewModel {
                         DocumentSnapshot userDoc = task.getResult().getDocuments().get(0);
                         User fetchedUser = userDoc.toObject(User.class);
                         user.setValue(fetchedUser);
-                        Log.d("Debug12", "UserIid: " + user.getValue().toString() + " Name: " + user.getValue().getName());
+                        Log.d("Debug12", "UserIid: " + user.getValue().toString() + " Name: " + user.getValue().getName() + "DownloadUrl: " + user.getValue().getImageUrl());
                     }
                 });
 

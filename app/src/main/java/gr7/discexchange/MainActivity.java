@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity{
 
     private TextView navUserNameTextView;
     private TextView navAddressTextView;
-    private RoundedImageView imageProfilePic;
+    private RoundedImageView navImageProfilePic;
 
 
 
@@ -75,6 +76,7 @@ public class MainActivity extends AppCompatActivity{
 
         navUserNameTextView = headerView.findViewById(R.id.navUserName);
         navAddressTextView = headerView.findViewById(R.id.navAddress);
+        navImageProfilePic = headerView.findViewById(R.id.imageProfilePic);
         currentUserViewModel.getUser().observe(this, new Observer<User>() {
             @Override
             public void onChanged(User user) {
@@ -83,6 +85,7 @@ public class MainActivity extends AppCompatActivity{
                 }
                 navUserNameTextView.setText(user.getName());
                 navAddressTextView.setText(user.getAddress());
+                Glide.with(getApplicationContext()).load(user.getImageUrl()).into(navImageProfilePic);
             }
         });
 
@@ -106,9 +109,7 @@ public class MainActivity extends AppCompatActivity{
         navController.setGraph(navGraph);
 
 
-
-        imageProfilePic = headerView.findViewById(R.id.imageProfilePic);
-        imageProfilePic.setOnClickListener(view -> {
+        navImageProfilePic.setOnClickListener(view -> {
             navController.navigate(R.id.menuProfile);
             drawerLayout.closeDrawer(GravityCompat.START);
         });

@@ -22,6 +22,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.makeramen.roundedimageview.RoundedImageView;
 
@@ -48,7 +49,7 @@ public class ProfileFragment extends Fragment {
 
         mainActivity = (MainActivity) getActivity();
 
-        RoundedImageView pictureTextView = view.findViewById(R.id.profilePic);
+        RoundedImageView profilePictureImageView = view.findViewById(R.id.profilePic);
         TextView nameTextView = view.findViewById(R.id.profileName);
         TextView addressTextView = view.findViewById(R.id.profileAddress);
         RatingBar ratingBar= view.findViewById(R.id.profileUserRatingBar);
@@ -61,6 +62,7 @@ public class ProfileFragment extends Fragment {
                 addressTextView.setText(user.getAddress());
                 ratingBar.setRating(user.getFeedback());
                 storeCreditTextView.setText("Butikk kredit: " + user.getStoreCredit());
+                Glide.with(view).load(user.getImageUrl()).into(profilePictureImageView);
             }
         });
 
