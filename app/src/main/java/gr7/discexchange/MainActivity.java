@@ -90,17 +90,7 @@ public class MainActivity extends AppCompatActivity{
         });
 
 
-
-        drawerNavView.getMenu().findItem(R.id.menuLogout).setOnMenuItemClickListener(item -> {
-            AuthUI.getInstance()
-                    .signOut(this)
-                    .addOnCompleteListener(task -> {
-                        Toast.makeText(getApplicationContext(), "Logger ut", Toast.LENGTH_LONG).show();
-                        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                    });
-            return true;
-        });
-
+        logout(drawerNavView);
 
 
         NavController navController = Navigation.findNavController(this, R.id.navHostFragment);
@@ -129,6 +119,19 @@ public class MainActivity extends AppCompatActivity{
 
 
 
+
+    }
+
+    private void logout(NavigationView drawerNavView) {
+        drawerNavView.getMenu().findItem(R.id.menuLogout).setOnMenuItemClickListener(item -> {
+            AuthUI.getInstance()
+                    .signOut(this)
+                    .addOnCompleteListener(task -> {
+                        Toast.makeText(getApplicationContext(), "Logger ut", Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                    });
+            return true;
+        });
     }
 
 

@@ -42,6 +42,10 @@ public class MyFeedFragment extends Fragment {
     private AdRecycleAdapter adAdapter;
     private ListenerRegistration firestoreListenerRegistration;
 
+
+
+
+
     public MyFeedFragment() {
         // Required empty public constructor
     }

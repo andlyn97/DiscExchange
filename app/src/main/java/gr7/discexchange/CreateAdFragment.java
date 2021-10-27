@@ -121,7 +121,11 @@ public class CreateAdFragment extends Fragment {
         firebaseStorage.putFile(currentUri).addOnCompleteListener(task -> {
             firebaseStorage.getDownloadUrl().addOnSuccessListener(uri -> {
                 ad.setImageUrl(uri.toString());
-                FirebaseFirestore.getInstance().collection("ad").add(ad).addOnCompleteListener(task1 -> Navigation.findNavController(view).popBackStack());
+                FirebaseFirestore
+                        .getInstance()
+                        .collection("ad")
+                        .add(ad)
+                        .addOnCompleteListener(task1 -> Navigation.findNavController(view).popBackStack());
             });
         });
     }

@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,7 +19,20 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 
@@ -86,6 +100,27 @@ public class EditProfileFragment extends Fragment {
         File file = new File(getContext().getFilesDir(), "picFromCamera");
         currentUri = FileProvider.getUriForFile(view.getContext(), BuildConfig.APPLICATION_ID + ".provider", file );
 
+        CollectionReference collectionRef = FirebaseFirestore
+                .getInstance()
+                .collection("user");
 
+        editProfileSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                currentUser.setAddress(profileEditAddress.getText().toString());
+                currentUser.setName(profileEditName.getText().toString());
+
+                StorageReference firebaseStorage = FirebaseStorage.getInstance().getReference().child("user-images").child(String.valueOf(System.currentTimeMillis()));
+                firebaseStorage.putFile(currentUri).addOnCompleteListener(task -> {
+                    firebaseStorage.getDownloadUrl().addOnSuccessListener(uri -> {
+                        currentUser.setImageUrl(uri.toString());
+                        collectionRef
+                                .document(currentUser.getUid())
+                                .set(currentUser)
+                                .addOnCompleteListener(task1 -> Navigation.findNavController(view).popBackStack());
+                    });
+                });
+            }
+        });
     }
 }
