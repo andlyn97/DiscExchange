@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.makeramen.roundedimageview.RoundedImageView;
+
 
 import gr7.discexchange.model.User;
 import gr7.discexchange.viewmodel.DEViewModel;
