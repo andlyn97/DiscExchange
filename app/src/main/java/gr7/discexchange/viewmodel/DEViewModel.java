@@ -33,43 +33,27 @@ import gr7.discexchange.repository.IRepository;
 import gr7.discexchange.repository.Repository;
 
 public class DEViewModel extends ViewModel {
+    private FirebaseFirestore fireStore;
+    private Repository repository;
     private MutableLiveData<User> user;
     private MutableLiveData<List<Ad>> ads;
-    private List<Ad> currentAds = new ArrayList<>();
-    private List<String> adsUids;
 
 
-    private FirebaseFirestore fireStore = FirebaseFirestore.getInstance();
-    private Repository repository = new Repository();
 
 
     public DEViewModel() {
-
-        if(user == null) {
-            user = new MutableLiveData<>();
-            user.setValue(repository.getUser());
-        }
-
-        if(ads == null) {
-            ads = new MutableLiveData<>();
-            currentAds.containsAll(repository.getAds());
-            ads.setValue(currentAds);
-
-        }
-
-        if(adsUids == null) {
-            adsUids = new ArrayList<>();
-        }
+        fireStore = FirebaseFirestore.getInstance();
+        repository = new Repository();
+        user = repository.getUser();
+        ads = repository.getAds();
     }
-
-
 
     public LiveData<List<Ad>> getAds () {
         return ads;
     }
 
     public void setAds(List<Ad> ad) {
-        ads.setValue(ad);
+
     }
 
     public LiveData<User> getUser () {
@@ -77,14 +61,7 @@ public class DEViewModel extends ViewModel {
     }
 
     public void setUser(User userIn) {
-        User userAfterTrim = new User();
-        userAfterTrim.setName(userIn.getName().trim());
-        userAfterTrim.setAddress(userIn.getAddress().trim());
-        userAfterTrim.setFeedback(userIn.getFeedback());
-        userAfterTrim.setStoreCredit(userIn.getStoreCredit());
-        userAfterTrim.setUid(userIn.getUid().trim());
-        userAfterTrim.setImageUrl(userIn.getImageUrl().trim());
-        user.setValue(userAfterTrim);
+
     }
 
 

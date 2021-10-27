@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -79,7 +80,7 @@ public class AdRecycleAdapter extends RecyclerView.Adapter<AdRecycleAdapter.AdVi
 
         public void setAd(Ad adToDisplay) {
             nameTextView.setText("Navn: " + adToDisplay.getName());
-            conditionTextView.setText("Tilstand: " + String.valueOf(adToDisplay.getCondition() + "/10"));
+            conditionTextView.setText("Tilstand: " + String.valueOf(adToDisplay.getCondition()) + "/10");
             colorTextView.setText("Farge: " + adToDisplay.getColor());
             inkTextView.setText("Ink: " + adToDisplay.getInk());
             wishTextView.setText("Ønsker: " + adToDisplay.getWish());

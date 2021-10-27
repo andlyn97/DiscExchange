@@ -60,7 +60,6 @@ public class EditProfileFragment extends Fragment {
 
         viewModel = new ViewModelProvider(requireActivity()).get(DEViewModel.class);
 
-        MainActivity mainActivity = (MainActivity) getActivity();
         currentUser = viewModel.getUser().getValue();
         editProfilePictureView = view.findViewById(R.id.editProfilePictureView);
         editProfileTakeImage = view.findViewById(R.id.editProfileTakeImage);

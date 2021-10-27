@@ -9,7 +9,7 @@ public interface IRepository {
 
     // Ad
 
-    List<Ad> getAds();
+    //List<Ad> getAds();
     //Ad getSpecificAd(String adUid);
     //List<Ad> getUserAds(String userUid);
 
@@ -19,7 +19,7 @@ public interface IRepository {
 
     // User
 
-    User getUser();
+    //User getUser();
 
     //void createUser(User user);
     //void editUser(String userUid, User user);

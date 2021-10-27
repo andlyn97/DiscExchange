@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public void setupFirestoreListener() {
-        userFirestoreListenerRegistration = FirebaseFirestore.getInstance().collection("user").addSnapshotListener(new EventListener<QuerySnapshot>() {
+        /*userFirestoreListenerRegistration = FirebaseFirestore.getInstance().collection("user").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 if (error != null) {
@@ -146,13 +146,13 @@ public class MainActivity extends AppCompatActivity{
                     }
                 }
             }
-        });
+        });*/
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        setupFirestoreListener();
+        //setupFirestoreListener();
     }
 
     @Override

@@ -3,13 +3,17 @@ package gr7.discexchange.repository;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -21,60 +25,61 @@ import gr7.discexchange.model.User;
 
 public class Repository implements IRepository {
 
-    private final FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    private List<Ad> ads;
-    private User user;
+    private FirebaseFirestore firebaseFirestore;
+    private MutableLiveData<List<Ad>> ads;
+    private MutableLiveData<User> user;
 
     public Repository() {
-        loadAds();
-        loadUser();
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        ads = new MutableLiveData<>();
+        user = new MutableLiveData<>();
     }
 
-    private void loadAds() {
-        ads = new ArrayList<>();
-        firebaseFirestore
-                .collection("ad")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()) {
-                            for (QueryDocumentSnapshot adDocumentSnapshot: task.getResult()) {
-                                Ad ad = adDocumentSnapshot.toObject(Ad.class);
-                                ad.setUid(adDocumentSnapshot.getId());
-                                ads.add(ad);
-                            }
+    public MutableLiveData<List<Ad>> getAds() {
 
-                        }
+        firebaseFirestore.collection("ad").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                List<Ad> adList = new ArrayList<>();
+                for(QueryDocumentSnapshot document : value) {
+                    if(error != null) {
+                        return;
                     }
-                });
-    }
 
-    private void loadUser() {
-        String userUid = FirebaseAuth.getInstance().getUid();
-        firebaseFirestore
-                .collection("user")
-                .whereEqualTo("uid", userUid)
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful() && task.getResult().size() == 1) {
-                            DocumentSnapshot userDoc = task.getResult().getDocuments().get(0);
-                            user = userDoc.toObject(User.class);
-                        }
+                    if(document != null) {
+                        adList.add(document.toObject(Ad.class));
                     }
-                });
-    }
+                }
+                ads.postValue(adList);
+            }
+        });
 
-
-
-    @Override
-    public List<Ad> getAds() {
         return ads;
     }
 
-    @Override
-    public User getUser() {
+    public MutableLiveData<User> getUser() {
+        String userUid = FirebaseAuth.getInstance().getUid();
+        firebaseFirestore.collection("user").document(userUid).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                if(error != null) {
+                    return;
+                }
+
+                if(value != null) {
+                    User fetchedUser = value.toObject(User.class);
+                    User userAfterTrim = new User();
+                    userAfterTrim.setName(fetchedUser.getName().trim());
+                    userAfterTrim.setAddress(fetchedUser.getAddress().trim());
+                    userAfterTrim.setFeedback(fetchedUser.getFeedback());
+                    userAfterTrim.setStoreCredit(fetchedUser.getStoreCredit());
+                    userAfterTrim.setUid(fetchedUser.getUid().trim());
+                    userAfterTrim.setImageUrl(fetchedUser.getImageUrl().trim());
+                    user.postValue(userAfterTrim);
+                }
+            }
+        });
         return user;
     }
+
 }

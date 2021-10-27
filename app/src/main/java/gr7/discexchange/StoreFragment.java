@@ -36,7 +36,7 @@ public class StoreFragment extends Fragment {
     private void setupRecyclerView(View view) {
         RecyclerView storeRecyclerView = view.findViewById(R.id.storeRecyclerView);
 
-        storeRecyclerView.setAdapter(new AdRecycleAdapter(view.getContext(), Ad.getData()));
+        //storeRecyclerView.setAdapter(new AdRecycleAdapter(view.getContext(), Ad.getData()));
 
         storeRecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
     }

@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -68,9 +70,19 @@ public class MyFeedFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        adRecyclerView = view.findViewById(R.id.adRecyclerView);
+        adRecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+
+
         viewModel = new ViewModelProvider(requireActivity()).get(DEViewModel.class);
 
-        setupRecyclerView(view);
+        viewModel.getAds().observe((LifecycleOwner) view.getContext(), test -> {
+            adAdapter = new AdRecycleAdapter(view.getContext(), viewModel.getAds().getValue());
+            adRecyclerView.setAdapter(adAdapter);
+            adAdapter.notifyDataSetChanged();
+        });
+
+
     }
 
 
@@ -93,7 +105,7 @@ public class MyFeedFragment extends Fragment {
             }
         });*/
         // TODO: Gjøre om denne så den bruker viewmodel fremfor en liste?
-        firestoreListenerRegistration = adCollectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+        /*firestoreListenerRegistration = adCollectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 if(error != null) {
@@ -124,7 +136,7 @@ public class MyFeedFragment extends Fragment {
                     }
                 }
             }
-        });
+        });*/
     }
 
     @Override
@@ -142,14 +154,8 @@ public class MyFeedFragment extends Fragment {
 
     }
 
-    private void setupRecyclerView(View view) {
-        adRecyclerView = view.findViewById(R.id.adRecyclerView);
+    private void setupRecyclerView(View view, List<Ad> adList) {
 
-        adAdapter = new AdRecycleAdapter(view.getContext(), ads);
-
-        adRecyclerView.setAdapter(adAdapter);
-
-        adRecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
     }
 
 
