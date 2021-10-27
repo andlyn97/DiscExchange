@@ -92,6 +92,7 @@ public class MyFeedFragment extends Fragment {
                 }
             }
         });*/
+        // TODO: Gjøre om denne så den bruker viewmodel fremfor en liste?
         firestoreListenerRegistration = adCollectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
