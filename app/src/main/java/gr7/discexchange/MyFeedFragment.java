@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,6 +30,7 @@ import java.util.List;
 
 import gr7.discexchange.adapter.AdRecycleAdapter;
 import gr7.discexchange.model.Ad;
+import gr7.discexchange.viewmodel.DEViewModel;
 
 
 public class MyFeedFragment extends Fragment {
@@ -42,7 +44,7 @@ public class MyFeedFragment extends Fragment {
     private AdRecycleAdapter adAdapter;
     private ListenerRegistration firestoreListenerRegistration;
 
-
+    private DEViewModel viewModel;
 
 
 
@@ -65,6 +67,9 @@ public class MyFeedFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        viewModel = new ViewModelProvider(requireActivity()).get(DEViewModel.class);
+
         setupRecyclerView(view);
     }
 
@@ -119,17 +124,13 @@ public class MyFeedFragment extends Fragment {
                 }
             }
         });
-
     }
-
 
     @Override
     public void onResume() {
         super.onResume();
         createFirestoreReadListner();
     }
-
-
 
     @Override
     public void onPause() {
@@ -142,6 +143,7 @@ public class MyFeedFragment extends Fragment {
 
     private void setupRecyclerView(View view) {
         adRecyclerView = view.findViewById(R.id.adRecyclerView);
+
         adAdapter = new AdRecycleAdapter(view.getContext(), ads);
 
         adRecyclerView.setAdapter(adAdapter);

@@ -9,9 +9,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,29 +19,20 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 
 import gr7.discexchange.model.User;
+import gr7.discexchange.viewmodel.DEViewModel;
 
 public class EditProfileFragment extends Fragment {
 
 
-    private MainActivity mainActivity;
     private User currentUser;
     private ImageView editProfilePictureView;
     private Button editProfileTakeImage;
@@ -51,6 +42,7 @@ public class EditProfileFragment extends Fragment {
     private Button editProfileSubmit;
     private Uri currentUri;
 
+    private DEViewModel viewModel;
 
 
 
@@ -65,8 +57,11 @@ public class EditProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mainActivity = (MainActivity) getActivity();
-        currentUser = mainActivity.currentUserViewModel.getUser().getValue();
+
+        viewModel = new ViewModelProvider(requireActivity()).get(DEViewModel.class);
+
+        MainActivity mainActivity = (MainActivity) getActivity();
+        currentUser = viewModel.getUser().getValue();
         editProfilePictureView = view.findViewById(R.id.editProfilePictureView);
         editProfileTakeImage = view.findViewById(R.id.editProfileTakeImage);
         editProfileSelectImage = view.findViewById(R.id.editProfileSelectImage);

@@ -9,21 +9,21 @@ public interface IRepository {
 
     // Ad
 
-    List<Ad> getAllAds();
-    Ad getSpecificAd(String adUid);
-    List<Ad> getUserAds(String userUid);
+    List<Ad> getAds();
+    //Ad getSpecificAd(String adUid);
+    //List<Ad> getUserAds(String userUid);
 
-    void createAd(String userUid, Ad ad);
-    void updateAd(String adUid, Ad ad);
-    void deleteAd(String adUid);
+    //void createAd(String userUid, Ad ad);
+    //void updateAd(String adUid, Ad ad);
+    //void deleteAd(String adUid);
 
     // User
 
-    User getSpecificUser(String userUid);
+    User getUser();
 
-    void createUser(User user);
-    void editUser(String userUid, User user);
-    void deleteUser(String userUid);
+    //void createUser(User user);
+    //void editUser(String userUid, User user);
+    //void deleteUser(String userUid);
 
 
 
