@@ -86,24 +86,7 @@ public class Repository implements IRepository {
 
     public MutableLiveData<List<Ad>> getUserAds() {
 
-        firebaseFirestore.collection("ad").whereEqualTo("userUid", FirebaseAuth.getInstance().getUid()).addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                List<Ad> adList = new ArrayList<>();
-                for(QueryDocumentSnapshot document : value) {
-                    if(error != null) {
-                        return;
-                    }
-
-                    if(document != null) {
-                        adList.add(document.toObject(Ad.class));
-                    }
-                }
-                userAds.postValue(adList);
-            }
-        });
-
-        return userAds;
+        return ads;
     }
 
 }

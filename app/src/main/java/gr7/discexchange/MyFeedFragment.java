@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
@@ -83,6 +84,10 @@ public class MyFeedFragment extends Fragment implements AdRecycleAdapter.OnCardL
             adRecyclerView.setAdapter(adAdapter);
             adAdapter.notifyDataSetChanged();
         });
+
+        FloatingActionButton fab = view.findViewById(R.id.myFeedFAB);
+
+        fab.setOnClickListener(v -> Navigation.findNavController(requireActivity(), R.id.navHostFragment).navigate(R.id.notMenuCreateAd));
 
     }
 

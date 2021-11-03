@@ -25,13 +25,18 @@
         android:name="gr7.discexchange.StoreFragment"
         android:label="Butikk" />
     <fragment
-        android:id="@+id/menuCreateAd"
-        android:name="gr7.discexchange.CreateAdFragment"
-        android:label="Opprett annonse" />
-    <fragment
         android:id="@+id/menuChat"
         android:name="gr7.discexchange.ChatFragment"
         android:label="Chat" />
+    <fragment
+        android:id="@+id/menuMyAds"
+        android:name="gr7.discexchange.MyAdsFragment"
+        android:label="Mine annonser" />
+
+
+
+
+
     <fragment
         android:id="@+id/notMenuDetailedAd"
         android:name="gr7.discexchange.DetailedAdFragment"
@@ -41,6 +46,10 @@
         android:id="@+id/notMenuEditProfile"
         android:name="gr7.discexchange.EditProfileFragment"
         tools:layout="@layout/fragment_edit_profile" />
+    <fragment
+        android:id="@+id/notMenuCreateAd"
+        android:name="gr7.discexchange.CreateAdFragment"
+        android:label="Opprett annonse" />
 
 
 
