@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -83,88 +84,26 @@ public class MyFeedFragment extends Fragment implements AdRecycleAdapter.OnCardL
             adAdapter.notifyDataSetChanged();
         });
 
-
-
-    }
-
-
-
-    private void createFirestoreReadListner() {
-        /*adCollectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()) {
-                    for(QueryDocumentSnapshot adDocumentSnapshot : task.getResult()) {
-                        Ad ad = adDocumentSnapshot.toObject(Ad.class);
-                        ad.setUid(adDocumentSnapshot.getId());
-                        ads.add(ad);
-                        adsUids.add(ad.getUid());
-                    }
-                    adAdapter.notifyDataSetChanged();
-                } else {
-                    Log.d("Debug12", "Error:" + task.getException());
-                }
-            }
-        });*/
-        // TODO: Gjøre om denne så den bruker viewmodel fremfor en liste?
-        /*firestoreListenerRegistration = adCollectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                if(error != null) {
-                    return;
-                }
-
-                for(DocumentChange adDocumentChange : value.getDocumentChanges()) {
-                    Ad ad = adDocumentChange.getDocument().toObject(Ad.class);
-                    ad.setUid(adDocumentChange.getDocument().getId());
-
-                    int pos = adsUids.indexOf(ad.getUid());
-
-                    switch (adDocumentChange.getType()) {
-                        case ADDED:
-                            ads.add(ad);
-                            adsUids.add(ad.getUid());
-                            adAdapter.notifyItemInserted(ads.size()-1);
-                            break;
-                        case REMOVED:
-                            ads.remove(pos);
-                            adsUids.remove(pos);
-                            adAdapter.notifyItemRemoved(pos);
-                            break;
-                        case MODIFIED:
-                            ads.set(pos, ad);
-                            adAdapter.notifyItemChanged(pos);
-                            break;
-                    }
-                }
-            }
-        });*/
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        createFirestoreReadListner();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        if(firestoreListenerRegistration != null) {
-            firestoreListenerRegistration.remove();
-        }
 
     }
-
-    private void setupRecyclerView(View view, List<Ad> adList) {
-
-    }
-
 
     @Override
     public void onCardClick(int pos) {
         Toast.makeText(getContext(), "" + viewModel.getAds().getValue().get(pos).getName(), Toast.LENGTH_LONG).show();
 
         // TODO: Detaljert visning av en annonse
+        Bundle bundle = new Bundle();
+        bundle.putInt("position", pos);
+        Navigation.findNavController(requireActivity(), R.id.navHostFragment).navigate(R.id.notMenuDetailedAd, bundle);
     }
 }

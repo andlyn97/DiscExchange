@@ -28,7 +28,14 @@
         android:id="@+id/menuCreateAd"
         android:name="gr7.discexchange.CreateAdFragment"
         android:label="Opprett annonse" />
-
+    <fragment
+        android:id="@+id/menuChat"
+        android:name="gr7.discexchange.ChatFragment"
+        android:label="Chat" />
+    <fragment
+        android:id="@+id/notMenuDetailedAd"
+        android:name="gr7.discexchange.DetailedAdFragment"
+        android:label="Detaljert visning" />
 
     <fragment
         android:id="@+id/notMenuEditProfile"
