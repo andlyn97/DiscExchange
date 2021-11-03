@@ -37,6 +37,7 @@ public class DEViewModel extends ViewModel {
     private Repository repository;
     private MutableLiveData<User> user;
     private MutableLiveData<List<Ad>> ads;
+    private MutableLiveData<List<Ad>> userAds;
 
 
 
@@ -46,6 +47,7 @@ public class DEViewModel extends ViewModel {
         repository = new Repository();
         user = repository.getUser();
         ads = repository.getAds();
+        userAds = repository.getUserAds();
     }
 
     public LiveData<List<Ad>> getAds () {
@@ -64,6 +66,11 @@ public class DEViewModel extends ViewModel {
 
     }
 
+    public MutableLiveData<List<Ad>> getUserAds() {
+        return userAds;
+    }
 
-
+    public void setUserAds(MutableLiveData<List<Ad>> userAds) {
+        this.userAds = userAds;
+    }
 }

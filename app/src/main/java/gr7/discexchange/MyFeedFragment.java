@@ -99,9 +99,6 @@ public class MyFeedFragment extends Fragment implements AdRecycleAdapter.OnCardL
 
     @Override
     public void onCardClick(int pos) {
-        Toast.makeText(getContext(), "" + viewModel.getAds().getValue().get(pos).getName(), Toast.LENGTH_LONG).show();
-
-        // TODO: Detaljert visning av en annonse
         Bundle bundle = new Bundle();
         bundle.putInt("position", pos);
         Navigation.findNavController(requireActivity(), R.id.navHostFragment).navigate(R.id.notMenuDetailedAd, bundle);
