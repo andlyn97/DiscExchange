@@ -83,7 +83,6 @@ public class EditProfileFragment extends Fragment {
         currentUri = Uri.parse(currentUser.getImageUrl());
 
 
-
         profileEditName.setText(currentUser.getName());
         profileEditAddress.setText(currentUser.getAddress());
 
