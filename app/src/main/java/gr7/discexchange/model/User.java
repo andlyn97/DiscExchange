@@ -8,6 +8,9 @@ public class User {
     private int feedback;
     private double storeCredit;
     private String imageUrl;
+    private String imageStorageRef;
+
+
 
     public User(String name, String address, int feedback, double storeCredit) {
         this.name = name;
@@ -66,4 +69,13 @@ public class User {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
+
+    public String getImageStorageRef() {
+        return imageStorageRef;
+    }
+
+    public void setImageStorageRef(String imageStorageRef) {
+        this.imageStorageRef = imageStorageRef;
+    }
+
 }

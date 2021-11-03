@@ -68,6 +68,7 @@ public class EditProfileFragment extends Fragment {
         profileEditAddress = view.findViewById(R.id.profileEditAddress);
         editProfileSubmit = view.findViewById(R.id.editProfileSubmit);
 
+        File file = new File(getContext().getFilesDir(), "picFromCamera");
 
         ActivityResultLauncher<String> handleGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(), result -> {
             currentUri = result;
@@ -75,16 +76,13 @@ public class EditProfileFragment extends Fragment {
         });
 
         ActivityResultLauncher<Uri> handleTakePicture = registerForActivityResult(new ActivityResultContracts.TakePicture(), result -> {
+            currentUri = FileProvider.getUriForFile(view.getContext(), BuildConfig.APPLICATION_ID + ".provider", file );
             editProfilePictureView.setImageURI(currentUri);
         });
 
         currentUri = Uri.parse(currentUser.getImageUrl());
 
-        if(currentUri != null) {
-            Glide.with(getContext())
-                    .load(currentUri)
-                    .into(editProfilePictureView);
-        }
+
 
         profileEditName.setText(currentUser.getName());
         profileEditAddress.setText(currentUser.getAddress());
@@ -93,8 +91,12 @@ public class EditProfileFragment extends Fragment {
         editProfileTakeImage.setOnClickListener(view1 -> handleTakePicture.launch(currentUri));
         editProfileSelectImage.setOnClickListener(view2 -> handleGetContent.launch("image/*"));
 
-        File file = new File(getContext().getFilesDir(), "picFromCamera");
-        currentUri = FileProvider.getUriForFile(view.getContext(), BuildConfig.APPLICATION_ID + ".provider", file );
+        if(currentUri != null) {
+            Glide.with(getContext())
+                    .load(currentUri)
+                    .into(editProfilePictureView);
+        }
+
 
         CollectionReference collectionRef = FirebaseFirestore
                 .getInstance()
@@ -106,14 +108,25 @@ public class EditProfileFragment extends Fragment {
                 currentUser.setAddress(profileEditAddress.getText().toString());
                 currentUser.setName(profileEditName.getText().toString());
 
-                StorageReference firebaseStorage = FirebaseStorage.getInstance().getReference().child("user-images").child(String.valueOf(System.currentTimeMillis()));
-                firebaseStorage.putFile(currentUri).addOnCompleteListener(task -> {
-                    firebaseStorage.getDownloadUrl().addOnSuccessListener(uri -> {
+                String createdAt = String.valueOf(System.currentTimeMillis());
+
+
+                StorageReference firebaseStorage = FirebaseStorage.getInstance().getReference().child("user-images");
+                firebaseStorage.child(createdAt).putFile(currentUri).addOnCompleteListener(task -> {
+                    firebaseStorage.child(createdAt).getDownloadUrl().addOnSuccessListener(uri -> {
+                        String oldCreatedAt = currentUser.getImageStorageRef();
+                        currentUser.setImageStorageRef(createdAt);
                         currentUser.setImageUrl(uri.toString());
                         collectionRef
                                 .document(currentUser.getUid())
                                 .set(currentUser)
-                                .addOnCompleteListener(task1 -> Navigation.findNavController(view).popBackStack());
+                                .addOnCompleteListener(task1 -> {
+                                    if(oldCreatedAt != null) {
+                                        firebaseStorage.child(oldCreatedAt).delete();
+                                    }
+                                    Navigation.findNavController(view).popBackStack();
+
+                                });
                     });
                 });
             }

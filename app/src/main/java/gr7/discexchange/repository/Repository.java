@@ -77,6 +77,7 @@ public class Repository implements IRepository {
                     userAfterTrim.setStoreCredit(fetchedUser.getStoreCredit());
                     userAfterTrim.setUid(fetchedUser.getUid().trim());
                     userAfterTrim.setImageUrl(fetchedUser.getImageUrl().trim());
+                    userAfterTrim.setImageStorageRef(fetchedUser.getImageStorageRef().trim());
                     user.postValue(userAfterTrim);
                 }
             }
