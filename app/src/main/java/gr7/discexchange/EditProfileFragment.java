@@ -120,7 +120,7 @@ public class EditProfileFragment extends Fragment {
                                 .document(currentUser.getUid())
                                 .set(currentUser)
                                 .addOnCompleteListener(task1 -> {
-                                    if(oldCreatedAt != null) {
+                                    if(oldCreatedAt != null || !oldCreatedAt.equals(currentUser.getImageStorageRef())) {
                                         firebaseStorage.child(oldCreatedAt).delete();
                                     }
                                     Navigation.findNavController(view).popBackStack();
