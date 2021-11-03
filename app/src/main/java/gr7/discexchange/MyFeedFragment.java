@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -35,7 +36,7 @@ import gr7.discexchange.model.Ad;
 import gr7.discexchange.viewmodel.DEViewModel;
 
 
-public class MyFeedFragment extends Fragment {
+public class MyFeedFragment extends Fragment implements AdRecycleAdapter.OnCardListener {
 
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference adCollectionReference;
@@ -77,10 +78,11 @@ public class MyFeedFragment extends Fragment {
         viewModel = new ViewModelProvider(requireActivity()).get(DEViewModel.class);
 
         viewModel.getAds().observe((LifecycleOwner) view.getContext(), test -> {
-            adAdapter = new AdRecycleAdapter(view.getContext(), viewModel.getAds().getValue());
+            adAdapter = new AdRecycleAdapter(view.getContext(), viewModel.getAds().getValue(), this);
             adRecyclerView.setAdapter(adAdapter);
             adAdapter.notifyDataSetChanged();
         });
+
 
 
     }
@@ -159,5 +161,10 @@ public class MyFeedFragment extends Fragment {
     }
 
 
+    @Override
+    public void onCardClick(int pos) {
+        Toast.makeText(getContext(), "" + viewModel.getAds().getValue().get(pos).getName(), Toast.LENGTH_LONG).show();
 
+        // TODO: Detaljert visning av en annonse
+    }
 }

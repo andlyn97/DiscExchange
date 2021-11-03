@@ -26,11 +26,13 @@ public class AdRecycleAdapter extends RecyclerView.Adapter<AdRecycleAdapter.AdVi
 
     private List<Ad> adList;
     private LayoutInflater inflater;
+    private OnCardListener onCardListener;
 
-    public AdRecycleAdapter(Context context, List<Ad> adList) {
+    public AdRecycleAdapter(Context context, List<Ad> adList, OnCardListener onCardListener) {
         inflater = LayoutInflater.from(context);
 
         this.adList = adList;
+        this.onCardListener = onCardListener;
 
     }
 
@@ -42,7 +44,7 @@ public class AdRecycleAdapter extends RecyclerView.Adapter<AdRecycleAdapter.AdVi
 
         View itemView = inflater.inflate(R.layout.ad_list_item, parent, false);
 
-        return new AdViewHolder(itemView);
+        return new AdViewHolder(itemView, onCardListener);
     }
 
     @Override
@@ -59,15 +61,16 @@ public class AdRecycleAdapter extends RecyclerView.Adapter<AdRecycleAdapter.AdVi
         return adList.size();
     }
 
-    public class AdViewHolder extends RecyclerView.ViewHolder {
+    public class AdViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView nameTextView;
         private TextView conditionTextView;
         private TextView colorTextView;
         private TextView inkTextView;
         private TextView wishTextView;
         private ImageView thumbnailImageView;
+        private OnCardListener onCardListener;
 
-        public AdViewHolder(@NonNull View itemView) {
+        public AdViewHolder(@NonNull View itemView, OnCardListener onCardListener) {
             super(itemView);
 
             thumbnailImageView = itemView.findViewById(R.id.thumbnailImageView);
@@ -76,6 +79,10 @@ public class AdRecycleAdapter extends RecyclerView.Adapter<AdRecycleAdapter.AdVi
             colorTextView = itemView.findViewById(R.id.tvColor);
             inkTextView = itemView.findViewById(R.id.tvInk);
             wishTextView = itemView.findViewById(R.id.tvWish);
+
+            this.onCardListener = onCardListener;
+
+            itemView.setOnClickListener(this);
         }
 
         public void setAd(Ad adToDisplay) {
@@ -92,6 +99,14 @@ public class AdRecycleAdapter extends RecyclerView.Adapter<AdRecycleAdapter.AdVi
             }
         }
 
+        @Override
+        public void onClick(View v) {
+            onCardListener.onCardClick(getAdapterPosition());
+        }
+    }
+
+    public interface OnCardListener {
+        void onCardClick(int pos);
     }
 
 }

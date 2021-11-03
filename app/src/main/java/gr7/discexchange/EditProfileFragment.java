@@ -74,7 +74,9 @@ public class EditProfileFragment extends Fragment {
             editProfilePictureView.setImageURI(currentUri);
         });
 
-        ActivityResultLauncher<Uri> handleTakePicture = registerForActivityResult(new ActivityResultContracts.TakePicture(), result -> editProfilePictureView.setImageURI(currentUri));
+        ActivityResultLauncher<Uri> handleTakePicture = registerForActivityResult(new ActivityResultContracts.TakePicture(), result -> {
+            editProfilePictureView.setImageURI(currentUri);
+        });
 
         currentUri = Uri.parse(currentUser.getImageUrl());
 
