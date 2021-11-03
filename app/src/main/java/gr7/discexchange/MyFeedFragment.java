@@ -105,7 +105,7 @@ public class MyFeedFragment extends Fragment implements AdRecycleAdapter.OnCardL
     @Override
     public void onCardClick(int pos) {
         Bundle bundle = new Bundle();
-        bundle.putInt("position", pos);
+        bundle.putInt("positionFeed", pos);
         Navigation.findNavController(requireActivity(), R.id.navHostFragment).navigate(R.id.notMenuDetailedAd, bundle);
     }
 }

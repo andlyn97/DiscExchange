@@ -41,11 +41,15 @@ public class DetailedAdFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        int pos = getArguments().getInt("position");
         viewModel = new ViewModelProvider(requireActivity()).get(DEViewModel.class);
-        ad = viewModel.getAds().getValue().get(pos);
-
+        int pos;
+        pos = getArguments().getInt("positionMyAds");
+        if(pos == 0) {
+            pos = getArguments().getInt("positionFeed");
+            ad = viewModel.getAds().getValue().get(pos);
+        } else {
+            ad = viewModel.getUserAds().getValue().get(pos);
+        }
 
         binding.setAd(ad);
 
