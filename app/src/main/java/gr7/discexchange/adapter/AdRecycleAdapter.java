@@ -14,6 +14,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.tabs.TabLayout;
 
 import org.w3c.dom.Text;
 
@@ -28,6 +29,7 @@ public class AdRecycleAdapter extends RecyclerView.Adapter<AdRecycleAdapter.AdVi
     private List<Ad> adList;
     private LayoutInflater inflater;
     private OnCardListener onCardListener;
+    private TabLayout.OnTabSelectedListener onTabSelectedListener;
 
     public AdRecycleAdapter(Context context, List<Ad> adList, OnCardListener onCardListener) {
         inflater = LayoutInflater.from(context);
@@ -35,6 +37,21 @@ public class AdRecycleAdapter extends RecyclerView.Adapter<AdRecycleAdapter.AdVi
         this.adList = adList;
         this.onCardListener = onCardListener;
 
+    }
+
+    /*public AdRecycleAdapter(Context context, List<Ad> adList, OnCardListener onCardListener, TabLayout.OnTabSelectedListener onTabSelectedListener) {
+        inflater = LayoutInflater.from(context);
+
+        this.adList = adList;
+        this.onCardListener = onCardListener;
+        this.onTabSelectedListener = onTabSelectedListener;
+    }*/
+
+    public AdRecycleAdapter(Context context, List<Ad> adList, TabLayout.OnTabSelectedListener onTabSelectedListener) {
+        inflater = LayoutInflater.from(context);
+
+        this.adList = adList;
+        this.onTabSelectedListener = onTabSelectedListener;
     }
 
     @NonNull

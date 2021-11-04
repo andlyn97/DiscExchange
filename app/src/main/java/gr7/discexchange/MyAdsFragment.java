@@ -18,6 +18,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
 
+import com.google.android.material.tabs.TabLayout;
+
 import gr7.discexchange.adapter.AdRecycleAdapter;
 import gr7.discexchange.databinding.FragmentDetailedAdBindingImpl;
 import gr7.discexchange.viewmodel.DEViewModel;
@@ -28,6 +30,7 @@ public class MyAdsFragment extends Fragment implements AdRecycleAdapter.OnCardLi
     private DEViewModel viewModel;
     private RecyclerView adRecyclerView;
     private AdRecycleAdapter adAdapter;
+    private TabLayout tabLayout;
 
     public MyAdsFragment() {
     }
@@ -49,10 +52,36 @@ public class MyAdsFragment extends Fragment implements AdRecycleAdapter.OnCardLi
         adRecyclerView = view.findViewById(R.id.myAdRecyclerView);
         adRecyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), 2));
 
-        viewModel.getUserAds().observe((LifecycleOwner) view.getContext(), x -> {
-            adAdapter = new AdRecycleAdapter(view.getContext(), viewModel.getUserAds().getValue(), this);
-            adRecyclerView.setAdapter(adAdapter);
-            adAdapter.notifyDataSetChanged();
+        tabLayout = view.findViewById(R.id.tabLayout);
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                System.out.println(tab.getPosition());
+                switch(tab.getPosition()) {
+                    case 0:
+                        viewModel.getUserAds(false).observe((LifecycleOwner) view.getContext(), x -> {
+                            adAdapter = new AdRecycleAdapter(view.getContext(), viewModel.getUserAds(false).getValue(), this);
+                        });
+                        break;
+                    case 1:
+                        viewModel.getUserAds(true).observe((LifecycleOwner) view.getContext(), x -> {
+                            adAdapter = new AdRecycleAdapter(view.getContext(), viewModel.getUserAds(true).getValue(), this);
+                        });
+                        break;
+                }
+                adRecyclerView.setAdapter(adAdapter);
+                adAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
         });
 
     }
