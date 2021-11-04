@@ -4,7 +4,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -33,7 +32,7 @@ public class Repository implements IRepository {
     private String userUid;
 
     private List<Ad> ads;
-    private List<Ad> userAds;
+    private MutableLiveData<List<Ad>> userAds;
     private MutableLiveData<User> user;
 
     private List<User> users;
@@ -43,7 +42,6 @@ public class Repository implements IRepository {
     public Repository() {
         firebaseFirestore = FirebaseFirestore.getInstance();
         ads = new ArrayList<>();
-        userAds = new ArrayList<>();
         userUid = FirebaseAuth.getInstance().getUid();
         users = new ArrayList<>();
         rooms = new ArrayList<>();

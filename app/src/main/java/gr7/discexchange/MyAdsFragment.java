@@ -52,6 +52,12 @@ public class MyAdsFragment extends Fragment implements AdRecycleAdapter.OnCardLi
         adRecyclerView = view.findViewById(R.id.myAdRecyclerView);
         adRecyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), 2));
 
+        viewModel.getUserAds().observe((LifecycleOwner) view.getContext(), x -> {
+            adAdapter = new AdRecycleAdapter(view.getContext(), viewModel.getUserAds().getValue(), this);
+            adRecyclerView.setAdapter(adAdapter);
+            adAdapter.notifyDataSetChanged();
+        });
+
         tabLayout = view.findViewById(R.id.tabLayout);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -59,18 +65,23 @@ public class MyAdsFragment extends Fragment implements AdRecycleAdapter.OnCardLi
                 System.out.println(tab.getPosition());
                 switch(tab.getPosition()) {
                     case 0:
-                        viewModel.getUserAds(false).observe((LifecycleOwner) view.getContext(), x -> {
+                        /*viewModel.getUserAds(false).observe((LifecycleOwner) view.getContext(), x -> {
                             adAdapter = new AdRecycleAdapter(view.getContext(), viewModel.getUserAds(false).getValue(), this);
-                        });
+                            adRecyclerView.setAdapter(adAdapter);
+                            adAdapter.notifyDataSetChanged();
+                        });*/
+                        viewModel.getUserAds(true);
                         break;
                     case 1:
-                        viewModel.getUserAds(true).observe((LifecycleOwner) view.getContext(), x -> {
+                        /*viewModel.getUserAds(true).observe((LifecycleOwner) view.getContext(), x -> {
                             adAdapter = new AdRecycleAdapter(view.getContext(), viewModel.getUserAds(true).getValue(), this);
-                        });
+                            adRecyclerView.setAdapter(adAdapter);
+                            adAdapter.notifyDataSetChanged();
+                        });*/
+                        viewModel.getUserAds(false);
                         break;
                 }
-                adRecyclerView.setAdapter(adAdapter);
-                adAdapter.notifyDataSetChanged();
+
             }
 
             @Override

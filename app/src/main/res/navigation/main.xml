@@ -53,7 +53,7 @@
     <fragment
         android:id="@+id/notMenuChatRoom"
         android:name="gr7.discexchange.ChatRoomFragment"
-        android:label="Chatte rom" />
+        android:label="Chat" />
 
 
 

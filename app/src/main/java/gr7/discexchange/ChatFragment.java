@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,10 +29,11 @@ import java.util.List;
 import gr7.discexchange.adapter.ChatRecycleAdapter;
 import gr7.discexchange.model.Message;
 import gr7.discexchange.model.MessageRoom;
+import gr7.discexchange.viewmodel.ChatViewModel;
 
 public class ChatFragment extends Fragment implements ChatRecycleAdapter.OnChatRoomListener {
 
-    private MutableLiveData<List<MessageRoom>> rooms;
+    private ChatViewModel chatViewModel;
     private RecyclerView recyclerView;
     private ChatRecycleAdapter adapter;
 
@@ -42,10 +44,6 @@ public class ChatFragment extends Fragment implements ChatRecycleAdapter.OnChatR
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        rooms = new MutableLiveData<>();
-
-
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_chat, container, false);
     }
@@ -53,47 +51,17 @@ public class ChatFragment extends Fragment implements ChatRecycleAdapter.OnChatR
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        getMessageRooms();
+        chatViewModel = new ViewModelProvider(requireActivity()).get(ChatViewModel.class);
 
         recyclerView = view.findViewById(R.id.chatRoomsRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
-        rooms.observe((LifecycleOwner) view.getContext(), x -> {
-            adapter = new ChatRecycleAdapter(view.getContext(), rooms.getValue(), this);
+        chatViewModel.getRooms().observe((LifecycleOwner) view.getContext(), x -> {
+            adapter = new ChatRecycleAdapter(view.getContext(), chatViewModel.getRooms().getValue(), this);
             recyclerView.setAdapter(adapter);
             adapter.notifyDataSetChanged();
         });
 
-
-    }
-
-    @NonNull
-    private void getMessageRooms() {
-        ArrayList<MessageRoom> rooms1 = new ArrayList<>();
-        FirebaseFirestore
-                .getInstance()
-                .collection("messageRoom")
-                .whereEqualTo("name", "Marcus_Andreas")
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-
-                        if(error != null) {
-                            Log.d("TAG", "onEvent: " + error.getMessage());
-                        }
-
-                        for (DocumentSnapshot documentSnapshot : value.getDocuments()) {
-                            if(documentSnapshot != null) {
-                                MessageRoom room = documentSnapshot.toObject(MessageRoom.class);
-                                rooms1.add(room);
-                            }
-
-                        }
-
-                        rooms.postValue(rooms1);
-                    }
-                });
 
     }
 

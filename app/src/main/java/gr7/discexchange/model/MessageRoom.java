@@ -1,29 +1,26 @@
 package gr7.discexchange.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MessageRoom {
-
-    private String name;
-    private ArrayList<Message> messages;
+    private List<String> usersUid;
+    private List<User> users;
+    private List<Message> messages;
     private Message lastMessage;
 
     public MessageRoom() {
+        usersUid = new ArrayList<>();
+        users = new ArrayList<>();
+        messages = new ArrayList<>();
+        lastMessage = new Message();
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public ArrayList<Message> getMessages() {
+    public List<Message> getMessages() {
         return messages;
     }
 
-    public void setMessages(ArrayList<Message> messages) {
+    public void setMessages(List<Message> messages) {
         this.messages = messages;
     }
 
@@ -33,5 +30,21 @@ public class MessageRoom {
 
     public void setLastMessage(Message lastMessage) {
         this.lastMessage = lastMessage;
+    }
+
+    public List<String> getUsersUid() {
+        return usersUid;
+    }
+
+    public void setUsersUid(List<String> usersUid) {
+        this.usersUid = usersUid;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 }

@@ -67,7 +67,8 @@ public class ChatRecycleAdapter extends RecyclerView.Adapter<ChatRecycleAdapter.
 
         public void setRoom(MessageRoom room) {
 
-            roomTV.setText(room.getName());
+            roomTV.setText("UsersUid: " + room.getUsersUid().size() + "\n"
+                    + "Users: " + room.getUsers().size());
 
         }
 
