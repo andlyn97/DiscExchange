@@ -40,14 +40,12 @@ public class DEViewModel extends ViewModel {
     private MutableLiveData<List<Ad>> userAds;
 
 
-
-
     public DEViewModel() {
         fireStore = FirebaseFirestore.getInstance();
         repository = new Repository();
         user = repository.getUser();
         ads = repository.getAds();
-        userAds = repository.getUserAds();
+        userAds = repository.getUserAds(false);
     }
 
     public LiveData<List<Ad>> getAds () {
@@ -64,6 +62,11 @@ public class DEViewModel extends ViewModel {
 
     public void setUser(User userIn) {
 
+    }
+
+    public MutableLiveData<List<Ad>> getUserAds(boolean isArchived) {
+        userAds = repository.getUserAds(isArchived);
+        return userAds;
     }
 
     public MutableLiveData<List<Ad>> getUserAds() {
