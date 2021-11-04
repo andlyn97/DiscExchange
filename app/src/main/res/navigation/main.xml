@@ -50,6 +50,10 @@
         android:id="@+id/notMenuCreateAd"
         android:name="gr7.discexchange.CreateAdFragment"
         android:label="Opprett annonse" />
+    <fragment
+        android:id="@+id/notMenuChatRoom"
+        android:name="gr7.discexchange.ChatRoomFragment"
+        android:label="Chatte rom" />
 
 
 
