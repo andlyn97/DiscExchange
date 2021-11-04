@@ -4,12 +4,14 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -21,38 +23,48 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gr7.discexchange.model.Ad;
+import gr7.discexchange.model.Message;
+import gr7.discexchange.model.MessageRoom;
 import gr7.discexchange.model.User;
 
 public class Repository implements IRepository {
 
     private FirebaseFirestore firebaseFirestore;
-    private MutableLiveData<List<Ad>> ads;
-    private MutableLiveData<List<Ad>> userAds;
+    private String userUid;
+
+    private List<Ad> ads;
+    private List<Ad> userAds;
     private MutableLiveData<User> user;
+
+    private List<User> users;
+    private List<MessageRoom> rooms;
+    private List<Message> messages;
 
     public Repository() {
         firebaseFirestore = FirebaseFirestore.getInstance();
-        ads = new MutableLiveData<>();
+        ads = new ArrayList<>();
+        userAds = new ArrayList<>();
+        userUid = FirebaseAuth.getInstance().getUid();
+        users = new ArrayList<>();
+        rooms = new ArrayList<>();
+        messages = new ArrayList<>();
         user = new MutableLiveData<>();
-        userAds = new MutableLiveData<>();
     }
 
-    public MutableLiveData<List<Ad>> getAds() {
+    public List<Ad> getAds() {
 
         firebaseFirestore.collection("ad").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                List<Ad> adList = new ArrayList<>();
                 for(QueryDocumentSnapshot document : value) {
                     if(error != null) {
                         return;
                     }
 
                     if(document != null) {
-                        adList.add(document.toObject(Ad.class));
+                        ads.add(document.toObject(Ad.class));
                     }
                 }
-                ads.postValue(adList);
             }
         });
 
@@ -60,7 +72,6 @@ public class Repository implements IRepository {
     }
 
     public MutableLiveData<User> getUser() {
-        String userUid = FirebaseAuth.getInstance().getUid();
         firebaseFirestore.collection("user").document(userUid).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -79,31 +90,75 @@ public class Repository implements IRepository {
                     userAfterTrim.setImageUrl(fetchedUser.getImageUrl().trim());
                     userAfterTrim.setImageStorageRef(fetchedUser.getImageStorageRef().trim());
                     user.postValue(userAfterTrim);
+
+
                 }
             }
         });
         return user;
     }
 
-    public MutableLiveData<List<Ad>> getUserAds() {
+    public List<Ad> getUserAds() {
         String userUid = FirebaseAuth.getInstance().getUid();
         firebaseFirestore.collection("ad").whereEqualTo("userUid", userUid).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                List<Ad> adList = new ArrayList<>();
                 for(QueryDocumentSnapshot document : value) {
                     if(error != null) {
                         return;
                     }
 
                     if(document != null) {
-                        adList.add(document.toObject(Ad.class));
+                        userAds.add(document.toObject(Ad.class));
                     }
                 }
-                userAds.postValue(adList);
+
             }
         });
         return userAds;
     }
 
+    public List<User> getUsers() {
+        firebaseFirestore.collection("user").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                if(error != null) {
+                    return;
+                }
+
+                for (DocumentChange userDoc : value.getDocumentChanges()) {
+                    users.add(userDoc.getDocument().toObject(User.class));
+                }
+
+            }
+        });
+        return users;
+    }
+
+    public List<MessageRoom> getRooms() {
+        firebaseFirestore
+                .collection("messageRoom")
+                .whereArrayContains("usersUid", userUid)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+
+                        if(error != null) {
+                            Log.d("TAG", "onEvent: " + error.getMessage());
+                        }
+
+                        for (DocumentSnapshot documentSnapshot : value.getDocuments()) {
+                            if(documentSnapshot != null) {
+                                MessageRoom room = documentSnapshot.toObject(MessageRoom.class);
+                                rooms.add(room);
+                            }
+                        }
+                    }
+                });
+        return rooms;
+    }
+
+    public List<Message> getMessages() {
+        return messages;
+    }
 }

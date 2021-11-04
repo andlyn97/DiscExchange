@@ -40,29 +40,29 @@ public class DEViewModel extends ViewModel {
     private MutableLiveData<List<Ad>> userAds;
 
 
-
-
     public DEViewModel() {
         fireStore = FirebaseFirestore.getInstance();
         repository = new Repository();
+        ads = new MutableLiveData<>();
+        userAds = new MutableLiveData<>();
         user = repository.getUser();
-        ads = repository.getAds();
-        userAds = repository.getUserAds();
+        ads.postValue(repository.getAds());
+        userAds.postValue(repository.getUserAds());
     }
 
-    public LiveData<List<Ad>> getAds () {
+    public MutableLiveData<List<Ad>> getAds () {
         return ads;
     }
 
-    public void setAds(List<Ad> ad) {
+    public void setAds(List<Ad> ads) {
 
     }
 
-    public LiveData<User> getUser () {
+    public MutableLiveData<User> getUser () {
         return user;
     }
 
-    public void setUser(User userIn) {
+    public void setUser(User user) {
 
     }
 
