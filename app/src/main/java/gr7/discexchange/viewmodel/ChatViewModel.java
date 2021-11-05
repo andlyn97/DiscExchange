@@ -27,7 +27,6 @@ public class ChatViewModel extends ViewModel {
     String userUid;
     private FirebaseFirestore firestore;
     private MutableLiveData<User> user;
-    private MutableLiveData<List<User>> users;
     private MutableLiveData<List<MessageRoom>> rooms;
     private MutableLiveData<List<Message>> messages;
 
@@ -35,12 +34,9 @@ public class ChatViewModel extends ViewModel {
         firestore = FirebaseFirestore.getInstance();
         userUid = FirebaseAuth.getInstance().getUid();
         user = new MutableLiveData<>();
-        users = new MutableLiveData<>();
         rooms = new MutableLiveData<>();
         messages = new MutableLiveData<>();
 
-
-        getUsersFromFirestore();
         getRoomsFromFirestore();
 
     }
@@ -51,14 +47,6 @@ public class ChatViewModel extends ViewModel {
 
     public void setUser(MutableLiveData<User> user) {
         this.user = user;
-    }
-
-    public MutableLiveData<List<User>> getUsers() {
-        return users;
-    }
-
-    public void setUsers(MutableLiveData<List<User>> users) {
-        this.users = users;
     }
 
     public MutableLiveData<List<MessageRoom>> getRooms() {
@@ -80,7 +68,9 @@ public class ChatViewModel extends ViewModel {
 
     // Firestore
 
-    private void getUsersFromFirestore() {
+
+    private void getRoomsFromFirestore() {
+        List<User> users = new ArrayList<>();
         firestore.collection("user").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -92,12 +82,10 @@ public class ChatViewModel extends ViewModel {
                 for (DocumentChange userDoc : value.getDocumentChanges()) {
                     fetchedUsers.add(userDoc.getDocument().toObject(User.class));
                 }
-                users.postValue(fetchedUsers);
+                users.addAll(fetchedUsers);
             }
         });
-    }
 
-    private void getRoomsFromFirestore() {
         firestore
                 .collection("messageRoom")
                 .whereArrayContains("usersUid", userUid)
@@ -112,8 +100,18 @@ public class ChatViewModel extends ViewModel {
                         for (DocumentSnapshot documentSnapshot : value.getDocuments()) {
                             if(documentSnapshot != null) {
                                 MessageRoom room = documentSnapshot.toObject(MessageRoom.class);
+                                for (String uUid : room.getUsersUid()) {
+                                    for (User user : users) {
+                                        if(user.getUid().equals(uUid)) {
+                                            room.addUser(user);
+                                        }
+                                    }
+                                }
+
                                 fetchedRooms.add(room);
                             }
+
+
                         }
                         rooms.postValue(fetchedRooms);
                     }
