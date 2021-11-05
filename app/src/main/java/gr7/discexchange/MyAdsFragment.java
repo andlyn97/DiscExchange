@@ -4,20 +4,16 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridLayout;
 
 import com.google.android.material.tabs.TabLayout;
 
@@ -66,10 +62,10 @@ public class MyAdsFragment extends Fragment implements AdRecycleAdapter.OnCardLi
             public void onTabSelected(TabLayout.Tab tab) {
                 switch(tab.getPosition()) {
                     case 0:
-                        viewModel.setUserAds(false);
+                        viewModel.getUserAdsFromFirestore(false);
                         break;
                     case 1:
-                        viewModel.setUserAds(true);
+                        viewModel.getUserAdsFromFirestore(true);
                         break;
                 }
             }
