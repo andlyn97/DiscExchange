@@ -48,12 +48,8 @@ public class DetailedAdFragment extends Fragment {
 
         int pos;
         pos = getArguments().getInt("positionMyAds");
-        if(pos == 0) {
-            pos = getArguments().getInt("positionFeed");
-            ad = adsViewModel.getAds().getValue().get(pos);
-        } else {
-            ad = adsViewModel.getUserAds().getValue().get(pos);
-        }
+
+        ad = adsViewModel.getUserAds().getValue().get(pos);
 
         binding.setAd(ad);
 
