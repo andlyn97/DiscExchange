@@ -1,6 +1,7 @@
 package gr7.discexchange;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.DialogCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
@@ -18,6 +19,8 @@ import com.firebase.ui.auth.AuthUI;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.makeramen.roundedimageview.RoundedImageView;
+
+import gr7.discexchange.model.User;
 import gr7.discexchange.viewmodel.UserViewModel;
 
 public class MainActivity extends AppCompatActivity{
@@ -33,6 +36,9 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
 
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        if(userViewModel.getUser() == null) {
+            Navigation.findNavController(this, R.id.navHostFragment).navigate(R.id.notMenuEditProfile);
+        }
         drawerLayout = findViewById(R.id.drawer_layout);
 
 

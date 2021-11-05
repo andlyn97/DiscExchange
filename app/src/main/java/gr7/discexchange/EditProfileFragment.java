@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
+import java.io.IOException;
 
 import gr7.discexchange.model.User;
 import gr7.discexchange.viewmodel.UserViewModel;
@@ -68,7 +70,7 @@ public class EditProfileFragment extends Fragment {
         profileEditAddress = view.findViewById(R.id.profileEditAddress);
         editProfileSubmit = view.findViewById(R.id.editProfileSubmit);
 
-        File file = new File(getContext().getFilesDir(), "picFromCamera");
+
 
         ActivityResultLauncher<String> handleGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(), result -> {
             currentUri = result;
@@ -76,11 +78,13 @@ public class EditProfileFragment extends Fragment {
         });
 
         ActivityResultLauncher<Uri> handleTakePicture = registerForActivityResult(new ActivityResultContracts.TakePicture(), result -> {
-            currentUri = FileProvider.getUriForFile(view.getContext(), BuildConfig.APPLICATION_ID + ".provider", file );
+
             editProfilePictureView.setImageURI(currentUri);
         });
 
-        currentUri = Uri.parse(currentUser.getImageUrl());
+        if(!currentUser.getImageUrl().equals("")) {
+            currentUri = Uri.parse(currentUser.getImageUrl());
+        }
 
 
         profileEditName.setText(currentUser.getName());
@@ -101,6 +105,9 @@ public class EditProfileFragment extends Fragment {
                 .getInstance()
                 .collection("user");
 
+        File file = new File(getContext().getFilesDir(), "picFromCamera");
+        currentUri = FileProvider.getUriForFile(view.getContext(), BuildConfig.APPLICATION_ID + ".provider", file );
+
         editProfileSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -112,6 +119,24 @@ public class EditProfileFragment extends Fragment {
 
                 StorageReference firebaseStorage = FirebaseStorage.getInstance().getReference().child("user-images");
 
+
+                // If userimage doesnt exist
+                if(currentUser.getImageUrl().equals("")) {
+                    firebaseStorage.child(createdAt).putFile(currentUri).addOnCompleteListener(task -> {
+                        firebaseStorage.child(createdAt).getDownloadUrl().addOnSuccessListener(uri -> {
+                            currentUser.setImageStorageRef(createdAt);
+                            currentUser.setImageUrl(uri.toString());
+                            collectionRef
+                                    .document(currentUser.getUid())
+                                    .set(currentUser)
+                                    .addOnCompleteListener(task1 -> {
+                                        popBackStack();
+                                    });
+                        });
+                    });
+                    return;
+                }
+
                 if(!currentUser.getImageUrl().equals(currentUri.toString())) {
                     firebaseStorage.child(createdAt).putFile(currentUri).addOnCompleteListener(task -> {
                         firebaseStorage.child(createdAt).getDownloadUrl().addOnSuccessListener(uri -> {
@@ -119,25 +144,33 @@ public class EditProfileFragment extends Fragment {
                             currentUser.setImageStorageRef(createdAt);
                             currentUser.setImageUrl(uri.toString());
 
-                            if(oldCreatedAt != null || !oldCreatedAt.equals(currentUser.getImageStorageRef())) {
+                            if(!oldCreatedAt.equals("") && !oldCreatedAt.equals(currentUser.getImageStorageRef())) {
                                 firebaseStorage.child(oldCreatedAt).delete();
                             }
 
+                            collectionRef
+                                    .document(currentUser.getUid())
+                                    .set(currentUser)
+                                    .addOnCompleteListener(task1 -> {
+                                        popBackStack();
+                                    });
                         });
                     });
+                    return;
                 }
-
-
 
                 collectionRef
                         .document(currentUser.getUid())
                         .set(currentUser)
                         .addOnCompleteListener(task1 -> {
-
-                            Navigation.findNavController(view).popBackStack();
-
+                            popBackStack();
                         });
 
+
+            }
+
+            private void popBackStack() {
+                Navigation.findNavController(view).popBackStack();
             }
         });
     }

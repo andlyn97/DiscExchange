@@ -80,7 +80,7 @@ public class ChatViewModel extends ViewModel {
 
     // Firestore
 
-    public void getUsersFromFirestore() {
+    private void getUsersFromFirestore() {
         firestore.collection("user").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -97,7 +97,7 @@ public class ChatViewModel extends ViewModel {
         });
     }
 
-    public void getRoomsFromFirestore() {
+    private void getRoomsFromFirestore() {
         firestore
                 .collection("messageRoom")
                 .whereArrayContains("usersUid", userUid)

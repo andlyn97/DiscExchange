@@ -36,7 +36,7 @@ public class AdsViewModel extends ViewModel {
         return userAds;
     }
 
-    public void getAdsFromFirestore() {
+    private void getAdsFromFirestore() {
         firestore.collection("ad").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
