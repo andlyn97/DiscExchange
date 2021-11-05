@@ -21,7 +21,6 @@ import java.util.List;
 import gr7.discexchange.R;
 
 public class Ad {
-    @Exclude
     private String uid;
     private String name;
     private String imageUrl;

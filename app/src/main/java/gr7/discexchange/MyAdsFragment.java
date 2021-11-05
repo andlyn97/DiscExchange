@@ -1,5 +1,7 @@
 package gr7.discexchange;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,7 +13,6 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,6 @@ import com.google.android.material.tabs.TabLayout;
 import gr7.discexchange.adapter.AdRecycleAdapter;
 import gr7.discexchange.databinding.FragmentDetailedAdBindingImpl;
 import gr7.discexchange.viewmodel.AdsViewModel;
-import gr7.discexchange.viewmodel.UserViewModel;
 
 public class MyAdsFragment extends Fragment implements AdRecycleAdapter.OnCardListener {
 
@@ -90,4 +90,12 @@ public class MyAdsFragment extends Fragment implements AdRecycleAdapter.OnCardLi
         bundle.putInt("positionMyAds", pos);
         Navigation.findNavController(requireActivity(), R.id.navHostFragment).navigate(R.id.notMenuDetailedAd, bundle);
     }
+
+    @Override
+    public boolean onCardLongClick(int pos) {
+
+        return false;
+
+    }
+
 }

@@ -26,7 +26,6 @@ import java.util.List;
 import gr7.discexchange.adapter.AdRecycleAdapter;
 import gr7.discexchange.model.Ad;
 import gr7.discexchange.viewmodel.AdsViewModel;
-import gr7.discexchange.viewmodel.UserViewModel;
 
 
 public class MyFeedFragment extends Fragment implements AdRecycleAdapter.OnCardListener {
@@ -97,5 +96,10 @@ public class MyFeedFragment extends Fragment implements AdRecycleAdapter.OnCardL
         Bundle bundle = new Bundle();
         bundle.putInt("positionFeed", pos);
         Navigation.findNavController(requireActivity(), R.id.navHostFragment).navigate(R.id.notMenuDetailedAd, bundle);
+    }
+
+    @Override
+    public boolean onCardLongClick(int pos) {
+        return false;
     }
 }
