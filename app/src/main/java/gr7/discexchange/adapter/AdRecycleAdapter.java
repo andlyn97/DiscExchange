@@ -76,6 +76,9 @@ public class AdRecycleAdapter extends RecyclerView.Adapter<AdRecycleAdapter.AdVi
 
     @Override
     public int getItemCount() {
+        if(adList == null) {
+            return 0;
+        }
         return adList.size();
     }
 

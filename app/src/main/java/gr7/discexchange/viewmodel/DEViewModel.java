@@ -46,8 +46,8 @@ public class DEViewModel extends ViewModel {
         ads = new MutableLiveData<>();
         userAds = new MutableLiveData<>();
         user = repository.getUser();
-        ads = repository.getAds();
-        userAds = repository.getUserAds(true);
+        ads.postValue(repository.getAds());
+        setUserAds(false);
     }
 
     public MutableLiveData<List<Ad>> getAds () {
@@ -63,19 +63,64 @@ public class DEViewModel extends ViewModel {
     }
 
     public void setUser(User user) {
-
-    }
-
-    public MutableLiveData<List<Ad>> getUserAds(boolean isArchived) {
-        userAds = repository.getUserAds(isArchived);
-        return userAds;
+        this.user.setValue(user);
     }
 
     public MutableLiveData<List<Ad>> getUserAds() {
         return userAds;
     }
 
-    public void setUserAds(MutableLiveData<List<Ad>> userAds) {
-        this.userAds = userAds;
+    public void setUserAds(boolean isArchived) {
+        String userUid = FirebaseAuth.getInstance().getUid();
+        if (!isArchived) {
+            fireStore
+                    .collection("ad")
+                    .whereEqualTo("userUid", userUid)
+                    .whereEqualTo("archived", null)
+                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                            List<Ad> adList = new ArrayList<>();
+                            if (error != null) {
+                                return;
+                            }
+                            for (QueryDocumentSnapshot document : value) {
+                                if (error != null) {
+                                    return;
+                                }
+
+                                if (document != null) {
+                                    adList.add(document.toObject(Ad.class));
+                                }
+                            }
+                            userAds.postValue(adList);
+
+                        }
+                    });
+        } else {
+            fireStore
+                    .collection("ad")
+                    .whereEqualTo("userUid", userUid)
+                    .whereNotEqualTo("archived", null)
+                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                            List<Ad> adList = new ArrayList<>();
+                            if (error != null) {
+                                return;
+                            }
+                            for (QueryDocumentSnapshot document : value) {
+                                if (error != null) {
+                                    return;
+                                }
+
+                                if (document != null) {
+                                    adList.add(document.toObject(Ad.class));
+                                }
+                            }
+                            userAds.postValue(adList);
+                        }
+                    });
+        }
     }
 }

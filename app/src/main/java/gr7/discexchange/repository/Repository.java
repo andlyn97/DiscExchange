@@ -31,8 +31,8 @@ public class Repository implements IRepository {
     private FirebaseFirestore firebaseFirestore;
     private String userUid;
 
-    private MutableLiveData<List<Ad>> ads;
-    private MutableLiveData<List<Ad>> userAds;
+    private List<Ad> ads;
+    private List<Ad> userAds;
     private MutableLiveData<User> user;
 
     private MutableLiveData<List<User>> users;
@@ -41,31 +41,31 @@ public class Repository implements IRepository {
 
     public Repository() {
         firebaseFirestore = FirebaseFirestore.getInstance();
-        ads = new MutableLiveData<>();
+        ads = new ArrayList<>();
         userUid = FirebaseAuth.getInstance().getUid();
         users = new MutableLiveData<>();
         rooms = new MutableLiveData<>();
         messages = new MutableLiveData<>();
         user = new MutableLiveData<>();
-        userAds = new MutableLiveData<>();
+        userAds = new ArrayList<>();
     }
 
-    public MutableLiveData<List<Ad>> getAds() {
+    public List<Ad> getAds() {
 
         firebaseFirestore.collection("ad").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                List<Ad> adList = new ArrayList<>();
+                //List<Ad> adList = new ArrayList<>();
                 for(QueryDocumentSnapshot document : value) {
                     if(error != null) {
                         return;
                     }
 
                     if(document != null) {
-                        adList.add(document.toObject(Ad.class));
+                        ads.add(document.toObject(Ad.class));
                     }
                 }
-                ads.postValue(adList);
+                //ads.postValue(adList);
             }
         });
 
@@ -99,7 +99,7 @@ public class Repository implements IRepository {
         return user;
     }
 
-    public MutableLiveData<List<Ad>> getUserAds(boolean isArchived) {
+    public List<Ad> getUserAds(boolean isArchived) {
         String userUid = FirebaseAuth.getInstance().getUid();
 
         if (!isArchived) {
@@ -123,10 +123,10 @@ public class Repository implements IRepository {
                                     adList.add(document.toObject(Ad.class));
                                 }
                             }
-                            userAds.postValue(adList);
+                            //userAds.postValue(adList);
+                            userAds = adList;
                         }
                     });
-            return userAds;
         } else {
             firebaseFirestore
                     .collection("ad")
@@ -137,6 +137,7 @@ public class Repository implements IRepository {
                         public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                             List<Ad> adList = new ArrayList<>();
                             if (error != null) {
+                                int i = 1 + 1;
                                 return;
                             }
                             for (QueryDocumentSnapshot document : value) {
@@ -148,11 +149,12 @@ public class Repository implements IRepository {
                                     adList.add(document.toObject(Ad.class));
                                 }
                             }
-                            userAds.postValue(adList);
+                            //userAds.postValue(adList);
+                            userAds = adList;
                         }
                     });
-            return userAds;
         }
+        return userAds;
     }
 
     public MutableLiveData<List<User>> getUsers() {

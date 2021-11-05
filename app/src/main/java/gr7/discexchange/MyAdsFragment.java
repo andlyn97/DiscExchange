@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,29 +60,18 @@ public class MyAdsFragment extends Fragment implements AdRecycleAdapter.OnCardLi
         });
 
         tabLayout = view.findViewById(R.id.tabLayout);
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                System.out.println(tab.getPosition());
                 switch(tab.getPosition()) {
                     case 0:
-                        /*viewModel.getUserAds(false).observe((LifecycleOwner) view.getContext(), x -> {
-                            adAdapter = new AdRecycleAdapter(view.getContext(), viewModel.getUserAds(false).getValue(), this);
-                            adRecyclerView.setAdapter(adAdapter);
-                            adAdapter.notifyDataSetChanged();
-                        });*/
-                        viewModel.getUserAds(true);
+                        viewModel.setUserAds(false);
                         break;
                     case 1:
-                        /*viewModel.getUserAds(true).observe((LifecycleOwner) view.getContext(), x -> {
-                            adAdapter = new AdRecycleAdapter(view.getContext(), viewModel.getUserAds(true).getValue(), this);
-                            adRecyclerView.setAdapter(adAdapter);
-                            adAdapter.notifyDataSetChanged();
-                        });*/
-                        viewModel.getUserAds(false);
+                        viewModel.setUserAds(true);
                         break;
                 }
-
             }
 
             @Override
@@ -94,7 +84,6 @@ public class MyAdsFragment extends Fragment implements AdRecycleAdapter.OnCardLi
 
             }
         });
-
     }
 
     @Override
