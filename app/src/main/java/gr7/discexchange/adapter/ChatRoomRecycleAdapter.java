@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,14 +46,17 @@ public class ChatRoomRecycleAdapter extends RecyclerView.Adapter<ChatRoomRecycle
 
     public class ChatRoomViewHolder extends RecyclerView.ViewHolder{
 
+        private TextView sentFromTV = itemView.findViewById(R.id.messageSentFrom);
+        private TextView messageTV = itemView.findViewById(R.id.message);
+
         public ChatRoomViewHolder(@NonNull View itemView) {
             super(itemView);
 
         }
 
         public void setMessage(Message message) {
-
-
+            sentFromTV.setText("From: " + message.getFromUserUid());
+            messageTV.setText("Message: " + message.getMessage());
 
         }
     }

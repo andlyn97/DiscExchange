@@ -7,25 +7,21 @@
     android:layout_height="match_parent"
     tools:context=".ChatRoomFragment">
 
+
     <TextView
+        android:id="@+id/userYouChatWith"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:text="Du chatter med Marcus"
-        android:textFontWeight="100"
         android:background="#F5F5F5"
+        android:gravity="center_horizontal"
+        android:text="Du chatter med Placeholder"
+        android:textFontWeight="100"
+        app:layout_constraintBottom_toTopOf="@+id/chatRoomRecyclerView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/chatRoomRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayoutCompat"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/linearLayoutCompat"
@@ -48,5 +44,16 @@
             android:text="Send" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/chatRoomRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="28dp"
+        android:minHeight="200dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayoutCompat"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

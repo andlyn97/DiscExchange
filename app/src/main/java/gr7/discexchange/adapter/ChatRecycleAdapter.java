@@ -79,7 +79,7 @@ public class ChatRecycleAdapter extends RecyclerView.Adapter<ChatRecycleAdapter.
 
 
     public interface OnChatRoomListener {
-        public void onChatRoomClick(int pos);
+        void onChatRoomClick(int pos);
     }
 }
 

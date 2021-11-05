@@ -4,16 +4,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MessageRoom {
+    private String roomUid;
     private List<String> usersUid;
     private List<User> users;
     private List<Message> messages;
     private Message lastMessage;
+    private User fromUser;
+
+
 
     public MessageRoom() {
         usersUid = new ArrayList<>();
         users = new ArrayList<>();
         messages = new ArrayList<>();
         lastMessage = new Message();
+    }
+
+    public String getRoomUid() {
+        return roomUid;
+    }
+
+    public void setRoomUid(String roomUid) {
+        this.roomUid = roomUid;
     }
 
     public List<Message> getMessages() {
@@ -47,6 +59,16 @@ public class MessageRoom {
     public void setUsers(List<User> users) {
         this.users = users;
     }
+
+    public User getFromUser() {
+        return fromUser;
+    }
+
+    public void setFromUser(User fromUser) {
+        this.fromUser = fromUser;
+    }
+
+
 
     public void addUser(User user) {
         users.add(user);
