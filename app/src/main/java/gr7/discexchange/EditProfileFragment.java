@@ -111,23 +111,33 @@ public class EditProfileFragment extends Fragment {
 
 
                 StorageReference firebaseStorage = FirebaseStorage.getInstance().getReference().child("user-images");
-                firebaseStorage.child(createdAt).putFile(currentUri).addOnCompleteListener(task -> {
-                    firebaseStorage.child(createdAt).getDownloadUrl().addOnSuccessListener(uri -> {
-                        String oldCreatedAt = currentUser.getImageStorageRef();
-                        currentUser.setImageStorageRef(createdAt);
-                        currentUser.setImageUrl(uri.toString());
-                        collectionRef
-                                .document(currentUser.getUid())
-                                .set(currentUser)
-                                .addOnCompleteListener(task1 -> {
-                                    if(oldCreatedAt != null || !oldCreatedAt.equals(currentUser.getImageStorageRef())) {
-                                        firebaseStorage.child(oldCreatedAt).delete();
-                                    }
-                                    Navigation.findNavController(view).popBackStack();
 
-                                });
+                if(!currentUser.getImageUrl().equals(currentUri.toString())) {
+                    firebaseStorage.child(createdAt).putFile(currentUri).addOnCompleteListener(task -> {
+                        firebaseStorage.child(createdAt).getDownloadUrl().addOnSuccessListener(uri -> {
+                            String oldCreatedAt = currentUser.getImageStorageRef();
+                            currentUser.setImageStorageRef(createdAt);
+                            currentUser.setImageUrl(uri.toString());
+
+                            if(oldCreatedAt != null || !oldCreatedAt.equals(currentUser.getImageStorageRef())) {
+                                firebaseStorage.child(oldCreatedAt).delete();
+                            }
+
+                        });
                     });
-                });
+                }
+
+
+
+                collectionRef
+                        .document(currentUser.getUid())
+                        .set(currentUser)
+                        .addOnCompleteListener(task1 -> {
+
+                            Navigation.findNavController(view).popBackStack();
+
+                        });
+
             }
         });
     }
