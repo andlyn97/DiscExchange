@@ -237,11 +237,6 @@ public class Ad {
 
         ArrayList<Ad> popList = new ArrayList<>();
 
-        int img1 = R.drawable.firebird;
-        int img2 = R.drawable.explorer;
-        int img3 = R.drawable.hydra;
-        int img4 = R.drawable.moab;
-        int img5 = R.drawable.keystone;
 
         Ad one = new Ad("Firebird", "Innova");
         Ad two = new Ad("Explorer", "Latitude 64");

@@ -22,8 +22,7 @@
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="404dp"
-                android:layout_height="209dp"
-                app:srcCompat="@drawable/firebird" />
+                android:layout_height="209dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
