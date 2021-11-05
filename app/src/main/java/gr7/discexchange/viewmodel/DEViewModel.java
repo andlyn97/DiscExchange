@@ -46,7 +46,7 @@ public class DEViewModel extends ViewModel {
         ads = new MutableLiveData<>();
         userAds = new MutableLiveData<>();
         user = repository.getUser();
-        ads.postValue(repository.getAds());
+        ads = repository.getAds();
         userAds = repository.getUserAds(true);
     }
 

@@ -27,9 +27,9 @@ public class ChatViewModel extends ViewModel {
         messages = new MutableLiveData<>();
 
         user = repository.getUser();
-        users.postValue(repository.getUsers());
-        rooms.postValue(repository.getRooms());
-        messages.postValue(repository.getMessages());
+        users = repository.getUsers();
+        rooms = repository.getRooms();
+        messages = repository.getMessages();
     }
 
     public MutableLiveData<User> getUser() {
