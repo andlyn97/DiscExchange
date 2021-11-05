@@ -74,7 +74,9 @@ public class AdsViewModel extends ViewModel {
                                 }
 
                                 if (document != null) {
-                                    adList.add(document.toObject(Ad.class));
+                                    Ad ad = document.toObject(Ad.class);
+                                    ad.setUid(document.getId());
+                                    adList.add(ad);
                                 }
                             }
                             userAds.postValue(adList);

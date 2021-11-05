@@ -1,7 +1,8 @@
 package gr7.discexchange.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
-import android.os.Bundle;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,18 +11,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
-
-import org.w3c.dom.Text;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
 import gr7.discexchange.R;
 import gr7.discexchange.model.Ad;
+import gr7.discexchange.viewmodel.AdsViewModel;
 
 public class AdRecycleAdapter extends RecyclerView.Adapter<AdRecycleAdapter.AdViewHolder> {
     private static final String TAG = AdRecycleAdapter.class.getSimpleName();
@@ -30,12 +34,14 @@ public class AdRecycleAdapter extends RecyclerView.Adapter<AdRecycleAdapter.AdVi
     private LayoutInflater inflater;
     private OnCardListener onCardListener;
     private TabLayout.OnTabSelectedListener onTabSelectedListener;
+    private AdsViewModel adsViewModel;
 
     public AdRecycleAdapter(Context context, List<Ad> adList, OnCardListener onCardListener) {
         inflater = LayoutInflater.from(context);
 
         this.adList = adList;
         this.onCardListener = onCardListener;
+        this.adsViewModel = new ViewModelProvider((ViewModelStoreOwner) context).get(AdsViewModel.class);
 
     }
 
@@ -82,7 +88,7 @@ public class AdRecycleAdapter extends RecyclerView.Adapter<AdRecycleAdapter.AdVi
         return adList.size();
     }
 
-    public class AdViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class AdViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         private TextView nameTextView;
         private TextView conditionTextView;
         private TextView colorTextView;
@@ -104,6 +110,35 @@ public class AdRecycleAdapter extends RecyclerView.Adapter<AdRecycleAdapter.AdVi
             this.onCardListener = onCardListener;
 
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    int p = getAdapterPosition();
+
+                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(v.getContext());
+                    builder.setTitle("Innstillinger")
+                            .setMessage("Vil du endre eller arkivere annonse?")
+                            .setPositiveButton("Endre", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // Reroute til edit
+                                    onCardListener.onCardClick(getAdapterPosition());
+                                }
+                            })
+                            .setNegativeButton("Arkiver", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // Arkiver og reset
+                                    String uid = adsViewModel.getUserAds().getValue().get(getAdapterPosition()).getUid();
+                                    FirebaseFirestore.getInstance().collection("ad").document(uid).update("archived", String.valueOf(System.currentTimeMillis()));
+                                }
+                            })
+                            .show()
+                    ;
+
+                    return true;
+                }
+            });
         }
 
         public void setAd(Ad adToDisplay) {
@@ -124,10 +159,16 @@ public class AdRecycleAdapter extends RecyclerView.Adapter<AdRecycleAdapter.AdVi
         public void onClick(View v) {
             onCardListener.onCardClick(getAdapterPosition());
         }
+
+        @Override
+        public boolean onLongClick(View v) {
+            return onCardListener.onCardLongClick(getAdapterPosition());
+        }
     }
 
     public interface OnCardListener {
         void onCardClick(int pos);
+        boolean onCardLongClick(int pos);
     }
 
 }
