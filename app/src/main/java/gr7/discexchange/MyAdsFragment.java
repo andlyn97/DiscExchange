@@ -19,12 +19,13 @@ import com.google.android.material.tabs.TabLayout;
 
 import gr7.discexchange.adapter.AdRecycleAdapter;
 import gr7.discexchange.databinding.FragmentDetailedAdBindingImpl;
-import gr7.discexchange.viewmodel.DEViewModel;
+import gr7.discexchange.viewmodel.AdsViewModel;
+import gr7.discexchange.viewmodel.UserViewModel;
 
 public class MyAdsFragment extends Fragment implements AdRecycleAdapter.OnCardListener {
 
     private FragmentDetailedAdBindingImpl binding;
-    private DEViewModel viewModel;
+    private AdsViewModel adsViewModel;
     private RecyclerView adRecyclerView;
     private AdRecycleAdapter adAdapter;
     private TabLayout tabLayout;
@@ -36,7 +37,7 @@ public class MyAdsFragment extends Fragment implements AdRecycleAdapter.OnCardLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        viewModel = new ViewModelProvider(requireActivity()).get(DEViewModel.class);
+        adsViewModel = new ViewModelProvider(requireActivity()).get(AdsViewModel.class);
         //binding = DataBindingUtil.inflate(inflater, R.layout.fragment_my_ads, container, false);
         //return binding.getRoot();
         return inflater.inflate(R.layout.fragment_my_ads, container, false);
@@ -49,8 +50,8 @@ public class MyAdsFragment extends Fragment implements AdRecycleAdapter.OnCardLi
         adRecyclerView = view.findViewById(R.id.myAdRecyclerView);
         adRecyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), 2));
 
-        viewModel.getUserAds().observe((LifecycleOwner) view.getContext(), x -> {
-            adAdapter = new AdRecycleAdapter(view.getContext(), viewModel.getUserAds().getValue(), this);
+        adsViewModel.getUserAds().observe((LifecycleOwner) view.getContext(), x -> {
+            adAdapter = new AdRecycleAdapter(view.getContext(), adsViewModel.getUserAds().getValue(), this);
             adRecyclerView.setAdapter(adAdapter);
             adAdapter.notifyDataSetChanged();
         });
@@ -62,10 +63,10 @@ public class MyAdsFragment extends Fragment implements AdRecycleAdapter.OnCardLi
             public void onTabSelected(TabLayout.Tab tab) {
                 switch(tab.getPosition()) {
                     case 0:
-                        viewModel.getUserAdsFromFirestore(false);
+                        adsViewModel.getUserAdsFromFirestore(false);
                         break;
                     case 1:
-                        viewModel.getUserAdsFromFirestore(true);
+                        adsViewModel.getUserAdsFromFirestore(true);
                         break;
                 }
             }

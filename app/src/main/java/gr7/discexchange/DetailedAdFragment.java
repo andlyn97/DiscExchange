@@ -16,14 +16,16 @@ import com.bumptech.glide.Glide;
 
 import gr7.discexchange.databinding.FragmentDetailedAdBindingImpl;
 import gr7.discexchange.model.Ad;
-import gr7.discexchange.viewmodel.DEViewModel;
+import gr7.discexchange.viewmodel.AdsViewModel;
+import gr7.discexchange.viewmodel.UserViewModel;
 
 public class DetailedAdFragment extends Fragment {
 
 
 
     private Ad ad;
-    private DEViewModel viewModel;
+    private UserViewModel userViewModel;
+    private AdsViewModel adsViewModel;
     private FragmentDetailedAdBindingImpl binding;
     public DetailedAdFragment() {
         // Required empty public constructor
@@ -41,14 +43,16 @@ public class DetailedAdFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewModel = new ViewModelProvider(requireActivity()).get(DEViewModel.class);
+        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
+        adsViewModel = new ViewModelProvider(requireActivity()).get(AdsViewModel.class);
+
         int pos;
         pos = getArguments().getInt("positionMyAds");
         if(pos == 0) {
             pos = getArguments().getInt("positionFeed");
-            ad = viewModel.getAds().getValue().get(pos);
+            ad = adsViewModel.getAds().getValue().get(pos);
         } else {
-            ad = viewModel.getUserAds().getValue().get(pos);
+            ad = adsViewModel.getUserAds().getValue().get(pos);
         }
 
         binding.setAd(ad);

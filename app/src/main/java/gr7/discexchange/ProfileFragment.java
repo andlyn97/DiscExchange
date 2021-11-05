@@ -14,22 +14,19 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RatingBar;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 
-import gr7.discexchange.databinding.FragmentDetailedAdBindingImpl;
 import gr7.discexchange.databinding.FragmentProfileBindingImpl;
 import gr7.discexchange.model.User;
-import gr7.discexchange.viewmodel.DEViewModel;
+import gr7.discexchange.viewmodel.UserViewModel;
 
 public class ProfileFragment extends Fragment {
 
-    private DEViewModel viewModel;
+    private UserViewModel viewModel;
     private FragmentProfileBindingImpl binding;
 
 
@@ -49,7 +46,7 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        viewModel = new ViewModelProvider(requireActivity()).get(DEViewModel.class);
+        viewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
 
         RoundedImageView profilePictureImageView = view.findViewById(R.id.profilePic);
 

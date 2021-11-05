@@ -18,21 +18,21 @@ import com.firebase.ui.auth.AuthUI;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.makeramen.roundedimageview.RoundedImageView;
-import gr7.discexchange.viewmodel.DEViewModel;
+import gr7.discexchange.viewmodel.UserViewModel;
 
 public class MainActivity extends AppCompatActivity{
     public DrawerLayout drawerLayout;
     private TextView navUserNameTextView;
     private TextView navAddressTextView;
     private RoundedImageView navImageProfilePic;
-    private DEViewModel viewModel;
+    private UserViewModel userViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        viewModel = new ViewModelProvider(this).get(DEViewModel.class);
+        userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
         drawerLayout = findViewById(R.id.drawer_layout);
 
 
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity{
         navController.setGraph(navGraph);
 
 
-        viewModel.getUser().observe(this, user -> {
+        userViewModel.getUser().observe(this, user -> {
             if(user == null) {
                 return;
             }

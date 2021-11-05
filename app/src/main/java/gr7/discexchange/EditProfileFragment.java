@@ -28,7 +28,7 @@ import com.google.firebase.storage.StorageReference;
 import java.io.File;
 
 import gr7.discexchange.model.User;
-import gr7.discexchange.viewmodel.DEViewModel;
+import gr7.discexchange.viewmodel.UserViewModel;
 
 public class EditProfileFragment extends Fragment {
 
@@ -42,7 +42,7 @@ public class EditProfileFragment extends Fragment {
     private Button editProfileSubmit;
     private Uri currentUri;
 
-    private DEViewModel viewModel;
+    private UserViewModel viewModel;
 
 
 
@@ -58,7 +58,7 @@ public class EditProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
-        viewModel = new ViewModelProvider(requireActivity()).get(DEViewModel.class);
+        viewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
 
         currentUser = viewModel.getUser().getValue();
         editProfilePictureView = view.findViewById(R.id.editProfilePictureView);

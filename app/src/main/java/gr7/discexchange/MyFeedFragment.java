@@ -6,36 +6,27 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import gr7.discexchange.adapter.AdRecycleAdapter;
 import gr7.discexchange.model.Ad;
-import gr7.discexchange.viewmodel.DEViewModel;
+import gr7.discexchange.viewmodel.AdsViewModel;
+import gr7.discexchange.viewmodel.UserViewModel;
 
 
 public class MyFeedFragment extends Fragment implements AdRecycleAdapter.OnCardListener {
@@ -49,7 +40,7 @@ public class MyFeedFragment extends Fragment implements AdRecycleAdapter.OnCardL
     private AdRecycleAdapter adAdapter;
     private ListenerRegistration firestoreListenerRegistration;
 
-    private DEViewModel viewModel;
+    private AdsViewModel adsViewModel;
 
 
 
@@ -76,11 +67,10 @@ public class MyFeedFragment extends Fragment implements AdRecycleAdapter.OnCardL
         adRecyclerView = view.findViewById(R.id.adRecyclerView);
         adRecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
+        adsViewModel = new ViewModelProvider(requireActivity()).get(AdsViewModel.class);
 
-        viewModel = new ViewModelProvider(requireActivity()).get(DEViewModel.class);
-
-        viewModel.getAds().observe((LifecycleOwner) view.getContext(), test -> {
-            adAdapter = new AdRecycleAdapter(view.getContext(), viewModel.getAds().getValue(), this);
+        adsViewModel.getAds().observe((LifecycleOwner) view.getContext(), test -> {
+            adAdapter = new AdRecycleAdapter(view.getContext(), adsViewModel.getAds().getValue(), this);
             adRecyclerView.setAdapter(adAdapter);
             adAdapter.notifyDataSetChanged();
         });
