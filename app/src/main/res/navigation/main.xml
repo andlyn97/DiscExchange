@@ -16,11 +16,6 @@
         android:label="Profil"
         tools:layout="@layout/fragment_profile"/>
     <fragment
-        android:id="@+id/menuPopular"
-        android:name="gr7.discexchange.PopularFragment"
-        android:label="Populære"
-        tools:layout="@layout/fragment_popular" />
-    <fragment
         android:id="@+id/menuStore"
         android:name="gr7.discexchange.StoreFragment"
         android:label="Butikk" />

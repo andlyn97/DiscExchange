@@ -18,10 +18,6 @@
         android:title="@string/mine_annonser" />
 
     <item
-        android:id="@+id/menuPopular"
-        android:title="@string/popul_re" />
-
-    <item
         android:id="@+id/menuStore"
         android:title="@string/butikk" />
 
