@@ -32,6 +32,7 @@ public class ChatViewModel extends ViewModel {
     private MutableLiveData<User> user;
     private MutableLiveData<List<MessageRoom>> rooms;
     private MutableLiveData<List<Message>> messages;
+    private List<User> users;
 
     public ChatViewModel() {
         firestore = FirebaseFirestore.getInstance();
@@ -39,10 +40,12 @@ public class ChatViewModel extends ViewModel {
         user = new MutableLiveData<>();
         rooms = new MutableLiveData<>();
         messages = new MutableLiveData<>();
+        users = new ArrayList<>();
 
+
+        getUsersFromFirestore();
         getRoomsFromFirestore();
         getMessagesFromFirestore();
-        getCollectionGroupFromFirestore();
 
     }
 
@@ -75,8 +78,8 @@ public class ChatViewModel extends ViewModel {
 
     // Firestore
 
-    private ArrayList<User> getUsersFromFirestore() {
-        ArrayList<User> users = new ArrayList<>();
+    private void getUsersFromFirestore() {
+
         firestore.collection("user").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -91,15 +94,10 @@ public class ChatViewModel extends ViewModel {
                 users.addAll(fetchedUsers);
             }
         });
-
-        for (User user : users) {
-
-        }
-        return users;
     }
 
     private void getRoomsFromFirestore() {
-        ArrayList<User> users = getUsersFromFirestore();
+
 
         firestore
                 .collection("messageRoom")
@@ -152,9 +150,16 @@ public class ChatViewModel extends ViewModel {
 
                 for (DocumentSnapshot doc : documentMessages) {
                     Message message = doc.toObject(Message.class);
+                    for (User user : users) {
+                        if(message.getFromUserUid().equals(user.getUid())) {
+                            message.setFromUser(user);
+                        }
+                    }
                     messageList.add(message);
 
                 }
+
+
                 messages.postValue(messageList);
             }
         });
@@ -167,12 +172,5 @@ public class ChatViewModel extends ViewModel {
         return getRooms().getValue().get(0).getFromUser().getName();
     }
 
-    public void getCollectionGroupFromFirestore() {
-        firestore.collectionGroup("messageRoom").whereArrayContains("usersUid", user.getValue().getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                Log.d("Debug12", task.toString());
-            }
-        });
-    }
+
 }

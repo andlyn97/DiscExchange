@@ -9,6 +9,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 
 import gr7.discexchange.R;
@@ -48,6 +51,7 @@ public class ChatRoomRecycleAdapter extends RecyclerView.Adapter<ChatRoomRecycle
 
         private TextView sentFromTV = itemView.findViewById(R.id.messageSentFrom);
         private TextView messageTV = itemView.findViewById(R.id.message);
+        private TextView dateTV = itemView.findViewById(R.id.messageDate);
 
         public ChatRoomViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -55,8 +59,10 @@ public class ChatRoomRecycleAdapter extends RecyclerView.Adapter<ChatRoomRecycle
         }
 
         public void setMessage(Message message) {
-            sentFromTV.setText("From: " + message.getFromUserUid());
-            messageTV.setText("Message: " + message.getMessage());
+            sentFromTV.setText("Fra: " + message.getFromUser().getName());
+            messageTV.setText("Melding: " + message.getMessage());
+            // Stole code from here: https://www.candidjava.com/date-time/how-to-convert-epoch-time-to-date-in-java/
+            dateTV.setText("Sendt: " + Instant.ofEpochMilli(Long.parseLong(message.getSentAt())).atZone(ZoneId.systemDefault()).toLocalDateTime());
 
         }
     }

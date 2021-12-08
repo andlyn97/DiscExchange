@@ -3,6 +3,7 @@ package gr7.discexchange.model;
 public class Message {
 
     private String fromUserUid;
+    private User fromUser;
     private String message;
     private String sentAt;
 
@@ -16,6 +17,15 @@ public class Message {
     public void setFromUserUid(String fromUserUid) {
         this.fromUserUid = fromUserUid;
     }
+
+    public User getFromUser() {
+        return fromUser;
+    }
+
+    public void setFromUser(User fromUser) {
+        this.fromUser = fromUser;
+    }
+
 
     public String getMessage() {
         return message;

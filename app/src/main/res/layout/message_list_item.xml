@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -10,11 +9,18 @@
         android:id="@+id/messageSentFrom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="From Placeholder"/>
+        android:text="From Placeholder" />
+
     <TextView
         android:id="@+id/message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Message Placeholder"/>
+        android:text="Message Placeholder" />
+
+    <TextView
+        android:id="@+id/messageDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date Placeholder"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

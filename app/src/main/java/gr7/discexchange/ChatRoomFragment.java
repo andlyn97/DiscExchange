@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import gr7.discexchange.adapter.ChatRecycleAdapter;
 import gr7.discexchange.adapter.ChatRoomRecycleAdapter;
 import gr7.discexchange.viewmodel.ChatViewModel;
 
@@ -47,7 +46,7 @@ public class ChatRoomFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
         userYouChatWithTV = view.findViewById(R.id.userYouChatWith);
-        userYouChatWithTV.setText(chatViewModel.getFromUsername());
+        userYouChatWithTV.setText("Du chatter med " + chatViewModel.getFromUsername());
 
         chatViewModel.getMessages().observe((LifecycleOwner) view.getContext(), x -> {
             adapter = new ChatRoomRecycleAdapter(view.getContext(), chatViewModel.getMessages().getValue());
