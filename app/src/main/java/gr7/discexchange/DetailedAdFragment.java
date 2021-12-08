@@ -50,16 +50,17 @@ public class DetailedAdFragment extends Fragment {
         userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
         adsViewModel = new ViewModelProvider(requireActivity()).get(AdsViewModel.class);
 
-        int pos;
+        int posFeed, posAds;
         String from;
 
         from = getArguments().getString("from");
-        pos = getArguments().getInt("positionFeed");
+        posFeed = getArguments().getInt("positionFeed");
+        posAds = getArguments().getInt("positionMyAds");
 
         if (from.equals("MyFeed")) {
-            ad = adsViewModel.getAds().getValue().get(pos);
+            ad = adsViewModel.getAds().getValue().get(posFeed);
         } else if (from.equals("MyAds")) {
-            ad = adsViewModel.getUserAds().getValue().get(pos);
+            ad = adsViewModel.getUserAds().getValue().get(posAds);
         }
 
         binding.setAd(ad);
