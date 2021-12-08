@@ -88,6 +88,7 @@ public class MyAdsFragment extends Fragment implements AdRecycleAdapter.OnCardLi
     public void onCardClick(int pos) {
         Bundle bundle = new Bundle();
         bundle.putInt("positionMyAds", pos);
+        bundle.putString("from", "MyAds");
         Navigation.findNavController(requireActivity(), R.id.navHostFragment).navigate(R.id.notMenuDetailedAd, bundle);
     }
 

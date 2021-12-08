@@ -11,6 +11,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,6 +96,7 @@ public class MyFeedFragment extends Fragment implements AdRecycleAdapter.OnCardL
     public void onCardClick(int pos) {
         Bundle bundle = new Bundle();
         bundle.putInt("positionFeed", pos);
+        bundle.putString("from", "MyFeed");
         Navigation.findNavController(requireActivity(), R.id.navHostFragment).navigate(R.id.notMenuDetailedAd, bundle);
     }
 

@@ -12,12 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import gr7.discexchange.adapter.AdRecycleAdapter;
-import gr7.discexchange.model.Ad;
-
 public class StoreFragment extends Fragment {
 
-    public StoreFragment() {
+    public void StoreFragment() {
 
     }
 

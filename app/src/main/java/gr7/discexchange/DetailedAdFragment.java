@@ -6,13 +6,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+
+import java.util.List;
 
 import gr7.discexchange.databinding.FragmentDetailedAdBindingImpl;
 import gr7.discexchange.model.Ad;
@@ -47,9 +51,16 @@ public class DetailedAdFragment extends Fragment {
         adsViewModel = new ViewModelProvider(requireActivity()).get(AdsViewModel.class);
 
         int pos;
-        pos = getArguments().getInt("positionMyAds");
+        String from;
 
-        ad = adsViewModel.getUserAds().getValue().get(pos);
+        from = getArguments().getString("from");
+        pos = getArguments().getInt("positionFeed");
+
+        if (from.equals("MyFeed")) {
+            ad = adsViewModel.getAds().getValue().get(pos);
+        } else if (from.equals("MyAds")) {
+            ad = adsViewModel.getUserAds().getValue().get(pos);
+        }
 
         binding.setAd(ad);
 
