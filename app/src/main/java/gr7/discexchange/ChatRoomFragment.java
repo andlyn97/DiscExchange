@@ -54,5 +54,7 @@ public class ChatRoomFragment extends Fragment {
             recyclerView.setAdapter(adapter);
             adapter.notifyDataSetChanged();
         });
+
+
     }
 }
