@@ -27,6 +27,10 @@
         android:id="@+id/menuMyAds"
         android:name="gr7.discexchange.MyAdsFragment"
         android:label="Mine annonser" />
+    <fragment
+        android:id="@+id/menuSettings"
+        android:name="gr7.discexchange.SettingsFragment"
+        android:label="Innstillinger" />
 
 
 
@@ -49,6 +53,7 @@
         android:id="@+id/notMenuChatRoom"
         android:name="gr7.discexchange.ChatRoomFragment"
         android:label="Chat" />
+
 
 
 

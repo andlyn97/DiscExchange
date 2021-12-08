@@ -1,0 +1,12 @@
+<resources>
+    <string-array name="screen_mode_options">
+        <item>Systemvalgt</item>
+        <item>Lyst</item>
+        <item>Mørkt</item>
+    </string-array>
+    <string-array name="screen_mode_values">
+        <item>systemvalgt</item>
+        <item>lyst</item>
+        <item>morkt</item>
+    </string-array>
+</resources>

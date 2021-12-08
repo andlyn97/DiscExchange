@@ -1,0 +1,28 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory app:title="Diverse">
+
+        <SwitchPreferenceCompat
+            app:key="notifications"
+            app:title="Notifikasjoner på" />
+
+        <ListPreference
+            android:entries="@array/screen_mode_options"
+            android:entryValues="@array/screen_mode_values"
+            app:key="screenmode"
+            app:title="Darkmode"
+            app:useSimpleSummaryProvider="true"
+            />
+
+
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Konto">
+        <Preference
+            app:key="logout"
+            android:title="Logg ut" />
+    </PreferenceCategory>
+
+
+
+</PreferenceScreen>

@@ -26,8 +26,8 @@
         android:title="@string/handlekurv" />
 
     <item
-        android:id="@+id/menuLogout"
-        android:title="@string/logg_ut" />
+        android:id="@+id/menuSettings"
+        android:title="Innstillinger" />
 
 </menu>
 

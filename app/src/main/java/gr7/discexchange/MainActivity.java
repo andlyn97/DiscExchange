@@ -57,9 +57,6 @@ public class MainActivity extends AppCompatActivity{
 
 
 
-        logout(drawerNavView);
-
-
         NavController navController = Navigation.findNavController(this, R.id.navHostFragment);
         NavGraph navGraph = navController.getNavInflater().inflate(R.navigation.main);
         navGraph.setStartDestination(R.id.menuFeed);
@@ -94,15 +91,6 @@ public class MainActivity extends AppCompatActivity{
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> textTitle.setText(destination.getLabel()));
     }
 
-    private void logout(NavigationView drawerNavView) {
-        drawerNavView.getMenu().findItem(R.id.menuLogout).setOnMenuItemClickListener(item -> {
-            AuthUI.getInstance()
-                    .signOut(this)
-                    .addOnCompleteListener(task -> {
-                        Toast.makeText(getApplicationContext(), "Logger ut", Toast.LENGTH_LONG).show();
-                        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                    });
-            return true;
-        });
-    }
+
+
 }
