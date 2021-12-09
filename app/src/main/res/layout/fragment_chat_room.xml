@@ -31,12 +31,14 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/chatRoomInputMessage"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:hint="Melding" />
 
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/chatRoomSubmitMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0"

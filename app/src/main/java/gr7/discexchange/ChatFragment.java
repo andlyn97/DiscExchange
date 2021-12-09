@@ -62,6 +62,8 @@ public class ChatFragment extends Fragment implements ChatRecycleAdapter.OnChatR
             adapter.notifyDataSetChanged();
         });
 
+
+
     }
 
     @Override

@@ -33,6 +33,7 @@ public class ChatViewModel extends ViewModel {
     private MutableLiveData<List<MessageRoom>> rooms;
     private MutableLiveData<List<Message>> messages;
     private List<User> users;
+    private String currentRoomUid;
 
     public ChatViewModel() {
         firestore = FirebaseFirestore.getInstance();
@@ -45,7 +46,8 @@ public class ChatViewModel extends ViewModel {
 
         getUsersFromFirestore();
         getRoomsFromFirestore();
-        getMessagesFromFirestore("");
+        currentRoomUid = "PjAQkTfsYyCThLsS3eoC";
+        getMessagesFromFirestore(currentRoomUid);
 
     }
 
@@ -74,6 +76,22 @@ public class ChatViewModel extends ViewModel {
 
     public void setMessages(MutableLiveData<List<Message>> messages) {
         this.messages = messages;
+    }
+
+    public String getUserUid() {
+        return userUid;
+    }
+
+    public void setUserUid(String userUid) {
+        this.userUid = userUid;
+    }
+
+    public String getCurrentRoomUid() {
+        return currentRoomUid;
+    }
+
+    public void setCurrentRoomUid(String currentRoomUid) {
+        this.currentRoomUid = currentRoomUid;
     }
 
     public String getFromUsername() {
@@ -117,6 +135,7 @@ public class ChatViewModel extends ViewModel {
                         for (DocumentSnapshot documentSnapshot : value.getDocuments()) {
                             if(documentSnapshot != null) {
                                 MessageRoom room = documentSnapshot.toObject(MessageRoom.class);
+
                                 room.setRoomUid(documentSnapshot.getId());
 
 
@@ -154,17 +173,16 @@ public class ChatViewModel extends ViewModel {
                     .collection("messages")
                     .orderBy("sentAt")
                     .limitToLast(1)
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
                         @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            DocumentSnapshot lastMessageDocSnap = task.getResult().getDocuments().get(0);
+                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                            DocumentSnapshot lastMessageDocSnap = value.getDocuments().get(0);
                             Message lastMessage = lastMessageDocSnap.toObject(Message.class);
 
                             room.setLastMessage(lastMessage);
-
                         }
                     });
+
 
             return room;
     }
@@ -172,40 +190,43 @@ public class ChatViewModel extends ViewModel {
 
     private void getMessagesFromFirestore(String roomUid) {
         // TODO: Fikse denne så den henter dynamisk onClick.
-        roomUid = "PjAQkTfsYyCThLsS3eoC";
+
 
         firestore
                 .collection("messageRoom")
                 .document(roomUid)
                 .collection("messages")
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                List<Message> messageList = new ArrayList<>();
-                List<DocumentSnapshot> documentMessages = task.getResult().getDocuments();
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        List<Message> messageList = new ArrayList<>();
+                        List<DocumentSnapshot> documentMessages = value.getDocuments();
 
-                for (DocumentSnapshot doc : documentMessages) {
-                    Message message = doc.toObject(Message.class);
-                    for (User user : users) {
-                        if(message.getFromUserUid().equals(user.getUid())) {
-                            message.setFromUser(user);
+                        for (DocumentSnapshot doc : documentMessages) {
+                            Message message = doc.toObject(Message.class);
+                            for (User user : users) {
+                                if(message.getFromUserUid().equals(user.getUid())) {
+                                    message.setFromUser(user);
+                                }
+                            }
+                            messageList.add(message);
+
                         }
+
+
+                        messages.postValue(messageList);
                     }
-                    messageList.add(message);
+                });
 
-                }
-
-
-                messages.postValue(messageList);
-            }
-        });
 
 
     }
 
 
+    public void addMessage(Message message) {
+        List<Message> tempMessagesList = messages.getValue();
+        tempMessagesList.add(message);
 
-
-
-
+        messages.postValue(tempMessagesList);
+    }
 }
