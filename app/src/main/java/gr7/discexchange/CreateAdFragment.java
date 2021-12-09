@@ -113,7 +113,25 @@ public class CreateAdFragment extends Fragment {
             createBtnCreate.setText("Endre annonse");
             createBtnCreate.setOnClickListener(view1 -> {
                 String name = textInputName.getEditableText().toString();
+                String brand = textInputBrand.getEditableText().toString();
+                int condition = Integer.parseInt(textInputCondition.getEditableText().toString());
+                String flight = textInputFlight.getEditableText().toString();
+                String color = textInputColor.getEditableText().toString();
+                String ink = textInputInk.getEditableText().toString();
+                String description = textInputDescription.getEditableText().toString();
+                String wish = textInputWish.getEditableText().toString();
+                String published = String.valueOf(System.currentTimeMillis());
+
                 ad.setName(name);
+                ad.setBrand(brand);
+                ad.setCondition(condition);
+                ad.setFlight(flight);
+                ad.setColor(color);
+                ad.setInk(ink);
+                ad.setDescription(description);
+                ad.setWish(wish);
+                ad.setPublished(published);
+
                 Log.d("Maome", "name: " + name);
                 updateAd(view, ad, pos);
             });
@@ -174,7 +192,15 @@ public class CreateAdFragment extends Fragment {
         Log.d("Maome", "uid: " + uid);
         DocumentReference adRef = FirebaseFirestore.getInstance().collection("ad").document(uid);
         adRef
-                .update("name", ad.getName())
+                .update("name", ad.getName(),
+                "brand", ad.getBrand(),
+                        "condition", ad.getCondition(),
+                        "flight", ad.getFlight(),
+                        "color", ad.getColor(),
+                        "ink", ad.getInk(),
+                        "description", ad.getDescription(),
+                        "wish", ad.getWish(),
+                        "published", ad.getPublished())
                 .addOnSuccessListener(unused -> Log.d("Maome", "Ad updated successfully"))
                 .addOnFailureListener(e -> Log.d("Maome", "Error updating", e));
     }
