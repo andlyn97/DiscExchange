@@ -11,8 +11,6 @@ public class MessageRoom {
     private Message lastMessage;
     private User fromUser;
 
-
-
     public MessageRoom() {
         usersUid = new ArrayList<>();
         users = new ArrayList<>();
@@ -67,7 +65,6 @@ public class MessageRoom {
     public void setFromUser(User fromUser) {
         this.fromUser = fromUser;
     }
-
 
 
     public void addUser(User user) {

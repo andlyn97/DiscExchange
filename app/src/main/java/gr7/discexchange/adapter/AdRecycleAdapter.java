@@ -123,6 +123,7 @@ public class AdRecycleAdapter extends RecyclerView.Adapter<AdRecycleAdapter.AdVi
                                 public void onClick(DialogInterface dialog, int which) {
                                     // Reroute til edit
                                     onCardListener.onCardClick(getAdapterPosition());
+
                                 }
                             })
                             .setNegativeButton("Arkiver", new DialogInterface.OnClickListener() {

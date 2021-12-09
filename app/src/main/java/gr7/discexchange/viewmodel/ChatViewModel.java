@@ -45,9 +45,10 @@ public class ChatViewModel extends ViewModel {
 
         getUsersFromFirestore();
         getRoomsFromFirestore();
-        getMessagesFromFirestore();
+        getMessagesFromFirestore("");
 
     }
+
 
 
 
@@ -75,6 +76,11 @@ public class ChatViewModel extends ViewModel {
         this.messages = messages;
     }
 
+    public String getFromUsername() {
+        return getRooms().getValue().get(0).getFromUser().getName();
+    }
+
+
 
     // Firestore
 
@@ -97,8 +103,6 @@ public class ChatViewModel extends ViewModel {
     }
 
     private void getRoomsFromFirestore() {
-
-
         firestore
                 .collection("messageRoom")
                 .whereArrayContains("usersUid", userUid)
@@ -115,6 +119,7 @@ public class ChatViewModel extends ViewModel {
                                 MessageRoom room = documentSnapshot.toObject(MessageRoom.class);
                                 room.setRoomUid(documentSnapshot.getId());
 
+
                                 for (User u : users) {
                                     for (String uUid : room.getUsersUid()) {
                                         if(u.getUid().equals(uUid)) {
@@ -128,19 +133,50 @@ public class ChatViewModel extends ViewModel {
                                         room.setFromUser(user);
                                     }
                                 }
-
+                                room = getLastMessagesFromFirestore(room);
                                 fetchedRooms.add(room);
                             }
+
                         }
                         rooms.postValue(fetchedRooms);
+
                     }
                 });
+
+
     }
 
-    private void getMessagesFromFirestore() {
+    private MessageRoom getLastMessagesFromFirestore(MessageRoom room) {
+
+            firestore
+                    .collection("messageRoom")
+                    .document(room.getRoomUid())
+                    .collection("messages")
+                    .orderBy("sentAt")
+                    .limitToLast(1)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            DocumentSnapshot lastMessageDocSnap = task.getResult().getDocuments().get(0);
+                            Message lastMessage = lastMessageDocSnap.toObject(Message.class);
+
+                            room.setLastMessage(lastMessage);
+
+                        }
+                    });
+
+            return room;
+    }
+
+
+    private void getMessagesFromFirestore(String roomUid) {
+        // TODO: Fikse denne så den henter dynamisk onClick.
+        roomUid = "PjAQkTfsYyCThLsS3eoC";
+
         firestore
                 .collection("messageRoom")
-                .document("PjAQkTfsYyCThLsS3eoC")
+                .document(roomUid)
                 .collection("messages")
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -168,9 +204,8 @@ public class ChatViewModel extends ViewModel {
     }
 
 
-    public String getFromUsername() {
-        return getRooms().getValue().get(0).getFromUser().getName();
-    }
+
+
 
 
 }
