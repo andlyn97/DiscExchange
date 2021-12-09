@@ -52,13 +52,16 @@ public class ChatRecycleAdapter extends RecyclerView.Adapter<ChatRecycleAdapter.
 
     public class ChatViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        private TextView roomTV;
+        private TextView fromUser;
+        private TextView lastMessage;
+
         private OnChatRoomListener onChatRoomListener;
 
         public ChatViewHolder(@NonNull View itemView, OnChatRoomListener onChatRoomListener) {
             super(itemView);
 
-            roomTV = itemView.findViewById(R.id.roomRVItem);
+            fromUser = itemView.findViewById(R.id.roomListItemFromUser);
+            lastMessage = itemView.findViewById(R.id.roomListItemLastMessage);
             this.onChatRoomListener = onChatRoomListener;
 
             itemView.setOnClickListener(this);
@@ -66,9 +69,8 @@ public class ChatRecycleAdapter extends RecyclerView.Adapter<ChatRecycleAdapter.
         }
 
         public void setRoom(MessageRoom room) {
-
-            roomTV.setText("User: " + room.getFromUser().getName() + "Siste melding: " + room.getLastMessage().getMessage());
-
+            fromUser.setText("User: " + room.getFromUser().getName());
+            lastMessage.setText("Siste melding: " + room.getLastMessage().getMessage());
         }
 
         @Override

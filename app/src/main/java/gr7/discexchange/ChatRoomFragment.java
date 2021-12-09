@@ -90,8 +90,12 @@ public class ChatRoomFragment extends Fragment {
                         Message message = docSnap.toObject(Message.class);
 
                         chatViewModel.addMessage(message);
+
+
                     }
                 });
+
+                inputMessage.getText().clear();
             }
         });
 
