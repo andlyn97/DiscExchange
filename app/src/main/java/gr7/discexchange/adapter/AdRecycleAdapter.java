@@ -1,8 +1,10 @@
 package gr7.discexchange.adapter;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -110,35 +112,27 @@ public class AdRecycleAdapter extends RecyclerView.Adapter<AdRecycleAdapter.AdVi
             this.onCardListener = onCardListener;
 
             itemView.setOnClickListener(this);
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    int p = getAdapterPosition();
+            itemView.setOnLongClickListener(v -> {
+                int p = getAdapterPosition();
 
-                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(v.getContext());
-                    builder.setTitle("Innstillinger")
-                            .setMessage("Vil du endre eller arkivere annonse?")
-                            .setPositiveButton("Endre", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // Reroute til edit
-                                    onCardListener.onCardClick(getAdapterPosition());
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(v.getContext());
+                builder.setTitle("Innstillinger")
+                        .setMessage("Vil du endre eller arkivere annonse?")
+                        .setPositiveButton("Endre", (dialog, which) -> {
+                            // Reroute til edit
+                            Bundle bundle = new Bundle();
+                            bundle.putString("from", "Edit");
+                            Navigation.findNavController((Activity) v.getContext(), R.id.navHostFragment).navigate(R.id.notMenuCreateAd, bundle);
+                        })
+                        .setNegativeButton("Arkiver", (dialog, which) -> {
+                            // Arkiver og reset
+                            String uid = adsViewModel.getUserAds().getValue().get(getAdapterPosition()).getUid();
+                            FirebaseFirestore.getInstance().collection("ad").document(uid).update("archived", String.valueOf(System.currentTimeMillis()));
+                        })
+                        .show()
+                ;
 
-                                }
-                            })
-                            .setNegativeButton("Arkiver", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // Arkiver og reset
-                                    String uid = adsViewModel.getUserAds().getValue().get(getAdapterPosition()).getUid();
-                                    FirebaseFirestore.getInstance().collection("ad").document(uid).update("archived", String.valueOf(System.currentTimeMillis()));
-                                }
-                            })
-                            .show()
-                    ;
-
-                    return true;
-                }
+                return true;
             });
         }
 
