@@ -4,10 +4,14 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.List;
 
@@ -52,6 +56,7 @@ public class ChatRecycleAdapter extends RecyclerView.Adapter<ChatRecycleAdapter.
 
     public class ChatViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
+        private RoundedImageView userPicture;
         private TextView fromUser;
         private TextView lastMessage;
 
@@ -59,7 +64,7 @@ public class ChatRecycleAdapter extends RecyclerView.Adapter<ChatRecycleAdapter.
 
         public ChatViewHolder(@NonNull View itemView, OnChatRoomListener onChatRoomListener) {
             super(itemView);
-
+            userPicture = itemView.findViewById(R.id.roomListItemUserPicture);
             fromUser = itemView.findViewById(R.id.roomListItemFromUser);
             lastMessage = itemView.findViewById(R.id.roomListItemLastMessage);
             this.onChatRoomListener = onChatRoomListener;
@@ -69,8 +74,9 @@ public class ChatRecycleAdapter extends RecyclerView.Adapter<ChatRecycleAdapter.
         }
 
         public void setRoom(MessageRoom room) {
-            fromUser.setText("User: " + room.getFromUser().getName());
-            lastMessage.setText("Siste melding: " + room.getLastMessage().getMessage());
+            Glide.with(itemView.getContext()).load(room.getFromUser().getImageUrl()).into(userPicture);
+            fromUser.setText(room.getFromUser().getName());
+            lastMessage.setText(room.getLastMessage().getMessage());
         }
 
         @Override
