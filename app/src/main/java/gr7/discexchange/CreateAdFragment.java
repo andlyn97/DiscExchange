@@ -187,9 +187,35 @@ public class CreateAdFragment extends Fragment {
     }
 
     private void updateAd(@NonNull View view, Ad ad, int pos) {
-        Log.d("Maome", "pos: " + pos);
         String uid = adsViewModel.getAds().getValue().get(pos).getUid();
-        Log.d("Maome", "uid: " + uid);
+        Log.d("Maome", "published: " + ad.getPublished());
+        StorageReference firebaseStorage = FirebaseStorage.getInstance().getReference().child("user-images");
+        if (uid == null) {
+            Log.d("Maome", "Ingen UID");
+        }
+
+        if (!ad.getImageUrl().equals(currentUri.toString())) {
+            firebaseStorage.child(ad.getPublished()).putFile(currentUri).addOnCompleteListener(task -> {
+                firebaseStorage.child(ad.getPublished()).getDownloadUrl().addOnSuccessListener(uri -> {
+                    String oldPublished = ad.getImageUrl();
+                    ad.setImageUrl(ad.getPublished());
+                    ad.setImageUrl(uri.toString());
+
+                    if(!oldPublished.equals("") && !oldPublished.equals(ad.getImageUrl())) {
+                        //firebaseStorage.child(oldPublished).delete();
+                        Log.d("Maome", "delete blokk kjører");
+                    }
+
+                    /*collectionRef
+                            .document(currentUser.getUid())
+                            .set(currentUser)
+                            .addOnCompleteListener(task1 -> {
+                                popBackStack();
+                            });*/
+                });
+            });
+        }
+
         DocumentReference adRef = FirebaseFirestore.getInstance().collection("ad").document(uid);
         adRef
                 .update("name", ad.getName(),

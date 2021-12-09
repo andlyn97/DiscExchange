@@ -121,7 +121,7 @@ public class EditProfileFragment extends Fragment {
 
 
                 // If userimage doesnt exist
-                if(currentUser.getImageUrl().equals("")) {
+                if (currentUser.getImageUrl().equals("")) {
                     firebaseStorage.child(createdAt).putFile(currentUri).addOnCompleteListener(task -> {
                         firebaseStorage.child(createdAt).getDownloadUrl().addOnSuccessListener(uri -> {
                             currentUser.setImageStorageRef(createdAt);
