@@ -55,7 +55,7 @@ public class ChatFragment extends Fragment implements ChatRecycleAdapter.OnChatR
         chatViewModel = new ViewModelProvider(requireActivity()).get(ChatViewModel.class);
 
         recyclerView = view.findViewById(R.id.chatRoomsRecyclerView);
-        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.HORIZONTAL)); // Source: https://stackoverflow.com/questions/31242812/how-can-a-divider-line-be-added-in-an-android-recyclerview
+        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL)); // Source: https://stackoverflow.com/questions/31242812/how-can-a-divider-line-be-added-in-an-android-recyclerview
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
         chatViewModel.getRooms().observe((LifecycleOwner) view.getContext(), x -> {
