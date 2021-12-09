@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -36,6 +37,7 @@ public class ChatFragment extends Fragment implements ChatRecycleAdapter.OnChatR
 
     private ChatViewModel chatViewModel;
     private RecyclerView recyclerView;
+    private TextView emptyView;
     private ChatRecycleAdapter adapter;
 
     public ChatFragment() {
@@ -58,15 +60,33 @@ public class ChatFragment extends Fragment implements ChatRecycleAdapter.OnChatR
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL)); // Source: https://stackoverflow.com/questions/31242812/how-can-a-divider-line-be-added-in-an-android-recyclerview
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
-        chatViewModel.getRooms().observe((LifecycleOwner) view.getContext(), x -> {
+        emptyView = view.findViewById(R.id.chatRoomsEmpty);
+
+
+        chatViewModel.getRooms().observe(getViewLifecycleOwner(), x -> {
+
+            // Inspiration source: https://stackoverflow.com/questions/28217436/how-to-show-an-empty-view-with-a-recyclerview
+            if(chatViewModel.getRooms().getValue() != null) {
+                if(chatViewModel.getRooms().getValue().size() != 0) {
+                    recyclerView.setVisibility(View.VISIBLE);
+                    emptyView.setVisibility(View.GONE);
+                } else {
+                    recyclerView.setVisibility(View.GONE);
+                    emptyView.setVisibility(View.VISIBLE);
+                }
+            } else {
+                recyclerView.setVisibility(View.GONE);
+                emptyView.setVisibility(View.VISIBLE);
+            }
+
             adapter = new ChatRecycleAdapter(view.getContext(), chatViewModel.getRooms().getValue(), this);
             recyclerView.setAdapter(adapter);
             adapter.notifyDataSetChanged();
         });
 
 
-
     }
+
 
     @Override
     public void onChatRoomClick(int pos) {
