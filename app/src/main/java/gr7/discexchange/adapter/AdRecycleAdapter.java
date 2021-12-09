@@ -113,7 +113,7 @@ public class AdRecycleAdapter extends RecyclerView.Adapter<AdRecycleAdapter.AdVi
 
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(v -> {
-                int p = getAdapterPosition();
+                int pos = getAdapterPosition();
 
                 MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(v.getContext());
                 builder.setTitle("Innstillinger")
@@ -121,6 +121,7 @@ public class AdRecycleAdapter extends RecyclerView.Adapter<AdRecycleAdapter.AdVi
                         .setPositiveButton("Endre", (dialog, which) -> {
                             // Reroute til edit
                             Bundle bundle = new Bundle();
+                            bundle.putInt("pos", pos);
                             bundle.putString("from", "Edit");
                             Navigation.findNavController((Activity) v.getContext(), R.id.navHostFragment).navigate(R.id.notMenuCreateAd, bundle);
                         })

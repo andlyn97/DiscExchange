@@ -1,5 +1,7 @@
 package gr7.discexchange;
 
+import static android.content.ContentValues.TAG;
+
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,16 +13,21 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -28,6 +35,7 @@ import com.google.firebase.storage.StorageReference;
 import java.io.File;
 
 import gr7.discexchange.model.Ad;
+import gr7.discexchange.viewmodel.AdsViewModel;
 
 
 public class CreateAdFragment extends Fragment {
@@ -45,7 +53,8 @@ public class CreateAdFragment extends Fragment {
     private Button takeImageBtn;
     private Button selectImageBtn;
     private Button createBtnCreate;
-
+    private AdsViewModel adsViewModel;
+    private Ad ad;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,6 +67,7 @@ public class CreateAdFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         currentImage = view.findViewById(R.id.createImageView);
+        adsViewModel = new ViewModelProvider(requireActivity()).get(AdsViewModel.class);
 
 
         textInputName = view.findViewById(R.id.createName);
@@ -80,6 +90,34 @@ public class CreateAdFragment extends Fragment {
 
         File file = new File(getContext().getFilesDir(), "picFromCamera");
         currentUri = FileProvider.getUriForFile(view.getContext(), BuildConfig.APPLICATION_ID + ".provider", file );
+
+        String from;
+        int pos;
+
+        pos = getArguments().getInt("pos");
+        from = getArguments().getString("from");
+
+        ad = adsViewModel.getAds().getValue().get(pos);
+
+        textInputName.setText(ad.getName());
+        textInputBrand.setText(ad.getBrand());
+        textInputCondition.setText(String.valueOf(ad.getCondition()));
+        textInputFlight.setText(ad.getFlight());
+        textInputColor.setText(ad.getColor());
+        textInputInk.setText(ad.getInk());
+        textInputDescription.setText(ad.getDescription());
+        textInputWish.setText(ad.getWish());
+
+        if (from.equals("Edit")) {
+            createBtnCreate = view.findViewById(R.id.createBtnCreate);
+            createBtnCreate.setText("Endre annonse");
+            createBtnCreate.setOnClickListener(view1 -> {
+                String name = textInputName.getEditableText().toString();
+                ad.setName(name);
+                Log.d("Maome", "name: " + name);
+                updateAd(view, ad, pos);
+            });
+        }
     }
 
     private void setOnClickListeners(@NonNull View view, ActivityResultLauncher<String> handleGetContent, ActivityResultLauncher<Uri> handleTakePicture) {
@@ -128,6 +166,17 @@ public class CreateAdFragment extends Fragment {
                         .addOnCompleteListener(task1 -> Navigation.findNavController(view).popBackStack());
             });
         });
+    }
+
+    private void updateAd(@NonNull View view, Ad ad, int pos) {
+        Log.d("Maome", "pos: " + pos);
+        String uid = adsViewModel.getAds().getValue().get(pos).getUid();
+        Log.d("Maome", "uid: " + uid);
+        DocumentReference adRef = FirebaseFirestore.getInstance().collection("ad").document(uid);
+        adRef
+                .update("name", ad.getName())
+                .addOnSuccessListener(unused -> Log.d("Maome", "Ad updated successfully"))
+                .addOnFailureListener(e -> Log.d("Maome", "Error updating", e));
     }
 
 
