@@ -104,7 +104,7 @@ public class ChatViewModel extends ViewModel {
     // Firestore
 
     public void addMessageRoomToFirestore(Ad ad) {
-        // TODO: IKKE FERDIG!!!
+
         List<String> usersUid = new ArrayList<>();
         usersUid.add(ad.getUserUid());
         usersUid.add(FirebaseAuth.getInstance().getUid());
@@ -113,8 +113,26 @@ public class ChatViewModel extends ViewModel {
         room.setAdUid(ad.getUid());
         room.setMessages(new ArrayList<>());
         firestore
-                .collection("messageRoom").document()
+                .collection("messageRoom")
+                .document()
                 .set(room);
+        firestore
+                .collection("messageRoom")
+                .whereEqualTo("adUid", ad.getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(!task.isSuccessful()) {
+                            return;
+                        }
+
+                        String roomUid = task.getResult().getDocuments().get(0).getId();
+                        setCurrentRoomUid(roomUid);
+                    }
+                });
+
+
 
     }
 
@@ -218,8 +236,6 @@ public class ChatViewModel extends ViewModel {
                         List<Message> messageList = new ArrayList<>();
                         List<DocumentSnapshot> documentMessages = value.getDocuments();
 
-
-
                         for (DocumentSnapshot doc : documentMessages) {
                             Message message = doc.toObject(Message.class);
                             for (User user : users) {
@@ -231,7 +247,6 @@ public class ChatViewModel extends ViewModel {
 
                         }
 
-
                         messages.postValue(messageList);
                     }
                 });
@@ -242,7 +257,7 @@ public class ChatViewModel extends ViewModel {
 
 
     public void addMessage(Message message) {
-        CollectionReference ref = firestore.collection("messageRoom").document(getCurrentRoomUid()).collection("messages");
+        CollectionReference ref = firestore.collection("messageRoom").document(currentRoomUid).collection("messages");
         ref.limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -250,26 +265,26 @@ public class ChatViewModel extends ViewModel {
                     return;
                 }
 
+
                 if(task.getResult().size() == 0){
                     ref.add(message);
                 }
             }
         });
 
-        ref.add(message).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+        ref.add(message).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
             @Override
-            public void onSuccess(DocumentReference documentReference) {
-                if(!documentReference.get().isSuccessful()) {
+            public void onComplete(@NonNull Task<DocumentReference> task) {
+                if(task.isSuccessful()) {
                     return;
                 }
-                DocumentSnapshot docSnap = documentReference.get().getResult();
-                Message message = docSnap.toObject(Message.class);
+                DocumentReference docRef = task.getResult();
+                Message message = docRef.get().getResult().toObject(Message.class);
 
                 List<Message> tempMessagesList = messages.getValue();
                 tempMessagesList.add(message);
 
                 messages.postValue(tempMessagesList);
-
             }
         });
 

@@ -84,7 +84,7 @@ public class DetailedAdFragment extends Fragment {
                     }
                 });
 
-                if(fetchedMessages.get() == false) {
+                if(!fetchedMessages.get()) {
                     chatViewModel.addMessageRoomToFirestore(ad);
                 }
 

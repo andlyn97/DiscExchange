@@ -8,6 +8,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -37,7 +38,7 @@ public class AdsViewModel extends ViewModel {
     }
 
     private void getAdsFromFirestore() {
-        firestore.collection("ad").addSnapshotListener(new EventListener<QuerySnapshot>() {
+        firestore.collection("ad").orderBy("published", Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 List<Ad> adList = new ArrayList<>();
@@ -56,6 +57,7 @@ public class AdsViewModel extends ViewModel {
             }
         });
     }
+
     public void getUserAdsFromFirestore(boolean isArchived) {
         String userUid = FirebaseAuth.getInstance().getUid();
         if (!isArchived) {
