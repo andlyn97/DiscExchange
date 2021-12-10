@@ -6,11 +6,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +17,7 @@ import android.widget.Button;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import gr7.discexchange.databinding.FragmentDetailedAdBindingImpl;
 import gr7.discexchange.model.Ad;
@@ -34,6 +32,7 @@ public class DetailedAdFragment extends Fragment {
     private Ad ad;
     private UserViewModel userViewModel;
     private AdsViewModel adsViewModel;
+    private ChatViewModel chatViewModel;
     private FragmentDetailedAdBindingImpl binding;
     public DetailedAdFragment() {
         // Required empty public constructor
@@ -75,13 +74,28 @@ public class DetailedAdFragment extends Fragment {
         chatWithBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                AtomicBoolean fetchedMessages = new AtomicBoolean(false);
+
+                chatViewModel.getRooms().getValue().forEach(room -> {
+                    if(room.getAdUid().equals(ad.getUid())) {
+                        chatViewModel.getMessagesFromFirestore(room.getRoomUid());
+                        fetchedMessages.set(true);
+                        return;
+                    }
+                });
+
+                if(fetchedMessages.get() == false) {
+                    chatViewModel.addMessageRoomToFirestore(ad);
+                }
+
+
                 Navigation.findNavController(requireActivity(), R.id.navHostFragment).navigate(R.id.notMenuChatRoom);
             }
         });
 
         userViewModel.getUsers().getValue().forEach(user -> {
             if(user.getUid().equals(ad.getUserUid())) {
-                new ViewModelProvider(requireActivity()).get(ChatViewModel.class); // A bit hacky
+                chatViewModel = new ViewModelProvider(requireActivity()).get(ChatViewModel.class); // A bit hacky
                 chatWithBtn.setText("Kontakt " + user.getName());
             }
         });

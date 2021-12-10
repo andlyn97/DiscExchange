@@ -10,6 +10,8 @@ public class MessageRoom {
     private List<Message> messages;
     private Message lastMessage;
     private User fromUser;
+    private String adUid;
+
 
     public MessageRoom() {
         usersUid = new ArrayList<>();
@@ -64,6 +66,14 @@ public class MessageRoom {
 
     public void setFromUser(User fromUser) {
         this.fromUser = fromUser;
+    }
+
+    public String getAdUid() {
+        return adUid;
+    }
+
+    public void setAdUid(String adUid) {
+        this.adUid = adUid;
     }
 
 

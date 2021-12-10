@@ -56,6 +56,7 @@ public class ChatRoomFragment extends Fragment {
 
         chatViewModel = new ViewModelProvider(requireActivity()).get(ChatViewModel.class);
 
+
         recyclerView = view.findViewById(R.id.chatRoomRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
@@ -75,25 +76,7 @@ public class ChatRoomFragment extends Fragment {
                 message.setFromUserUid(FirebaseAuth.getInstance().getUid());
                 message.setFromUser(chatViewModel.getUser().getValue());
 
-                FirebaseFirestore
-                        .getInstance()
-                        .collection("messageRoom")
-                        .document(chatViewModel.getCurrentRoomUid())
-                        .collection("messages")
-                        .add(message).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        if(!documentReference.get().isSuccessful()) {
-                            return;
-                        }
-                        DocumentSnapshot docSnap = documentReference.get().getResult();
-                        Message message = docSnap.toObject(Message.class);
-
-                        chatViewModel.addMessage(message);
-
-
-                    }
-                });
+                chatViewModel.addMessage(message);
 
                 inputMessage.getText().clear();
             }

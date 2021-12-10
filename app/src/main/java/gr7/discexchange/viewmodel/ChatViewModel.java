@@ -11,6 +11,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -22,6 +23,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+import gr7.discexchange.model.Ad;
 import gr7.discexchange.model.Message;
 import gr7.discexchange.model.MessageRoom;
 import gr7.discexchange.model.User;
@@ -94,34 +96,26 @@ public class ChatViewModel extends ViewModel {
     }
 
     public String getFromUsername() {
-        if(getRooms().getValue() == null) {
-            addMessageRoomToFirestore();
-            return "";
-        } else {
-            return getRooms().getValue().get(0).getFromUser().getName();
-        }
+        return getRooms().getValue().get(0).getFromUser().getName();
     }
 
 
 
     // Firestore
 
-    private void addMessageRoomToFirestore() {
+    public void addMessageRoomToFirestore(Ad ad) {
         // TODO: IKKE FERDIG!!!
         List<String> usersUid = new ArrayList<>();
-        usersUid.add(user.getValue().getUid());
+        usersUid.add(ad.getUserUid());
         usersUid.add(FirebaseAuth.getInstance().getUid());
         MessageRoom room = new MessageRoom();
         room.setUsersUid(usersUid);
+        room.setAdUid(ad.getUid());
+        room.setMessages(new ArrayList<>());
         firestore
-                .collection("messageRoom")
-                .add(room)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d("Debug12", "Success!");
-                    }
-                });
+                .collection("messageRoom").document()
+                .set(room);
+
     }
 
     private void getUsersFromFirestore() {
@@ -197,6 +191,9 @@ public class ChatViewModel extends ViewModel {
                     .addSnapshotListener(new EventListener<QuerySnapshot>() {
                         @Override
                         public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                            if(error != null || value.getDocuments().size() == 0) {
+                                return;
+                            }
                             DocumentSnapshot lastMessageDocSnap = value.getDocuments().get(0);
                             Message lastMessage = lastMessageDocSnap.toObject(Message.class);
 
@@ -209,6 +206,7 @@ public class ChatViewModel extends ViewModel {
     }
 
     public void getMessagesFromFirestore(String roomUid) {
+        currentRoomUid = roomUid;
         firestore
                 .collection("messageRoom")
                 .document(roomUid)
@@ -244,9 +242,37 @@ public class ChatViewModel extends ViewModel {
 
 
     public void addMessage(Message message) {
-        List<Message> tempMessagesList = messages.getValue();
-        tempMessagesList.add(message);
+        CollectionReference ref = firestore.collection("messageRoom").document(getCurrentRoomUid()).collection("messages");
+        ref.limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(!task.isSuccessful()) {
+                    return;
+                }
 
-        messages.postValue(tempMessagesList);
+                if(task.getResult().size() == 0){
+                    ref.add(message);
+                }
+            }
+        });
+
+        ref.add(message).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                if(!documentReference.get().isSuccessful()) {
+                    return;
+                }
+                DocumentSnapshot docSnap = documentReference.get().getResult();
+                Message message = docSnap.toObject(Message.class);
+
+                List<Message> tempMessagesList = messages.getValue();
+                tempMessagesList.add(message);
+
+                messages.postValue(tempMessagesList);
+
+            }
+        });
+
+
     }
 }
