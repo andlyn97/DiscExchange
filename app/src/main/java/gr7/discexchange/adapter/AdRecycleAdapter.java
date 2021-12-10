@@ -114,7 +114,7 @@ public class AdRecycleAdapter extends RecyclerView.Adapter<AdRecycleAdapter.AdVi
 
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(v -> {
-                if (adList.get(getAdapterPosition()).getUserUid().equals(FirebaseAuth.getInstance().getUid())) {
+                if (adList.get(getAdapterPosition()).getUserUid().equals(FirebaseAuth.getInstance().getUid()) && adList.get(getAdapterPosition()).getArchived() == null) {
                     int pos = getAdapterPosition();
 
                     MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(v.getContext());
