@@ -1,6 +1,7 @@
 package gr7.discexchange.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -17,6 +20,7 @@ import java.util.List;
 
 import gr7.discexchange.R;
 import gr7.discexchange.model.MessageRoom;
+import gr7.discexchange.viewmodel.ChatViewModel;
 
 public class ChatRecycleAdapter extends RecyclerView.Adapter<ChatRecycleAdapter.ChatViewHolder> {
     private LayoutInflater inflater;
@@ -59,6 +63,7 @@ public class ChatRecycleAdapter extends RecyclerView.Adapter<ChatRecycleAdapter.
         private RoundedImageView userPicture;
         private TextView fromUser;
         private TextView lastMessage;
+        private ChatViewModel chatViewModel;
 
         private OnChatRoomListener onChatRoomListener;
 
@@ -71,6 +76,8 @@ public class ChatRecycleAdapter extends RecyclerView.Adapter<ChatRecycleAdapter.
 
             itemView.setOnClickListener(this);
 
+            chatViewModel = new ViewModelProvider((ViewModelStoreOwner) itemView.getContext()).get(ChatViewModel.class);
+
         }
 
         public void setRoom(MessageRoom room) {
@@ -82,6 +89,8 @@ public class ChatRecycleAdapter extends RecyclerView.Adapter<ChatRecycleAdapter.
         @Override
         public void onClick(View v) {
             onChatRoomListener.onChatRoomClick(getAdapterPosition());
+            MessageRoom room = chatViewModel.getRooms().getValue().get(getAdapterPosition());
+            chatViewModel.getMessagesFromFirestore(room.getRoomUid());
         }
     }
 

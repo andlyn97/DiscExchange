@@ -48,9 +48,6 @@ public class ChatViewModel extends ViewModel {
 
         getUsersFromFirestore();
         getRoomsFromFirestore();
-        currentRoomUid = "PjAQkTfsYyCThLsS3eoC";
-        getMessagesFromFirestore(currentRoomUid);
-
     }
 
 
@@ -98,9 +95,11 @@ public class ChatViewModel extends ViewModel {
 
     public String getFromUsername() {
         if(getRooms().getValue() == null) {
-            //addMessageRoomToFirestore();
+            addMessageRoomToFirestore();
+            return "";
+        } else {
+            return getRooms().getValue().get(0).getFromUser().getName();
         }
-        return getRooms().getValue().get(0).getFromUser().getName();
     }
 
 
@@ -108,6 +107,7 @@ public class ChatViewModel extends ViewModel {
     // Firestore
 
     private void addMessageRoomToFirestore() {
+        // TODO: IKKE FERDIG!!!
         List<String> usersUid = new ArrayList<>();
         usersUid.add(user.getValue().getUid());
         usersUid.add(FirebaseAuth.getInstance().getUid());
@@ -188,7 +188,6 @@ public class ChatViewModel extends ViewModel {
     }
 
     private MessageRoom getLastMessagesFromFirestore(MessageRoom room) {
-
             firestore
                     .collection("messageRoom")
                     .document(room.getRoomUid())
@@ -209,20 +208,19 @@ public class ChatViewModel extends ViewModel {
             return room;
     }
 
-
-    private void getMessagesFromFirestore(String roomUid) {
-        // TODO: Fikse denne så den henter dynamisk onClick.
-
-
+    public void getMessagesFromFirestore(String roomUid) {
         firestore
                 .collection("messageRoom")
                 .document(roomUid)
-                .collection("messages").orderBy("sentAt")
+                .collection("messages")
+                .orderBy("sentAt")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                         List<Message> messageList = new ArrayList<>();
                         List<DocumentSnapshot> documentMessages = value.getDocuments();
+
+
 
                         for (DocumentSnapshot doc : documentMessages) {
                             Message message = doc.toObject(Message.class);
