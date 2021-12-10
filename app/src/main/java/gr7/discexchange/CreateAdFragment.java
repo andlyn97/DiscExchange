@@ -100,6 +100,9 @@ public class CreateAdFragment extends Fragment {
 
         ad = adsViewModel.getAds().getValue().get(pos);
 
+        String adUserUid = ad.getUserUid();
+        String userUid = FirebaseAuth.getInstance().getUid();
+
         currentImage.setImageURI(currentUri);
         textInputName.setText(ad.getName());
         textInputBrand.setText(ad.getBrand());
@@ -112,6 +115,9 @@ public class CreateAdFragment extends Fragment {
 
         if (from.equals("Edit")) {
             createBtnCreate = view.findViewById(R.id.createBtnCreate);
+            if (adUserUid.equals(userUid)) {
+                // Må ha sjekk på lonclick lik if ovenfor, så endre bare kan komme fra egne ads, og så sette ads til userAds
+            }
 
             createBtnCreate.setText("Endre annonse");
             createBtnCreate.setOnClickListener(view1 -> {

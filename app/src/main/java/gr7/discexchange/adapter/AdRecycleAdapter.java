@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
@@ -113,27 +114,32 @@ public class AdRecycleAdapter extends RecyclerView.Adapter<AdRecycleAdapter.AdVi
 
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(v -> {
-                int pos = getAdapterPosition();
+                if (adList.get(getAdapterPosition()).getUserUid().equals(FirebaseAuth.getInstance().getUid())) {
+                    int pos = getAdapterPosition();
 
-                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(v.getContext());
-                builder.setTitle("Innstillinger")
-                        .setMessage("Vil du endre eller arkivere annonse?")
-                        .setPositiveButton("Endre", (dialog, which) -> {
-                            // Reroute til edit
-                            Bundle bundle = new Bundle();
-                            bundle.putInt("pos", pos);
-                            bundle.putString("from", "Edit");
-                            Navigation.findNavController((Activity) v.getContext(), R.id.navHostFragment).navigate(R.id.notMenuCreateAd, bundle);
-                        })
-                        .setNegativeButton("Arkiver", (dialog, which) -> {
-                            // Arkiver og reset
-                            String uid = adsViewModel.getUserAds().getValue().get(getAdapterPosition()).getUid();
-                            FirebaseFirestore.getInstance().collection("ad").document(uid).update("archived", String.valueOf(System.currentTimeMillis()));
-                        })
-                        .show()
-                ;
+                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(v.getContext());
+                    builder.setTitle("Innstillinger")
+                            .setMessage("Vil du endre eller arkivere annonse?")
+                            .setPositiveButton("Endre", (dialog, which) -> {
+                                // Reroute til edit
+                                Bundle bundle = new Bundle();
+                                bundle.putInt("pos", pos);
+                                bundle.putString("from", "Edit");
+                                Navigation.findNavController((Activity) v.getContext(), R.id.navHostFragment).navigate(R.id.notMenuCreateAd, bundle);
+                            })
+                            .setNegativeButton("Arkiver", (dialog, which) -> {
+                                // Arkiver og reset
+                                String uid = adsViewModel.getUserAds().getValue().get(getAdapterPosition()).getUid();
+                                FirebaseFirestore.getInstance().collection("ad").document(uid).update("archived", String.valueOf(System.currentTimeMillis()));
+                            })
+                            .show()
+                    ;
 
-                return true;
+                    return true;
+                }
+
+                return false;
+
             });
         }
 
