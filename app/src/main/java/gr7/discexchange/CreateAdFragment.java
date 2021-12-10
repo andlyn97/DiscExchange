@@ -196,14 +196,12 @@ public class CreateAdFragment extends Fragment {
     }
 
     private void updateAd(@NonNull View view, Ad ad, int pos) {
-        String uid = adsViewModel.getAds().getValue().get(pos).getUid();
+        String uid = adsViewModel.getUserAds().getValue().get(pos).getUid();
         String createdAt = String.valueOf(System.currentTimeMillis());
         StorageReference firebaseStorage = FirebaseStorage.getInstance().getReference().child("ad-images");
         CollectionReference collectionRef = FirebaseFirestore.getInstance().collection("ad");
 
-        if (uid == null) {
-            Log.d("Maome", "Ingen UID");
-        }
+        // Kombinere denne metoden med handleForm?
 
         if (!ad.getImageUrl().equals(currentUri.toString())) {
             firebaseStorage.child(createdAt).putFile(currentUri).addOnCompleteListener(task -> {
