@@ -8,19 +8,23 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
 import gr7.discexchange.databinding.FragmentDetailedAdBindingImpl;
 import gr7.discexchange.model.Ad;
 import gr7.discexchange.viewmodel.AdsViewModel;
+import gr7.discexchange.viewmodel.ChatViewModel;
 import gr7.discexchange.viewmodel.UserViewModel;
 
 public class DetailedAdFragment extends Fragment {
@@ -66,6 +70,26 @@ public class DetailedAdFragment extends Fragment {
         binding.setAd(ad);
 
         Glide.with(view).load(ad.getImageUrl()).into(binding.imageView);
+
+        Button chatWithBtn = view.findViewById(R.id.chatWithBtn);
+        chatWithBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(requireActivity(), R.id.navHostFragment).navigate(R.id.notMenuChatRoom);
+            }
+        });
+
+        userViewModel.getUsers().getValue().forEach(user -> {
+            if(user.getUid().equals(ad.getUserUid())) {
+                new ViewModelProvider(requireActivity()).get(ChatViewModel.class); // A bit hacky
+                chatWithBtn.setText("Kontakt " + user.getName());
+            }
+        });
+
+        String loggedInUser = FirebaseAuth.getInstance().getUid();
+        if(ad.getUserUid().equals(loggedInUser)) {
+            chatWithBtn.setVisibility(View.GONE);
+        }
     }
     public Ad getAd() {
         return ad;

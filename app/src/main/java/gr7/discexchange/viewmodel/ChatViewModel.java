@@ -8,9 +8,11 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -95,12 +97,32 @@ public class ChatViewModel extends ViewModel {
     }
 
     public String getFromUsername() {
+        if(getRooms().getValue() == null) {
+            //addMessageRoomToFirestore();
+        }
         return getRooms().getValue().get(0).getFromUser().getName();
     }
 
 
 
     // Firestore
+
+    private void addMessageRoomToFirestore() {
+        List<String> usersUid = new ArrayList<>();
+        usersUid.add(user.getValue().getUid());
+        usersUid.add(FirebaseAuth.getInstance().getUid());
+        MessageRoom room = new MessageRoom();
+        room.setUsersUid(usersUid);
+        firestore
+                .collection("messageRoom")
+                .add(room)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d("Debug12", "Success!");
+                    }
+                });
+    }
 
     private void getUsersFromFirestore() {
 

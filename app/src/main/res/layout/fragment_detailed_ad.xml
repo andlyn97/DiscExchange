@@ -76,7 +76,7 @@
                     android:id="@+id/chatWithBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Kontakt Andreas" />
+                    android:text="Kontakt Placeholder" />
             </LinearLayout>
 
         </LinearLayout>

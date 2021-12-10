@@ -55,7 +55,13 @@ public class UserViewModel extends ViewModel {
         this.user.setValue(user);
     }
 
+    public MutableLiveData<List<User>> getUsers() {
+        return users;
+    }
 
+    public void setUsers(MutableLiveData<List<User>> users) {
+        this.users = users;
+    }
 
     // Firestore
 
