@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
@@ -81,11 +82,14 @@ public class CreateAdFragment extends Fragment {
         textInputWish = view.findViewById(R.id.createWish);
 
         ActivityResultLauncher<String> handleGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(), result -> {
-                    currentUri = result;
-                    currentImage.setImageURI(currentUri);
-                });
+            currentUri = result;
+            currentImage.setImageURI(currentUri);
+        });
 
-        ActivityResultLauncher<Uri> handleTakePicture = registerForActivityResult(new ActivityResultContracts.TakePicture(), result -> currentImage.setImageURI(currentUri));
+        ActivityResultLauncher<Uri> handleTakePicture = registerForActivityResult(new ActivityResultContracts.TakePicture(), result -> {
+            Log.d("Maome", "90:currentUri: " + currentUri);
+            currentImage.setImageURI(currentUri);
+        });
 
         setOnClickListeners(view, handleGetContent, handleTakePicture);
 
@@ -106,7 +110,7 @@ public class CreateAdFragment extends Fragment {
         if (from.equals("Edit")) {
             createBtnCreate = view.findViewById(R.id.createBtnCreate);
 
-            currentImage.setImageURI(currentUri);
+            Glide.with(getContext()).load(Uri.parse(ad.getImageUrl())).into(currentImage);
             textInputName.setText(ad.getName());
             textInputBrand.setText(ad.getBrand());
             textInputCondition.setText(String.valueOf(ad.getCondition()));
@@ -151,6 +155,7 @@ public class CreateAdFragment extends Fragment {
 
         takeImageBtn.setOnClickListener(view1 -> {
             handleTakePicture.launch(currentUri);
+            Log.d("Maome", "165:currentUri: " + currentUri);
         });
 
         selectImageBtn.setOnClickListener(view12 -> {
@@ -202,11 +207,10 @@ public class CreateAdFragment extends Fragment {
         // Kombinere denne metoden med handleForm?
         // if sjekk på bundle, sende med parameter inn i felles metode
 
-        if (!ad.getImageUrl().equals(currentUri.toString())) {
+        if (!ad.getImageUrl().equals(currentImage.toString())) {
             firebaseStorage.child(createdAt).putFile(currentUri).addOnCompleteListener(task -> {
                 firebaseStorage.child(createdAt).getDownloadUrl().addOnSuccessListener(uri -> {
                     String oldPublished = ad.getImageUrl();
-                    ad.setImageUrl(createdAt);
                     ad.setImageUrl(uri.toString());
 
                     if(!oldPublished.equals("") && !oldPublished.equals(ad.getImageUrl())) {
