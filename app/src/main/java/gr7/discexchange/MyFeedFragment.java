@@ -77,8 +77,11 @@ public class MyFeedFragment extends Fragment implements AdRecycleAdapter.OnCardL
 
         FloatingActionButton fab = view.findViewById(R.id.myFeedFAB);
 
-        fab.setOnClickListener(v -> Navigation.findNavController(requireActivity(), R.id.navHostFragment).navigate(R.id.notMenuCreateAd));
-
+        fab.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putString("from", "Create");
+            Navigation.findNavController(requireActivity(), R.id.navHostFragment).navigate(R.id.notMenuCreateAd, bundle);
+        });
     }
 
     @Override

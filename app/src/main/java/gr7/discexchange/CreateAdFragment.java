@@ -103,18 +103,18 @@ public class CreateAdFragment extends Fragment {
         String adUserUid = ad.getUserUid();
         String userUid = FirebaseAuth.getInstance().getUid();
 
-        currentImage.setImageURI(currentUri);
-        textInputName.setText(ad.getName());
-        textInputBrand.setText(ad.getBrand());
-        textInputCondition.setText(String.valueOf(ad.getCondition()));
-        textInputFlight.setText(ad.getFlight());
-        textInputColor.setText(ad.getColor());
-        textInputInk.setText(ad.getInk());
-        textInputDescription.setText(ad.getDescription());
-        textInputWish.setText(ad.getWish());
-
         if (from.equals("Edit")) {
             createBtnCreate = view.findViewById(R.id.createBtnCreate);
+
+            currentImage.setImageURI(currentUri);
+            textInputName.setText(ad.getName());
+            textInputBrand.setText(ad.getBrand());
+            textInputCondition.setText(String.valueOf(ad.getCondition()));
+            textInputFlight.setText(ad.getFlight());
+            textInputColor.setText(ad.getColor());
+            textInputInk.setText(ad.getInk());
+            textInputDescription.setText(ad.getDescription());
+            textInputWish.setText(ad.getWish());
 
             createBtnCreate.setText("Endre annonse");
             createBtnCreate.setOnClickListener(view1 -> {
