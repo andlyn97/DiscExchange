@@ -27,6 +27,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -99,6 +100,7 @@ public class CreateAdFragment extends Fragment {
 
         ad = adsViewModel.getAds().getValue().get(pos);
 
+        currentImage.setImageURI(currentUri);
         textInputName.setText(ad.getName());
         textInputBrand.setText(ad.getBrand());
         textInputCondition.setText(String.valueOf(ad.getCondition()));
@@ -110,6 +112,7 @@ public class CreateAdFragment extends Fragment {
 
         if (from.equals("Edit")) {
             createBtnCreate = view.findViewById(R.id.createBtnCreate);
+
             createBtnCreate.setText("Endre annonse");
             createBtnCreate.setOnClickListener(view1 -> {
                 String name = textInputName.getEditableText().toString();
@@ -188,30 +191,31 @@ public class CreateAdFragment extends Fragment {
 
     private void updateAd(@NonNull View view, Ad ad, int pos) {
         String uid = adsViewModel.getAds().getValue().get(pos).getUid();
-        Log.d("Maome", "published: " + ad.getPublished());
-        StorageReference firebaseStorage = FirebaseStorage.getInstance().getReference().child("user-images");
+        String createdAt = String.valueOf(System.currentTimeMillis());
+        StorageReference firebaseStorage = FirebaseStorage.getInstance().getReference().child("ad-images");
+        CollectionReference collectionRef = FirebaseFirestore.getInstance().collection("ad");
+
         if (uid == null) {
             Log.d("Maome", "Ingen UID");
         }
 
         if (!ad.getImageUrl().equals(currentUri.toString())) {
-            firebaseStorage.child(ad.getPublished()).putFile(currentUri).addOnCompleteListener(task -> {
-                firebaseStorage.child(ad.getPublished()).getDownloadUrl().addOnSuccessListener(uri -> {
+            firebaseStorage.child(createdAt).putFile(currentUri).addOnCompleteListener(task -> {
+                firebaseStorage.child(createdAt).getDownloadUrl().addOnSuccessListener(uri -> {
                     String oldPublished = ad.getImageUrl();
-                    ad.setImageUrl(ad.getPublished());
+                    ad.setImageUrl(createdAt);
                     ad.setImageUrl(uri.toString());
 
                     if(!oldPublished.equals("") && !oldPublished.equals(ad.getImageUrl())) {
-                        //firebaseStorage.child(oldPublished).delete();
-                        Log.d("Maome", "delete blokk kjører");
+                        firebaseStorage.child(oldPublished).delete();
                     }
 
-                    /*collectionRef
-                            .document(currentUser.getUid())
-                            .set(currentUser)
+                    collectionRef
+                            .document(ad.getUid())
+                            .set(ad)
                             .addOnCompleteListener(task1 -> {
-                                popBackStack();
-                            });*/
+                                Log.d("Maome", "Success");
+                            });
                 });
             });
         }
