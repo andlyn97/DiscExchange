@@ -195,7 +195,7 @@ public class ChatViewModel extends ViewModel {
         firestore
                 .collection("messageRoom")
                 .document(roomUid)
-                .collection("messages")
+                .collection("messages").orderBy("sentAt")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
