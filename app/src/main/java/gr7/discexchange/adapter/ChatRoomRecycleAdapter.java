@@ -9,9 +9,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.type.DateTime;
+
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import gr7.discexchange.R;
@@ -39,6 +44,12 @@ public class ChatRoomRecycleAdapter extends RecyclerView.Adapter<ChatRoomRecycle
     @Override
     public void onBindViewHolder(@NonNull ChatRoomViewHolder holder, int position) {
         Message message = messages.get(position);
+        if(message.getFromUserUid().equals(FirebaseAuth.getInstance().getUid())) {
+            holder.itemView.setBackgroundResource(R.drawable.sender_chat_style);
+        } else {
+            holder.itemView.setBackgroundResource(R.drawable.receiver_chat_style);
+        }
+
         holder.setMessage(message);
     }
 
@@ -59,10 +70,13 @@ public class ChatRoomRecycleAdapter extends RecyclerView.Adapter<ChatRoomRecycle
         }
 
         public void setMessage(Message message) {
-            sentFromTV.setText("Fra: " + message.getFromUser().getName());
-            messageTV.setText("Melding: " + message.getMessage());
-            // Stole code from here: https://www.candidjava.com/date-time/how-to-convert-epoch-time-to-date-in-java/
-            dateTV.setText("Sendt: " + Instant.ofEpochMilli(Long.parseLong(message.getSentAt())).atZone(ZoneId.systemDefault()).toLocalDateTime());
+            sentFromTV.setText(message.getFromUser().getName());
+            messageTV.setText(message.getMessage());
+
+            LocalDateTime sentAt = Instant.ofEpochMilli(Long.parseLong(message.getSentAt())).atZone(ZoneId.systemDefault()).toLocalDateTime(); // Stole some code from here: https://www.candidjava.com/date-time/how-to-convert-epoch-time-to-date-in-java/
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+            String formatedSentAt = sentAt.format(dateTimeFormatter);
+            dateTV.setText(formatedSentAt);
 
         }
     }
