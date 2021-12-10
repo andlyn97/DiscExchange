@@ -98,7 +98,7 @@ public class CreateAdFragment extends Fragment {
         pos = getArguments().getInt("pos");
         from = getArguments().getString("from");
 
-        ad = adsViewModel.getAds().getValue().get(pos);
+        ad = adsViewModel.getUserAds().getValue().get(pos);
 
         String adUserUid = ad.getUserUid();
         String userUid = FirebaseAuth.getInstance().getUid();
@@ -115,9 +115,6 @@ public class CreateAdFragment extends Fragment {
 
         if (from.equals("Edit")) {
             createBtnCreate = view.findViewById(R.id.createBtnCreate);
-            if (adUserUid.equals(userUid)) {
-                // Må ha sjekk på lonclick lik if ovenfor, så endre bare kan komme fra egne ads, og så sette ads til userAds
-            }
 
             createBtnCreate.setText("Endre annonse");
             createBtnCreate.setOnClickListener(view1 -> {
@@ -197,11 +194,13 @@ public class CreateAdFragment extends Fragment {
 
     private void updateAd(@NonNull View view, Ad ad, int pos) {
         String uid = adsViewModel.getUserAds().getValue().get(pos).getUid();
+        Log.d("Maome", "pos: " + pos + ", uid" + uid);
         String createdAt = String.valueOf(System.currentTimeMillis());
         StorageReference firebaseStorage = FirebaseStorage.getInstance().getReference().child("ad-images");
         CollectionReference collectionRef = FirebaseFirestore.getInstance().collection("ad");
 
         // Kombinere denne metoden med handleForm?
+        // if sjekk på bundle, sende med parameter inn i felles metode
 
         if (!ad.getImageUrl().equals(currentUri.toString())) {
             firebaseStorage.child(createdAt).putFile(currentUri).addOnCompleteListener(task -> {
