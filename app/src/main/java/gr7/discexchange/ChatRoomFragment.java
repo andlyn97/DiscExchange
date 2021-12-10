@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -87,7 +88,11 @@ public class ChatRoomFragment extends Fragment {
             recyclerView.setAdapter(adapter);
             adapter.notifyDataSetChanged();
         });
+    }
 
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        chatViewModel.setMessages(new MutableLiveData<>());
     }
 }
