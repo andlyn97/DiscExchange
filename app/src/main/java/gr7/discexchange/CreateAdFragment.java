@@ -57,6 +57,7 @@ public class CreateAdFragment extends Fragment {
     private Button createBtnCreate;
     private AdsViewModel adsViewModel;
     private Ad ad;
+    private int count;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -81,14 +82,18 @@ public class CreateAdFragment extends Fragment {
         textInputDescription = view.findViewById(R.id.createDescription);
         textInputWish = view.findViewById(R.id.createWish);
 
+        count = 0;
+
         ActivityResultLauncher<String> handleGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(), result -> {
             currentUri = result;
             currentImage.setImageURI(currentUri);
+            count++;
         });
 
         ActivityResultLauncher<Uri> handleTakePicture = registerForActivityResult(new ActivityResultContracts.TakePicture(), result -> {
             Log.d("Maome", "90:currentUri: " + currentUri);
             currentImage.setImageURI(currentUri);
+            count++;
         });
 
         setOnClickListeners(view, handleGetContent, handleTakePicture);
@@ -143,6 +148,11 @@ public class CreateAdFragment extends Fragment {
                 ad.setPublished(published);
 
                 Log.d("Maome", "name: " + name);
+                if (count == 0) {
+                    //ad.setImageUrl(currentUri.toString());
+                    currentUri = Uri.parse(ad.getImageUrl());
+                    Log.d("Maome", "Denne kjører");
+                }
                 updateAd(view, ad, pos);
             });
         }
@@ -213,7 +223,7 @@ public class CreateAdFragment extends Fragment {
                     String oldPublished = ad.getImageUrl();
                     ad.setImageUrl(uri.toString());
 
-                    if(!oldPublished.equals("") && !oldPublished.equals(ad.getImageUrl())) {
+                    if(!oldPublished.equals(ad.getImageUrl())) {
                         firebaseStorage.child(oldPublished).delete();
                     }
 
