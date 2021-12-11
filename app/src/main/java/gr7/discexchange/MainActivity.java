@@ -113,11 +113,11 @@ public class MainActivity extends AppCompatActivity{
 
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> textTitle.setText(destination.getLabel()));
 
-        createChatNotificationChannel();
-        superHackyChatNotifications();
+        //createChatNotificationChannel();
+        //superHackyChatNotifications();
     }
 
-    private void superHackyChatNotifications() {
+    /*private void superHackyChatNotifications() {
         Intent chatForgroundServiceIntent = new Intent(this, ChatForegroundService.class);
         FirebaseFirestore.getInstance().collection("messageRoom").whereArrayContains("usersUid", FirebaseAuth.getInstance().getUid()).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -136,9 +136,9 @@ public class MainActivity extends AppCompatActivity{
                 }
             }
         });
-    }
+    }*/
 
-    private void createChatNotificationChannel() {
+    /*private void createChatNotificationChannel() {
         final String CHANNEL_ID = "chatChannelId";
         final String CHANNEL_NAME = "Ny chat melding";
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity{
             NotificationManager manager = getSystemService(NotificationManager.class);
             manager.createNotificationChannel(channel);
         }
-    }
+    }*/
 
 
 
