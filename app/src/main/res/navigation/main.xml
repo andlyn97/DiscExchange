@@ -53,6 +53,10 @@
         android:id="@+id/notMenuChatRoom"
         android:name="gr7.discexchange.ChatRoomFragment"
         android:label="Chat" />
+    <fragment
+        android:id="@+id/notMenuMockAdmin"
+        android:name="gr7.discexchange.MockAdminFragment"
+        android:label="Mock admin" />
 
 
 

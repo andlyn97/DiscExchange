@@ -17,6 +17,11 @@
 
 
     </PreferenceCategory>
+    <PreferenceCategory android:title="Simulert admin" >
+        <Preference
+            app:key="mockAdmin"
+            android:title="Endre butikk kreditt og brukerrating" />
+    </PreferenceCategory>
     <PreferenceCategory android:title="Konto">
         <Preference
             app:key="logout"

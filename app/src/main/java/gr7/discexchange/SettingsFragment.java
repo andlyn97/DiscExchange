@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.navigation.Navigation;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
@@ -40,6 +41,13 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                             Toast.makeText(getContext(), "Logger ut", Toast.LENGTH_LONG).show();
                             startActivity(new Intent(getContext(), LoginActivity.class));
                         });
+                return true;
+            }
+        });
+        findPreference("mockAdmin").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Navigation.findNavController(requireActivity(), R.id.navHostFragment).navigate(R.id.notMenuMockAdmin);
                 return true;
             }
         });
