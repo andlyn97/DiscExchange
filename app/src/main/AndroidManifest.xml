@@ -18,13 +18,14 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".MainActivity"
             android:exported="true" />
+
+
         
         <provider
             android:authorities="${applicationId}.provider"
@@ -37,6 +38,7 @@
         </provider>
         <service android:name=".service.ChatForegroundService"/>
         <service android:name=".service.InternetConnectionService"/>
+        <service android:name=".service.AdForegroundService" />
     </application>
 
 </manifest>
