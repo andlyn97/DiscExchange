@@ -61,7 +61,7 @@ public class DetailedAdFragment extends Fragment {
         posAds = getArguments().getInt("positionMyAds");
 
         if (from.equals("MyFeed")) {
-            ad = adsViewModel.getAds().getValue().get(posFeed);
+            ad = adsViewModel.getFeed().getValue().get(posFeed);
         } else if (from.equals("MyAds")) {
             ad = adsViewModel.getUserAds().getValue().get(posAds);
         }

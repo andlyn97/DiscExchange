@@ -21,13 +21,16 @@ public class AdsViewModel extends ViewModel {
     private FirebaseFirestore firestore;
     private MutableLiveData<List<Ad>> ads;
     private MutableLiveData<List<Ad>> userAds;
+    private MutableLiveData<List<Ad>> feed;
 
     public AdsViewModel() {
         firestore = FirebaseFirestore.getInstance();
         ads = new MutableLiveData<>();
         userAds = new MutableLiveData<>();
+        feed = new MutableLiveData<>();
         getAdsFromFirestore();
         getUserAdsFromFirestore(false);
+        getFeedFromFirestore();
     }
 
     public MutableLiveData<List<Ad>> getAds() {
@@ -35,6 +38,35 @@ public class AdsViewModel extends ViewModel {
     }
     public MutableLiveData<List<Ad>> getUserAds() {
         return userAds;
+    }
+    public MutableLiveData<List<Ad>> getFeed() { return feed; }
+
+    private void getFeedFromFirestore() {
+        firestore.collection("ad").orderBy("published", Query.Direction.DESCENDING).addSnapshotListener((value, error) -> {
+            List<Ad> adList = new ArrayList<>();
+            String userUid = FirebaseAuth.getInstance().getUid();
+
+            firestore
+                    .collection("ad")
+                    .whereNotEqualTo("userUid", userUid)
+                    .addSnapshotListener((value1, error1) -> {
+                        if (error1 != null) {
+                            return;
+                        }
+                        for (QueryDocumentSnapshot document : value1) {
+                            if (error1 != null) {
+                                return;
+                            }
+
+                            if (document != null) {
+                                Ad ad = document.toObject(Ad.class);
+                                ad.setUid(document.getId());
+                                adList.add(ad);
+                            }
+                        }
+                        feed.postValue(adList);
+                    });
+        });
     }
 
     private void getAdsFromFirestore() {
