@@ -47,7 +47,8 @@
             android:layout_height="wrap_content"
             android:max="5"
             android:numStars="5"
-            android:isIndicator="false"/>
+            android:isIndicator="false"
+            android:stepSize="1"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
