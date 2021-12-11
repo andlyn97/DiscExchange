@@ -43,6 +43,7 @@ import gr7.discexchange.model.Message;
 import gr7.discexchange.model.MessageRoom;
 import gr7.discexchange.model.User;
 import gr7.discexchange.service.ChatForegroundService;
+import gr7.discexchange.service.InternetConnectionService;
 import gr7.discexchange.viewmodel.ChatViewModel;
 import gr7.discexchange.viewmodel.UserViewModel;
 
@@ -113,8 +114,10 @@ public class MainActivity extends AppCompatActivity{
 
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> textTitle.setText(destination.getLabel()));
 
-        //createChatNotificationChannel();
-        //superHackyChatNotifications();
+        //Intent internetConnectionService = new Intent(this, InternetConnectionService.class);
+        //startForegroundService(internetConnectionService);
+
+
     }
 
     /*private void superHackyChatNotifications() {
