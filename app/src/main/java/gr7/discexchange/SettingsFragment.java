@@ -14,7 +14,8 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
 import com.firebase.ui.auth.AuthUI;
-import com.google.android.material.navigation.NavigationView;
+
+import gr7.discexchange.service.ChatForegroundService;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
 

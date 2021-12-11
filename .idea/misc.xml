@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Temp/DiscExchange/app/src/main/res/drawable/ic_baseline_chat_24.xml" value="0.3880208333333333" />
+        <entry key="..\:/Temp/DiscExchange/app/src/main/res/drawable/ic_baseline_storefront_24.xml" value="0.3880208333333333" />
         <entry key="..\:/Temp/DiscExchange/app/src/main/res/drawable/receiver_chat_style.xml" value="0.3880208333333333" />
         <entry key="..\:/Temp/DiscExchange/app/src/main/res/drawable/sender_chat_style.xml" value="0.3880208333333333" />
         <entry key="..\:/Temp/DiscExchange/app/src/main/res/drawable/side_nav_bar.xml" value="0.20416666666666666" />
