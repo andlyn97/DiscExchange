@@ -135,7 +135,6 @@ public class CreateAdFragment extends Fragment {
                 String ink = textInputInk.getEditableText().toString();
                 String description = textInputDescription.getEditableText().toString();
                 String wish = textInputWish.getEditableText().toString();
-                String published = String.valueOf(System.currentTimeMillis());
 
                 ad.setName(name);
                 ad.setBrand(brand);
@@ -145,13 +144,9 @@ public class CreateAdFragment extends Fragment {
                 ad.setInk(ink);
                 ad.setDescription(description);
                 ad.setWish(wish);
-                ad.setPublished(published);
 
-                Log.d("Maome", "name: " + name);
                 if (count == 0) {
-                    //ad.setImageUrl(currentUri.toString());
                     currentUri = Uri.parse(ad.getImageUrl());
-                    Log.d("Maome", "Denne kjører");
                 }
                 updateAd(view, ad, pos);
             });
@@ -209,22 +204,22 @@ public class CreateAdFragment extends Fragment {
 
     private void updateAd(@NonNull View view, Ad ad, int pos) {
         String uid = adsViewModel.getUserAds().getValue().get(pos).getUid();
-        Log.d("Maome", "pos: " + pos + ", uid" + uid);
-        String createdAt = String.valueOf(System.currentTimeMillis());
         StorageReference firebaseStorage = FirebaseStorage.getInstance().getReference().child("ad-images");
         CollectionReference collectionRef = FirebaseFirestore.getInstance().collection("ad");
 
         // Kombinere denne metoden med handleForm?
         // if sjekk på bundle, sende med parameter inn i felles metode
 
-        if (!ad.getImageUrl().equals(currentImage.toString())) {
-            firebaseStorage.child(createdAt).putFile(currentUri).addOnCompleteListener(task -> {
-                firebaseStorage.child(createdAt).getDownloadUrl().addOnSuccessListener(uri -> {
-                    String oldPublished = ad.getImageUrl();
-                    ad.setImageUrl(uri.toString());
+        /*if (!ad.getImageUrl().equals(currentUri.toString())) {
+            firebaseStorage.child(createdAt).putFile(currentUri).addOnCompleteListener(task -> { // Oppretter nytt bilde i storage under createdAt (ny)
+                firebaseStorage.child(createdAt).getDownloadUrl().addOnSuccessListener(uri -> { // Får URL til den nylig opprettede knaggen i storage
+                    String oldPublished = ad.getPublished();
+                    ad.setImageUrl(uri.toString()); // Setter Image URL i ad til å være link til den nylig opprettede knaggen
 
                     if(!oldPublished.equals(ad.getImageUrl())) {
-                        firebaseStorage.child(oldPublished).delete();
+                        firebaseStorage.child(oldPublished).delete().addOnSuccessListener(what -> {
+                            Log.d("Maome", "Delete funka");
+                        });
                     }
 
                     collectionRef
@@ -233,6 +228,22 @@ public class CreateAdFragment extends Fragment {
                             .addOnCompleteListener(task1 -> {
                                 Log.d("Maome", "Success");
                             });
+                });
+            });
+        }*/
+
+        // Forsøk 1: Fjerne gammelt bilde fra knagg, legge til nytt bilde på knagg, gi ad.imageurl ny download link
+
+        String imageRef = ad.getPublished();
+
+        if (!ad.getImageUrl().equals(currentUri.toString())) {
+            firebaseStorage.child(imageRef).delete().addOnSuccessListener(res -> {
+                Log.d("Maome", "Successfully deleted file");
+                firebaseStorage.child(imageRef).putFile(currentUri).addOnSuccessListener(task -> {
+                    firebaseStorage.child(imageRef).getDownloadUrl().addOnSuccessListener(uri -> {
+                        Log.d("Maome", "put file kjørte");
+                        ad.setImageUrl(uri.toString());
+                    });
                 });
             });
         }
@@ -246,8 +257,7 @@ public class CreateAdFragment extends Fragment {
                         "color", ad.getColor(),
                         "ink", ad.getInk(),
                         "description", ad.getDescription(),
-                        "wish", ad.getWish(),
-                        "published", ad.getPublished())
+                        "wish", ad.getWish())
                 .addOnSuccessListener(unused -> Log.d("Maome", "Ad updated successfully"))
                 .addOnFailureListener(e -> Log.d("Maome", "Error updating", e));
     }
