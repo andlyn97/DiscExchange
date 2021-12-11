@@ -12,6 +12,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -125,8 +126,8 @@ public class UserViewModel extends ViewModel {
                     return;
                 }
 
-                for (DocumentChange userDoc : value.getDocumentChanges()) {
-                    fetchedUsers.add(userDoc.getDocument().toObject(User.class));
+                for (DocumentSnapshot userDoc : value.getDocuments()) {
+                    fetchedUsers.add(userDoc.toObject(User.class));
                 }
                 users.postValue(fetchedUsers);
             }

@@ -14,11 +14,15 @@ import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.makeramen.roundedimageview.RoundedImageView;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import gr7.discexchange.R;
 import gr7.discexchange.model.MessageRoom;
@@ -64,7 +68,7 @@ public class MockAdminRecycleAdapter extends RecyclerView.Adapter<MockAdminRecyc
 
         private AppCompatButton button;
         private TextView name;
-        private TextInputLayout storecredit;
+        private TextInputEditText storecredit;
         private AppCompatRatingBar rating;
 
 
@@ -75,12 +79,31 @@ public class MockAdminRecycleAdapter extends RecyclerView.Adapter<MockAdminRecyc
             storecredit = itemView.findViewById(R.id.mockAdminItemStorecredit);
             rating = itemView.findViewById(R.id.mockAdminItemRating);
 
+
         }
 
         public void setUser(User user) {
             name.setText(user.getName());
-            storecredit.getEditText().setText(String.valueOf(user.getStoreCredit()));
+            storecredit.setText(String.valueOf(user.getStoreCredit()));
             rating.setRating(user.getFeedback());
+
+
+
+
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    double storeCreditParsed = Double.parseDouble(storecredit.getEditableText().toString());
+                    Map<String, Object> updatedValues = new HashMap<>();
+                    updatedValues.put("storeCredit", storeCreditParsed);
+                    updatedValues.put("feedback", rating.getRating());
+                    FirebaseFirestore
+                            .getInstance()
+                            .collection("user")
+                            .document(user.getUid())
+                            .update(updatedValues);
+                }
+            });
         }
 
     }
