@@ -14,6 +14,8 @@ import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.NavGraph;
 import androidx.navigation.Navigation;
 
 import android.util.Log;
@@ -58,6 +60,7 @@ public class CreateAdFragment extends Fragment {
     private AdsViewModel adsViewModel;
     private Ad ad;
     private int count;
+    private static final String TAG = CreateAdFragment.class.getName();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -91,7 +94,6 @@ public class CreateAdFragment extends Fragment {
         });
 
         ActivityResultLauncher<Uri> handleTakePicture = registerForActivityResult(new ActivityResultContracts.TakePicture(), result -> {
-            Log.d("Maome", "90:currentUri: " + currentUri);
             currentImage.setImageURI(currentUri);
             count++;
         });
@@ -108,9 +110,6 @@ public class CreateAdFragment extends Fragment {
         from = getArguments().getString("from");
 
         ad = adsViewModel.getUserAds().getValue().get(pos);
-
-        String adUserUid = ad.getUserUid();
-        String userUid = FirebaseAuth.getInstance().getUid();
 
         if (from.equals("Edit")) {
             createBtnCreate = view.findViewById(R.id.createBtnCreate);
@@ -160,7 +159,6 @@ public class CreateAdFragment extends Fragment {
 
         takeImageBtn.setOnClickListener(view1 -> {
             handleTakePicture.launch(currentUri);
-            Log.d("Maome", "165:currentUri: " + currentUri);
         });
 
         selectImageBtn.setOnClickListener(view12 -> {
@@ -207,59 +205,23 @@ public class CreateAdFragment extends Fragment {
         StorageReference firebaseStorage = FirebaseStorage.getInstance().getReference().child("ad-images");
         CollectionReference collectionRef = FirebaseFirestore.getInstance().collection("ad");
 
-        // Kombinere denne metoden med handleForm?
-        // if sjekk på bundle, sende med parameter inn i felles metode
-
-        /*if (!ad.getImageUrl().equals(currentUri.toString())) {
-            firebaseStorage.child(createdAt).putFile(currentUri).addOnCompleteListener(task -> { // Oppretter nytt bilde i storage under createdAt (ny)
-                firebaseStorage.child(createdAt).getDownloadUrl().addOnSuccessListener(uri -> { // Får URL til den nylig opprettede knaggen i storage
-                    String oldPublished = ad.getPublished();
-                    ad.setImageUrl(uri.toString()); // Setter Image URL i ad til å være link til den nylig opprettede knaggen
-
-                    if(!oldPublished.equals(ad.getImageUrl())) {
-                        firebaseStorage.child(oldPublished).delete().addOnSuccessListener(what -> {
-                            Log.d("Maome", "Delete funka");
-                        });
-                    }
-
-                    collectionRef
-                            .document(ad.getUid())
-                            .set(ad)
-                            .addOnCompleteListener(task1 -> {
-                                Log.d("Maome", "Success");
-                            });
-                });
-            });
-        }*/
-
-        // Forsøk 1: Fjerne gammelt bilde fra knagg, legge til nytt bilde på knagg, gi ad.imageurl ny download link
-
         String imageRef = ad.getPublished();
 
         if (!ad.getImageUrl().equals(currentUri.toString())) {
-            firebaseStorage.child(imageRef).delete().addOnSuccessListener(res -> {
-                Log.d("Maome", "Successfully deleted file");
+            firebaseStorage.child(imageRef).delete().addOnSuccessListener(del -> {
                 firebaseStorage.child(imageRef).putFile(currentUri).addOnSuccessListener(task -> {
                     firebaseStorage.child(imageRef).getDownloadUrl().addOnSuccessListener(uri -> {
-                        Log.d("Maome", "put file kjørte");
                         ad.setImageUrl(uri.toString());
-                    });
-                });
+                        collectionRef.document(ad.getUid()).update("imageUrl", uri.toString());
+                    }).addOnFailureListener( err -> Log.d(TAG, err.getMessage()));
+                }).addOnFailureListener(e -> Log.d(TAG, e.getMessage()));
             });
         }
 
-        DocumentReference adRef = FirebaseFirestore.getInstance().collection("ad").document(uid);
-        adRef
-                .update("name", ad.getName(),
-                "brand", ad.getBrand(),
-                        "condition", ad.getCondition(),
-                        "flight", ad.getFlight(),
-                        "color", ad.getColor(),
-                        "ink", ad.getInk(),
-                        "description", ad.getDescription(),
-                        "wish", ad.getWish())
-                .addOnSuccessListener(unused -> Log.d("Maome", "Ad updated successfully"))
-                .addOnFailureListener(e -> Log.d("Maome", "Error updating", e));
+        collectionRef.document(ad.getUid()).set(ad).addOnSuccessListener(result -> {
+            Log.d(TAG, "Set ad: success");
+            Navigation.findNavController(view).popBackStack();
+        });
     }
 
 

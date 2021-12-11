@@ -125,7 +125,7 @@ public class AdRecycleAdapter extends RecyclerView.Adapter<AdRecycleAdapter.AdVi
                                 Bundle bundle = new Bundle();
                                 bundle.putInt("pos", pos);
                                 bundle.putString("from", "Edit");
-                                Navigation.findNavController((Activity) v.getContext(), R.id.navHostFragment).navigate(R.id.notMenuCreateAd, bundle);
+                                Navigation.findNavController((Activity) v.getContext(), R.id.navHostFragment).navigate(R.id.notMenuUpdateAd, bundle);
                             })
                             .setNegativeButton("Arkiver", (dialog, which) -> {
                                 // Arkiver og reset

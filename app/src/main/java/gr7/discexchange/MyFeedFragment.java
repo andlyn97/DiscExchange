@@ -41,6 +41,7 @@ public class MyFeedFragment extends Fragment implements AdRecycleAdapter.OnCardL
     private ListenerRegistration firestoreListenerRegistration;
 
     private AdsViewModel adsViewModel;
+    private static final String TAG = CreateAdFragment.class.getName();
 
 
 
@@ -69,8 +70,8 @@ public class MyFeedFragment extends Fragment implements AdRecycleAdapter.OnCardL
 
         adsViewModel = new ViewModelProvider(requireActivity()).get(AdsViewModel.class);
 
-        adsViewModel.getAds().observe((LifecycleOwner) view.getContext(), test -> {
-            adAdapter = new AdRecycleAdapter(view.getContext(), adsViewModel.getAds().getValue(), this);
+        adsViewModel.getFeed().observe((LifecycleOwner) view.getContext(), test -> {
+            adAdapter = new AdRecycleAdapter(view.getContext(), adsViewModel.getFeed().getValue(), this);
             adRecyclerView.setAdapter(adAdapter);
             adAdapter.notifyDataSetChanged();
         });
