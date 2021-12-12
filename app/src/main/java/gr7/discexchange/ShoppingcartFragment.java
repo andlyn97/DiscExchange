@@ -71,7 +71,7 @@ public class ShoppingcartFragment extends Fragment {
             double storeCredit = userViewModel.getUser().getValue().getStoreCredit();
             double cartTotal = storeViewModel.getShoppingcartTotal().getValue();
             if(storeCredit <= cartTotal) {
-                userViewModel.payForCart(cartTotal);
+                userViewModel.payForCart(storeCredit - cartTotal);
                 storeViewModel.setShoppingcart(new ArrayList<>());
             } else {
                 // Not enough storecredit
