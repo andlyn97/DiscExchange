@@ -148,7 +148,12 @@ public class AdRecycleAdapter extends RecyclerView.Adapter<AdRecycleAdapter.AdVi
             conditionTextView.setText("Tilstand: " + String.valueOf(adToDisplay.getCondition()) + "/10");
             colorTextView.setText("Farge: " + adToDisplay.getColor());
             inkTextView.setText("Ink: " + adToDisplay.getInk());
-            wishTextView.setText("Ønsker: " + adToDisplay.getWish());
+            if(adToDisplay.getWish() == null || adToDisplay.getWish().equals("")) {
+                wishTextView.setText("Pris: " + adToDisplay.getPrice());
+            } else if(adToDisplay.getPrice() == 0) {
+                wishTextView.setText("Ønsker: " + adToDisplay.getWish());
+            }
+
 
             if(adToDisplay.getImageUrl() != null) {
                 Glide.with(thumbnailImageView.getContext())
