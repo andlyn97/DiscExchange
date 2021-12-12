@@ -134,4 +134,8 @@ public class UserViewModel extends ViewModel {
         });
     }
 
+    public void payForCart(double credit) {
+        String userUid = FirebaseAuth.getInstance().getUid();
+        fireStore.collection("user").document(userUid).update("storeCredit", credit);
+    }
 }
