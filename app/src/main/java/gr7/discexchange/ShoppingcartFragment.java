@@ -51,8 +51,8 @@ public class ShoppingcartFragment extends Fragment {
         cartRV.setLayoutManager(new LinearLayoutManager(view.getContext()));
         cartPrice = view.findViewById(R.id.shoppingCartPrice);
 
-        storeViewModel = new ViewModelProvider(this).get(StoreViewModel.class);
-        userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        storeViewModel = new ViewModelProvider(requireActivity()).get(StoreViewModel.class);
+        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
 
         userViewModel.getUser().observe((LifecycleOwner) view.getContext(), x -> {
             currentStoreCredit.setText("Din saldo: " + userViewModel.getUser().getValue().getStoreCredit());
@@ -61,7 +61,7 @@ public class ShoppingcartFragment extends Fragment {
         storeViewModel.getShoppingcart().observe((LifecycleOwner) view.getContext(), x -> {
             List<Ad> cartItems = storeViewModel.getShoppingcart().getValue();
             cartAdapter = new ShoppingCartRecycleAdapter(view.getContext(), cartItems);
-            cartPrice.setText("Totalt: " + storeViewModel.getShoppingcartTotal().getValue());
+            cartPrice.setText("Totalt: " + calculateCartTotal());
             cartRV.setAdapter(cartAdapter);
             cartAdapter.notifyDataSetChanged();
 
@@ -75,10 +75,12 @@ public class ShoppingcartFragment extends Fragment {
                 return;
             }
             double storeCredit = userViewModel.getUser().getValue().getStoreCredit();
-            double cartTotal = storeViewModel.getShoppingcartTotal().getValue();
-            if(storeCredit <= cartTotal) {
+            double cartTotal = calculateCartTotal();
+            if(storeCredit >= cartTotal) {
                 userViewModel.payForCart(storeCredit - cartTotal);
                 storeViewModel.setShoppingcart(new ArrayList<>());
+                storeViewModel.setCartToArchived(cartItems);
+                Log.d("ShoppingCartDebug", "KJØPER");
             } else {
                 // Not enough storecredit
                 Log.d("ShoppingCartDebug", "Not enough credit, you have: " + storeCredit + " and you need: " + cartTotal);
@@ -88,6 +90,15 @@ public class ShoppingcartFragment extends Fragment {
         clearBtn = view.findViewById(R.id.shoppingCartClear);
         clearBtn.setOnClickListener(v -> storeViewModel.setShoppingcart(new ArrayList<>()));
 
+    }
+
+    private double calculateCartTotal() {
+        List<Ad> cartItems = storeViewModel.getShoppingcart().getValue();
+        double sum = 0;
+        for (Ad ad : cartItems) {
+            sum += ad.getPrice();
+        }
+        return sum;
     }
 
 }

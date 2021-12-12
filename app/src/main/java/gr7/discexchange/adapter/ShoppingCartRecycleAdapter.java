@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -35,7 +36,7 @@ public class ShoppingCartRecycleAdapter extends RecyclerView.Adapter<ShoppingCar
     @NonNull
     @Override
     public ShoppingCartViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int position) {
-        View itemView = layoutInflater.inflate(R.layout.ad_list_item, parent, false);
+        View itemView = layoutInflater.inflate(R.layout.cart_list_item, parent, false);
 
         return new ShoppingCartViewHolder(itemView);
     }
@@ -55,11 +56,11 @@ public class ShoppingCartRecycleAdapter extends RecyclerView.Adapter<ShoppingCar
     }
 
     public class ShoppingCartViewHolder extends RecyclerView.ViewHolder {
-
         private RoundedImageView roundedImageView;
         private TextView discNameTV;
         private TextView discPriceTV;
         private AppCompatButton deleteItemBtn;
+
         public ShoppingCartViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -70,8 +71,10 @@ public class ShoppingCartRecycleAdapter extends RecyclerView.Adapter<ShoppingCar
 
         }
 
-        private void setCartItem(Ad ad) {
-            Glide.with(itemView).load(ad.getImageUrl()).into(roundedImageView);
+        public void setCartItem(Ad ad) {
+            Glide.with(itemView.getContext())
+                    .load(ad.getImageUrl())
+                    .into(roundedImageView);
             discNameTV.setText(ad.getName());
             discPriceTV.setText(String.valueOf(ad.getPrice()));
             deleteItemBtn.setOnClickListener(new View.OnClickListener() {

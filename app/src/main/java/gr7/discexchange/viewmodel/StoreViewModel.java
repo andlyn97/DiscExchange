@@ -3,13 +3,16 @@ package gr7.discexchange.viewmodel;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.lang.reflect.Array;
@@ -22,15 +25,12 @@ public class StoreViewModel extends ViewModel {
     private FirebaseFirestore firestore;
     private MutableLiveData<List<Ad>> ads;
     private MutableLiveData<List<Ad>> shoppingcart;
-    private MutableLiveData<Double> shoppingcartTotal;
 
     public StoreViewModel() {
         ads = new MutableLiveData<>();
         shoppingcart = new MutableLiveData<>();
-        shoppingcartTotal = new MutableLiveData<>();
         firestore = FirebaseFirestore.getInstance();
 
-        calculateShoppingcartTotal();
         getStoreAdsFromFirebase();
     }
 
@@ -57,43 +57,35 @@ public class StoreViewModel extends ViewModel {
 
     }
 
-    public MutableLiveData<Double> getShoppingcartTotal() {
-        if(shoppingcartTotal.getValue() == null) {
-             return new MutableLiveData<>(0.0);
-        }
-        return shoppingcartTotal;
-    }
-
-    public void calculateShoppingcartTotal() {
-        if(shoppingcart.getValue() == null) {
-            return;
-        }
-        double sum = 0;
-        for (Ad ad : shoppingcart.getValue()) {
-            sum += ad.getPrice();
-        }
-        this.shoppingcartTotal.postValue(sum);
-    }
-
     private void getStoreAdsFromFirebase() {
         firestore
                 .collection("adStore")
-                .whereNotEqualTo("archived", null)
-                .get()
-                .addOnCompleteListener(task -> {
-            if(!task.isSuccessful()) {
-                return;
-            }
-            List<Ad> fetchedStoreAds = new ArrayList<>();
-            List<DocumentSnapshot> documentSnapshots = task.getResult().getDocuments();
-            for (DocumentSnapshot documentSnapshot : documentSnapshots) {
-                if (documentSnapshot != null) {
-                    Ad ad = documentSnapshot.toObject(Ad.class);
-                    ad.setUid(documentSnapshot.getId());
-                    fetchedStoreAds.add(ad);
-                }
-            }
-            ads.postValue(fetchedStoreAds);
-        });
+                .whereEqualTo("archived", null)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if(error != null) {
+                            return;
+                        }
+                        List<Ad> fetchedStoreAds = new ArrayList<>();
+                        List<DocumentSnapshot> documentSnapshots = value.getDocuments();
+                        for (DocumentSnapshot documentSnapshot : documentSnapshots) {
+                            if (documentSnapshot != null) {
+                                Ad ad = documentSnapshot.toObject(Ad.class);
+                                ad.setUid(documentSnapshot.getId());
+                                fetchedStoreAds.add(ad);
+                            }
+                        }
+                        ads.postValue(fetchedStoreAds);
+                    }
+                });
+    }
+
+    public void setCartToArchived(List<Ad> cartItems) {
+        String currentTime = String.valueOf(System.currentTimeMillis());
+        for (Ad ad : cartItems) {
+            firestore.collection("adStore").document(ad.getUid()).update("archived", currentTime);
+        }
+
     }
 }
