@@ -45,6 +45,12 @@ public class StoreViewModel extends ViewModel {
     public void setShoppingcart(List<Ad> shoppingcart) {
         this.shoppingcart.postValue(shoppingcart);
     }
+    public void addToShoppingcart(Ad newCartItem) {
+        List<Ad> tempCart = shoppingcart.getValue();
+        tempCart.add(newCartItem);
+        setShoppingcart(tempCart);
+
+    }
 
     public MutableLiveData<Double> getShoppingcartTotal() {
         if(shoppingcartTotal.getValue() == null) {
