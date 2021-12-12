@@ -7,6 +7,7 @@
     tools:context=".ShoppingcartFragment">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/shoppingCartRV"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/shoppingCartClear"
@@ -18,18 +19,32 @@
         android:id="@+id/shoppingCartBuy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:text="Kjøp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/shoppingCartPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:text="Totalt: 199.9"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/shoppingCartBuy"
+        app:layout_constraintTop_toBottomOf="@+id/shoppingCartRV"
+        app:layout_constraintVertical_bias="0.578" />
 
     <Button
         android:id="@+id/shoppingCartClear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_marginBottom="8dp"
         android:text="Tøm handlekurv"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/shoppingCartBuy"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toStartOf="@+id/shoppingCartPrice"
+        app:layout_constraintHorizontal_bias="0.258"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

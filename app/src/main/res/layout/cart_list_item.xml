@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/shoppingCartImageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp" />
+    <TextView
+        android:id="@+id/shoppingCartDiscName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="10"
+        android:layout_gravity="center_vertical"
+        android:text="DiscNavn"/>
+    <TextView
+        android:id="@+id/shoppingCartItemPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="5"
+        android:layout_gravity="center_vertical"
+        android:text="199.9" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/shoppingCartDeleteItem"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="X"
+        android:layout_gravity="end"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

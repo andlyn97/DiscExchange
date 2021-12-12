@@ -10,6 +10,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,22 @@ public class StoreViewModel extends ViewModel {
         ads = new MutableLiveData<>();
         shoppingcart = new MutableLiveData<>();
         firestore = FirebaseFirestore.getInstance();
+    }
+
+    public MutableLiveData<List<Ad>> getAds() {
+        return ads;
+    }
+
+    public void setAds(List<Ad> ads) {
+        this.ads.postValue(ads);
+    }
+
+    public MutableLiveData<List<Ad>> getShoppingcart() {
+        return shoppingcart;
+    }
+
+    public void setShoppingcart(List<Ad> shoppingcart) {
+        this.shoppingcart.postValue(shoppingcart);
     }
 
     private void getStoreAdsFromFirebase() {
