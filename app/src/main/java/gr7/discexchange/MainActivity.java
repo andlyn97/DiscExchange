@@ -15,11 +15,14 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -65,6 +68,14 @@ public class MainActivity extends AppCompatActivity {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 break;
         }
+
+        Log.d("Maome", "isConnected = " + isConnected());
+
+        /*if (isConnected()) {
+            Log.d("Maome", "Er koblet til nettverk");
+        } else if (!isConnected()) {
+            Log.d("Maome", "Er ikke koblet til nettverk");
+        }*/
 
         setContentView(R.layout.activity_main);
 
@@ -155,39 +166,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /*private void superHackyChatNotifications() {
-        Intent chatForgroundServiceIntent = new Intent(this, ChatForegroundService.class);
-        FirebaseFirestore.getInstance().collection("messageRoom").whereArrayContains("usersUid", FirebaseAuth.getInstance().getUid()).addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                List<DocumentSnapshot> refs = value.getDocuments();
-                for (DocumentSnapshot ref : refs) {
-                    ref.getReference().collection("messages").addSnapshotListener(new EventListener<QuerySnapshot>() {
-                        @Override
-                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                            Message message = value.getDocumentChanges().get(0).getDocument().toObject(Message.class);
-                            Log.d("Debug12", message.getMessage());
-                            chatForgroundServiceIntent.putExtra("EXTRA_MESSAGE", message.getMessage());
-                            startForegroundService(chatForgroundServiceIntent);
-                        }
-                    });
-                }
-            }
-        });
-    }*/
-
-    /*private void createChatNotificationChannel() {
-        final String CHANNEL_ID = "chatChannelId";
-        final String CHANNEL_NAME = "Ny chat melding";
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
-            channel.setLightColor(Color.GREEN);
-            channel.enableLights(true);
-            channel.setDescription("Test");
-
-            NotificationManager manager = getSystemService(NotificationManager.class);
-            manager.createNotificationChannel(channel);
+    public boolean isConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm.getActiveNetwork() == null ) {
+            return false;
         }
-    }*/
+
+        return cm.getActiveNetworkInfo().isConnectedOrConnecting();
+
+    }
 
 }

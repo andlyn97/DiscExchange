@@ -109,9 +109,9 @@ public class CreateAdFragment extends Fragment {
         pos = getArguments().getInt("pos");
         from = getArguments().getString("from");
 
-        ad = adsViewModel.getUserAds().getValue().get(pos);
 
         if (from.equals("Edit")) {
+            ad = adsViewModel.getUserAds().getValue().get(pos);
             createBtnCreate = view.findViewById(R.id.createBtnCreate);
 
             Glide.with(getContext()).load(Uri.parse(ad.getImageUrl())).into(currentImage);
