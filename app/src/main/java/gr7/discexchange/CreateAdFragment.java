@@ -116,7 +116,7 @@ public class CreateAdFragment extends Fragment {
             TextInputLayout createWishLayout = view.findViewById(R.id.createWishLayout);
             createBtnCreate.setText("Opprett annonse i butikk");
 
-            //textInputWish.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+            textInputWish.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
             createWishLayout.setHint("Pris");
 
             createBtnCreate.setOnClickListener(view2 -> {
