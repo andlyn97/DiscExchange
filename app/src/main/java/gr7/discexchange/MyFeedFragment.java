@@ -42,7 +42,6 @@ public class MyFeedFragment extends Fragment implements AdRecycleAdapter.OnCardL
     private RecyclerView adRecyclerView;
     private AdRecycleAdapter adAdapter;
     private ListenerRegistration firestoreListenerRegistration;
-    private SwipeRefreshLayout refreshLayout;
 
     private AdsViewModel adsViewModel;
     private static final String TAG = MyFeedFragment.class.getName();

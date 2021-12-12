@@ -1,5 +1,7 @@
 package gr7.discexchange.viewmodel;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -27,26 +29,29 @@ public class StoreViewModel extends ViewModel {
         shoppingcart = new MutableLiveData<>();
         shoppingcartTotal = new MutableLiveData<>();
         firestore = FirebaseFirestore.getInstance();
+
         calculateShoppingcartTotal();
+        getStoreAdsFromFirebase();
     }
 
-    public MutableLiveData<List<Ad>> getAds() {
-        return ads;
-    }
-
-    public void setAds(List<Ad> ads) {
-        this.ads.postValue(ads);
-    }
+    public MutableLiveData<List<Ad>> getStoreAds() { return ads; }
 
     public MutableLiveData<List<Ad>> getShoppingcart() {
         return shoppingcart;
     }
 
-    public void setShoppingcart(List<Ad> shoppingcart) {
-        this.shoppingcart.postValue(shoppingcart);
+    // shoppingcart har fortsatt count/size 0 etter setShoppingcart har kjørt
+
+    public void setShoppingcart(List<Ad> shoppingcartList) {
+        shoppingcart.postValue(shoppingcartList);
     }
     public void addToShoppingcart(Ad newCartItem) {
-        List<Ad> tempCart = shoppingcart.getValue();
+        List<Ad> tempCart = new ArrayList<>();
+        if (shoppingcart.getValue() != null) {
+            for (int i = 0; i < shoppingcart.getValue().size(); i++) {
+                tempCart.add(shoppingcart.getValue().get(i));
+            }
+        }
         tempCart.add(newCartItem);
         setShoppingcart(tempCart);
 
@@ -71,23 +76,24 @@ public class StoreViewModel extends ViewModel {
     }
 
     private void getStoreAdsFromFirebase() {
-        firestore.collection("adStore").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(!task.isSuccessful()) {
-                    return;
-                }
-                List<Ad> fetchedStoreAds = new ArrayList<>();
-                List<DocumentSnapshot> documentSnapshots = task.getResult().getDocuments();
-                for (DocumentSnapshot documentSnapshot : documentSnapshots) {
-                    if (documentSnapshot != null) {
-                        Ad ad = documentSnapshot.toObject(Ad.class);
-                        ad.setUid(documentSnapshot.getId());
-                        fetchedStoreAds.add(ad);
-                    }
-                }
-                ads.postValue(fetchedStoreAds);
+        firestore
+                .collection("adStore")
+                .whereNotEqualTo("archived", null)
+                .get()
+                .addOnCompleteListener(task -> {
+            if(!task.isSuccessful()) {
+                return;
             }
+            List<Ad> fetchedStoreAds = new ArrayList<>();
+            List<DocumentSnapshot> documentSnapshots = task.getResult().getDocuments();
+            for (DocumentSnapshot documentSnapshot : documentSnapshots) {
+                if (documentSnapshot != null) {
+                    Ad ad = documentSnapshot.toObject(Ad.class);
+                    ad.setUid(documentSnapshot.getId());
+                    fetchedStoreAds.add(ad);
+                }
+            }
+            ads.postValue(fetchedStoreAds);
         });
     }
 }

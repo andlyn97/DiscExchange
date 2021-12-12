@@ -70,23 +70,20 @@ public class AdsViewModel extends ViewModel {
     }
 
     private void getAdsFromFirestore() {
-        firestore.collection("ad").orderBy("published", Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                List<Ad> adList = new ArrayList<>();
-                for(QueryDocumentSnapshot document : value) {
-                    if(error != null) {
-                        return;
-                    }
-
-                    if(document != null) {
-                        Ad ad = document.toObject(Ad.class);
-                        ad.setUid(document.getId());
-                        adList.add(ad);
-                    }
+        firestore.collection("ad").orderBy("published", Query.Direction.DESCENDING).addSnapshotListener((value, error) -> {
+            List<Ad> adList = new ArrayList<>();
+            for(QueryDocumentSnapshot document : value) {
+                if(error != null) {
+                    return;
                 }
-                ads.postValue(adList);
+
+                if(document != null) {
+                    Ad ad = document.toObject(Ad.class);
+                    ad.setUid(document.getId());
+                    adList.add(ad);
+                }
             }
+            ads.postValue(adList);
         });
     }
 
