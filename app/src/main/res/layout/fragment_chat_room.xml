@@ -12,7 +12,7 @@
         android:id="@+id/userYouChatWith"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#F5F5F5"
+        android:background="?cardBackgroundColor"
         android:gravity="center_horizontal"
         android:text="Du chatter med Placeholder"
         android:textFontWeight="100"

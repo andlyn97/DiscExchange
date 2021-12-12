@@ -10,11 +10,14 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
@@ -39,9 +42,10 @@ public class MyFeedFragment extends Fragment implements AdRecycleAdapter.OnCardL
     private RecyclerView adRecyclerView;
     private AdRecycleAdapter adAdapter;
     private ListenerRegistration firestoreListenerRegistration;
+    private SwipeRefreshLayout refreshLayout;
 
     private AdsViewModel adsViewModel;
-    private static final String TAG = CreateAdFragment.class.getName();
+    private static final String TAG = MyFeedFragment.class.getName();
 
 
 
@@ -108,4 +112,5 @@ public class MyFeedFragment extends Fragment implements AdRecycleAdapter.OnCardL
     public boolean onCardLongClick(int pos) {
         return false;
     }
+
 }

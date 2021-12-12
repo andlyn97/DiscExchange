@@ -2,6 +2,7 @@ package gr7.discexchange;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -10,10 +11,13 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavGraph;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
+import androidx.preference.PreferenceManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -35,20 +39,38 @@ import gr7.discexchange.service.AdForegroundService;
 import gr7.discexchange.viewmodel.AdsViewModel;
 import gr7.discexchange.viewmodel.UserViewModel;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
     public DrawerLayout drawerLayout;
     private TextView navUserNameTextView;
     private TextView navAddressTextView;
     private RoundedImageView navImageProfilePic;
     private UserViewModel userViewModel;
     private AdsViewModel adsViewModel;
+    private static final String TAG = MainActivity.class.getName();
+    private static SharedPreferences preferences;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+        String mode = pref.getString("screenmode", null);
+
+        switch (mode) {
+            case "systemvalgt":
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+                break;
+            case "lyst":
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                break;
+            case "morkt":
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                break;
+        }
+
+        setContentView(R.layout.activity_main);
 
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
         adsViewModel = new ViewModelProvider(this).get(AdsViewModel.class);
@@ -146,6 +168,7 @@ public class MainActivity extends AppCompatActivity{
             NotificationChannel channel = new NotificationChannel(channelId, ChannelName, importance);
             channel.setLightColor(Color.GREEN);
             channel.enableLights(true);
+            channel.setDescription("AD CHANNEL");
 
             NotificationManager manager = getSystemService(NotificationManager.class);
             manager.createNotificationChannel(channel);
@@ -186,7 +209,5 @@ public class MainActivity extends AppCompatActivity{
             manager.createNotificationChannel(channel);
         }
     }*/
-
-
 
 }
