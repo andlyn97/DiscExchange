@@ -34,37 +34,37 @@
                     android:id="@+id/nameTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{Ad.name}" />
+                    android:text="@{@string/navn(Ad.name)}" />
 
                 <TextView
                     android:id="@+id/flightTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{Ad.flight}" />
+                    android:text="@{@string/flight(Ad.flight)}" />
 
                 <TextView
                     android:id="@+id/conditionTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{String.valueOf(Ad.condition)}" />
+                    android:text="@{@string/tilstand(String.valueOf(Ad.condition))}" />
 
                 <TextView
                     android:id="@+id/colorTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{Ad.color}" />
+                    android:text="@{@string/farge(Ad.color)}" />
 
                 <TextView
                     android:id="@+id/inkTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{Ad.ink}" />
+                    android:text="@{@string/ink(Ad.ink)}" />
 
                 <TextView
                     android:id="@+id/descriptionTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{Ad.description}" />
+                    android:text="@{@string/beskrivelse(Ad.description)}" />
 
                 <TextView
                     android:id="@+id/wishesTextView"
