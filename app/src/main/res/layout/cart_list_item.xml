@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="5"
         android:layout_gravity="center_vertical"
-        android:text="199.9" />
+        android:text="Pris" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/shoppingCartDeleteItem"

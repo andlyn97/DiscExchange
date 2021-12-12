@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -73,8 +74,8 @@ public class ShoppingcartFragment extends Fragment {
         buyBtn = view.findViewById(R.id.shoppingCartBuy);
         buyBtn.setOnClickListener(v -> {
             List<Ad> cartItems = storeViewModel.getShoppingcart().getValue();
-            if(cartItems == null) {
-                Log.d("ShoppingCartDebug", "No ads in cart");
+            if(cartItems == null || cartItems.size() == 0) {
+                Toast.makeText(view.getContext(),"Handlekurven er tom", Toast.LENGTH_LONG).show();
                 return;
             }
             double storeCredit = userViewModel.getUser().getValue().getStoreCredit();
@@ -83,10 +84,8 @@ public class ShoppingcartFragment extends Fragment {
                 userViewModel.payForCart(storeCredit - cartTotal);
                 storeViewModel.setShoppingcart(new ArrayList<>());
                 storeViewModel.setCartToArchived(cartItems);
-                Log.d("ShoppingCartDebug", "KJØPER");
             } else {
-                // Not enough storecredit
-                Log.d("ShoppingCartDebug", "Not enough credit, you have: " + storeCredit + " and you need: " + cartTotal);
+                Toast.makeText(view.getContext(),"Ikke nok butikk kreditt (" + storeCredit + "), du trenger " + (cartTotal-storeCredit) + " flere butikk kreditt!", Toast.LENGTH_LONG).show();
             }
         });
 
