@@ -21,6 +21,9 @@
         <Preference
             app:key="mockAdmin"
             android:title="Endre butikk kreditt og brukerrating" />
+        <Preference
+            app:key="storeCreate"
+            android:title="Legg til annonse i butikk" />
     </PreferenceCategory>
     <PreferenceCategory android:title="Konto">
         <Preference
