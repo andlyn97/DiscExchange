@@ -31,7 +31,6 @@
             android:layout_marginHorizontal="20dp"
             android:text="Ta bilde"
             app:layout_constraintEnd_toStartOf="@+id/editProfileSelectImage"
-            app:layout_constraintHorizontal_bias="0.56"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editProfilePictureView" />
 
@@ -41,7 +40,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginStart="78dp"
             android:text="Velg bilde"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/editProfileTakeImage"
@@ -83,6 +81,16 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
+        android:id="@+id/editProfileFindAdress"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Finn addresse"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout2" />
+
+    <Button
         android:id="@+id/editProfileSubmit"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="wrap_content"
@@ -91,7 +99,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout2" />
+        app:layout_constraintTop_toBottomOf="@+id/editProfileFindAdress" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

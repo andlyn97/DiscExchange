@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            String mode = pref.getString("screenmode", null);
+            String mode = pref.getString("screenmode", "systemvalgt");
             switch (mode) {
                 case "systemvalgt":
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);

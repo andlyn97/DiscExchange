@@ -70,7 +70,7 @@
                     android:id="@+id/wishesTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{() -> `Ønsker: ` + Ad.wish || `Pris: ` + Ad.price}" />
+                    android:text="@{Ad.wish}" />
 
                 <Button
                     android:id="@+id/chatWithBtn"

@@ -1,5 +1,10 @@
 package gr7.discexchange;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -7,6 +12,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -20,6 +26,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -28,6 +37,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import gr7.discexchange.model.User;
 import gr7.discexchange.viewmodel.UserViewModel;
@@ -42,10 +52,12 @@ public class EditProfileFragment extends Fragment {
     private TextInputEditText profileEditName;
     private TextInputEditText profileEditAddress;
     private Button editProfileSubmit;
+    private Button findAddress;
     private Uri currentUri;
 
     private UserViewModel viewModel;
 
+    private FusedLocationProviderClient fusedLocationClient;
 
 
     @Override
@@ -69,7 +81,7 @@ public class EditProfileFragment extends Fragment {
         profileEditName = view.findViewById(R.id.profileEditName);
         profileEditAddress = view.findViewById(R.id.profileEditAddress);
         editProfileSubmit = view.findViewById(R.id.editProfileSubmit);
-
+        findAddress = view.findViewById(R.id.editProfileFindAdress);
 
 
         ActivityResultLauncher<String> handleGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(), result -> {
@@ -82,7 +94,7 @@ public class EditProfileFragment extends Fragment {
             editProfilePictureView.setImageURI(currentUri);
         });
 
-        if(!currentUser.getImageUrl().equals("")) {
+        if (!currentUser.getImageUrl().equals("")) {
             currentUri = Uri.parse(currentUser.getImageUrl());
         }
 
@@ -94,7 +106,7 @@ public class EditProfileFragment extends Fragment {
         editProfileTakeImage.setOnClickListener(view1 -> handleTakePicture.launch(currentUri));
         editProfileSelectImage.setOnClickListener(view2 -> handleGetContent.launch("image/*"));
 
-        if(currentUri != null) {
+        if (currentUri != null) {
             Glide.with(getContext())
                     .load(currentUri)
                     .into(editProfilePictureView);
@@ -106,7 +118,7 @@ public class EditProfileFragment extends Fragment {
                 .collection("user");
 
         File file = new File(getContext().getFilesDir(), "picFromCamera");
-        currentUri = FileProvider.getUriForFile(view.getContext(), BuildConfig.APPLICATION_ID + ".provider", file );
+        currentUri = FileProvider.getUriForFile(view.getContext(), BuildConfig.APPLICATION_ID + ".provider", file);
 
         editProfileSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,14 +149,14 @@ public class EditProfileFragment extends Fragment {
                     return;
                 }
 
-                if(!currentUser.getImageUrl().equals(currentUri.toString())) {
+                if (!currentUser.getImageUrl().equals(currentUri.toString())) {
                     firebaseStorage.child(createdAt).putFile(currentUri).addOnCompleteListener(task -> {
                         firebaseStorage.child(createdAt).getDownloadUrl().addOnSuccessListener(uri -> {
                             String oldCreatedAt = currentUser.getImageStorageRef();
                             currentUser.setImageStorageRef(createdAt);
                             currentUser.setImageUrl(uri.toString());
 
-                            if(!oldCreatedAt.equals("") && !oldCreatedAt.equals(currentUser.getImageStorageRef())) {
+                            if (!oldCreatedAt.equals("") && !oldCreatedAt.equals(currentUser.getImageStorageRef())) {
                                 firebaseStorage.child(oldCreatedAt).delete();
                             }
 
@@ -171,6 +183,50 @@ public class EditProfileFragment extends Fragment {
 
             private void popBackStack() {
                 Navigation.findNavController(view).popBackStack();
+            }
+        });
+
+
+        // TODO: FIKS, FUNKER IKKE
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
+        findAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                        && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    Log.d("TAG", "-.-");
+                    return;
+                }
+                fusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        if (location == null) {
+                            Log.d("TAG", "LOCATION IS NULL");
+                            return;
+                        }
+                        Log.d("TAG", "SUCCESS");
+                        Geocoder geocoder = new Geocoder(getContext());
+                        try {
+                            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                            if (!addresses.isEmpty()) {
+                                StringBuilder addressString = new StringBuilder();
+                                Address address = addresses.get(0);
+                                for (int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
+                                    if (i != 0) {
+                                        addressString.append(", ");
+                                    }
+                                    addressString.append(address.getAddressLine(i));
+                                }
+
+                                profileEditAddress.setText(addressString.toString());
+                            } else {
+                                profileEditAddress.setText("BRA Veien 6D, 1783 Halden");
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
             }
         });
     }

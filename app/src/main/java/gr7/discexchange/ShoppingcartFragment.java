@@ -32,6 +32,7 @@ public class ShoppingcartFragment extends Fragment {
     private RecyclerView cartRV;
     private ShoppingCartRecycleAdapter cartAdapter;
     private TextView cartPrice;
+    private TextView currentStoreCredit;
     private AppCompatButton buyBtn;
     private AppCompatButton clearBtn;
 
@@ -45,12 +46,17 @@ public class ShoppingcartFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        currentStoreCredit = view.findViewById(R.id.shoppingCartCurrentStoreCredit);
         cartRV = view.findViewById(R.id.shoppingCartRV);
         cartRV.setLayoutManager(new LinearLayoutManager(view.getContext()));
         cartPrice = view.findViewById(R.id.shoppingCartPrice);
 
         storeViewModel = new ViewModelProvider(this).get(StoreViewModel.class);
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+
+        userViewModel.getUser().observe((LifecycleOwner) view.getContext(), x -> {
+            currentStoreCredit.setText("Din saldo: " + userViewModel.getUser().getValue().getStoreCredit());
+        });
 
         storeViewModel.getShoppingcart().observe((LifecycleOwner) view.getContext(), x -> {
             List<Ad> cartItems = storeViewModel.getShoppingcart().getValue();
