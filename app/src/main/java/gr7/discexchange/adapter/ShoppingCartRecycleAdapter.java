@@ -79,7 +79,6 @@ public class ShoppingCartRecycleAdapter extends RecyclerView.Adapter<ShoppingCar
                 public void onClick(View v) {
                     cartItems.remove(getAdapterPosition());
                     storeViewModel.setShoppingcart(cartItems);
-
                 }
             });
         }

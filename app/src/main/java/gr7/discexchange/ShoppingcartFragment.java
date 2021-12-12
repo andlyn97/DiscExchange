@@ -55,7 +55,7 @@ public class ShoppingcartFragment extends Fragment {
         storeViewModel.getShoppingcart().observe((LifecycleOwner) view.getContext(), x -> {
             List<Ad> cartItems = storeViewModel.getShoppingcart().getValue();
             cartAdapter = new ShoppingCartRecycleAdapter(view.getContext(), cartItems);
-            cartPrice.setText("Totalt: " + calculatePrice(cartItems));
+            cartPrice.setText("Totalt: " + storeViewModel.getShoppingcartTotal().getValue());
             cartRV.setAdapter(cartAdapter);
             cartAdapter.notifyDataSetChanged();
 
@@ -63,8 +63,13 @@ public class ShoppingcartFragment extends Fragment {
 
         buyBtn = view.findViewById(R.id.shoppingCartBuy);
         buyBtn.setOnClickListener(v -> {
+            List<Ad> cartItems = storeViewModel.getShoppingcart().getValue();
+            if(cartItems == null) {
+                Log.d("ShoppingCartDebug", "No ads in cart");
+                return;
+            }
             double storeCredit = userViewModel.getUser().getValue().getStoreCredit();
-            double cartTotal = calculatePrice(storeViewModel.getShoppingcart().getValue());
+            double cartTotal = storeViewModel.getShoppingcartTotal().getValue();
             if(storeCredit <= cartTotal) {
                 userViewModel.payForCart(cartTotal);
                 storeViewModel.setShoppingcart(new ArrayList<>());
@@ -79,11 +84,4 @@ public class ShoppingcartFragment extends Fragment {
 
     }
 
-    private double calculatePrice(List<Ad> items) {
-        double sum = 0;
-        for (Ad ad : items) {
-            sum += ad.getPrice();
-        }
-        return sum;
-    }
 }

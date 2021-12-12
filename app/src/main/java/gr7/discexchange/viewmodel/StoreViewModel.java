@@ -20,11 +20,14 @@ public class StoreViewModel extends ViewModel {
     private FirebaseFirestore firestore;
     private MutableLiveData<List<Ad>> ads;
     private MutableLiveData<List<Ad>> shoppingcart;
+    private MutableLiveData<Double> shoppingcartTotal;
 
     public StoreViewModel() {
         ads = new MutableLiveData<>();
         shoppingcart = new MutableLiveData<>();
+        shoppingcartTotal = new MutableLiveData<>();
         firestore = FirebaseFirestore.getInstance();
+        calculateShoppingcartTotal();
     }
 
     public MutableLiveData<List<Ad>> getAds() {
@@ -41,6 +44,24 @@ public class StoreViewModel extends ViewModel {
 
     public void setShoppingcart(List<Ad> shoppingcart) {
         this.shoppingcart.postValue(shoppingcart);
+    }
+
+    public MutableLiveData<Double> getShoppingcartTotal() {
+        if(shoppingcartTotal.getValue() == null) {
+             return new MutableLiveData<>(0.0);
+        }
+        return shoppingcartTotal;
+    }
+
+    public void calculateShoppingcartTotal() {
+        if(shoppingcart.getValue() == null) {
+            return;
+        }
+        double sum = 0;
+        for (Ad ad : shoppingcart.getValue()) {
+            sum += ad.getPrice();
+        }
+        this.shoppingcartTotal.postValue(sum);
     }
 
     private void getStoreAdsFromFirebase() {
