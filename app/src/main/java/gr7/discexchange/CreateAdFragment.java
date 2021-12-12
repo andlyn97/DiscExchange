@@ -18,10 +18,12 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavGraph;
 import androidx.navigation.Navigation;
 
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.ImageView;
 
@@ -29,6 +31,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -75,7 +78,6 @@ public class CreateAdFragment extends Fragment {
         currentImage = view.findViewById(R.id.createImageView);
         adsViewModel = new ViewModelProvider(requireActivity()).get(AdsViewModel.class);
 
-
         textInputName = view.findViewById(R.id.createName);
         textInputBrand = view.findViewById(R.id.createBrand);
         textInputCondition = view.findViewById(R.id.createCondition);
@@ -108,6 +110,43 @@ public class CreateAdFragment extends Fragment {
 
         pos = getArguments().getInt("pos");
         from = getArguments().getString("from");
+
+        if (from.equals("Settings")) {
+            createBtnCreate = view.findViewById(R.id.createBtnCreate);
+            TextInputLayout createWishLayout = view.findViewById(R.id.createWishLayout);
+            createBtnCreate.setText("Opprett annonse i butikk");
+
+            //textInputWish.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+            createWishLayout.setHint("Pris");
+
+            createBtnCreate.setOnClickListener(view2 -> {
+
+                String name = textInputName.getEditableText().toString();
+                String brand = textInputBrand.getEditableText().toString();
+                int condition = Integer.parseInt(textInputCondition.getEditableText().toString());
+                String flight = textInputFlight.getEditableText().toString();
+                String color = textInputColor.getEditableText().toString();
+                String ink = textInputInk.getEditableText().toString();
+                String description = textInputDescription.getEditableText().toString();
+                double price = Double.valueOf(textInputWish.getEditableText().toString());
+                String published = String.valueOf(System.currentTimeMillis());
+
+                Ad ad = new Ad(name, brand, condition, flight, color, ink, description, price, published, "ADMIN");
+
+                StorageReference firebaseStorage = FirebaseStorage.getInstance().getReference().child("ad-images").child(published);
+                firebaseStorage.putFile(currentUri).addOnCompleteListener(task -> {
+                    firebaseStorage.getDownloadUrl().addOnSuccessListener(uri -> {
+                        ad.setImageUrl(uri.toString());
+                        FirebaseFirestore
+                                .getInstance()
+                                .collection("adStore")
+                                .add(ad)
+                                .addOnCompleteListener(task1 -> Navigation.findNavController(view).popBackStack());
+                    });
+                });
+
+            });
+        }
 
 
         if (from.equals("Edit")) {

@@ -45,26 +45,27 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         });
 
         // Mock admin
-        findPreference("mockAdmin").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                Navigation.findNavController(requireActivity(), R.id.navHostFragment).navigate(R.id.notMenuMockAdmin);
-                return true;
-            }
+        findPreference("mockAdmin").setOnPreferenceClickListener(preference -> {
+            Navigation.findNavController(requireActivity(), R.id.navHostFragment).navigate(R.id.notMenuMockAdmin);
+            return true;
+        });
+
+        findPreference("storeCreate").setOnPreferenceClickListener(preference -> {
+            Bundle bundle = new Bundle();
+            bundle.putString("from", "Settings");
+            Navigation.findNavController(requireActivity(), R.id.navHostFragment).navigate(R.id.notMenuCreateAd, bundle);
+            return true;
         });
 
         // Logg ut
-        findPreference("logout").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                AuthUI.getInstance()
-                        .signOut(getContext())
-                        .addOnCompleteListener(task -> {
-                            Toast.makeText(getContext(), "Logger ut", Toast.LENGTH_LONG).show();
-                            startActivity(new Intent(getContext(), LoginActivity.class));
-                        });
-                return true;
-            }
+        findPreference("logout").setOnPreferenceClickListener(preference -> {
+            AuthUI.getInstance()
+                    .signOut(getContext())
+                    .addOnCompleteListener(task -> {
+                        Toast.makeText(getContext(), "Logger ut", Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(getContext(), LoginActivity.class));
+                    });
+            return true;
         });
     }
 }

@@ -96,6 +96,19 @@ public class Ad {
     public Ad() {
     }
 
+    public Ad(String name, String brand, int condition, String flight, String color, String ink, String description, double price, String published, String userUid) {
+        this.name = name;
+        this.brand = brand;
+        this.condition = condition;
+        this.flight = flight;
+        this.color = color;
+        this.ink = ink;
+        this.description = description;
+        this.price = price;
+        this.published = published;
+        this.userUid = userUid;
+    }
+
     public String getUid() {
         return uid;
     }
