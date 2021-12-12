@@ -3,6 +3,7 @@ package gr7.discexchange;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -19,6 +20,8 @@ import gr7.discexchange.service.ChatForegroundService;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
 
+    private static final String TAG = SettingsFragment.class.getName();
+
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey);
@@ -28,11 +31,30 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
 
         boolean notifications = sp.getBoolean("notifications", true);
-        String screenmode = sp.getString("screenmode", "systemvalgt");
+        String screenmode = sp.getString("screenmode", null);
+
+        // Dark mode
+        findPreference("screenmode").setOnPreferenceChangeListener((preference, newValue) -> {
+            sp.edit().putString("screenmode", newValue.toString()).apply();
+            getActivity().finish();
+            Intent intent = getActivity().getIntent();
+            getActivity().startActivity(intent);
+            return true;
+        });
+
+        // Mock admin
+        findPreference("mockAdmin").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Navigation.findNavController(requireActivity(), R.id.navHostFragment).navigate(R.id.notMenuMockAdmin);
+                return true;
+            }
+        });
+
+        // Logg ut
         findPreference("logout").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -42,13 +64,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                             Toast.makeText(getContext(), "Logger ut", Toast.LENGTH_LONG).show();
                             startActivity(new Intent(getContext(), LoginActivity.class));
                         });
-                return true;
-            }
-        });
-        findPreference("mockAdmin").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                Navigation.findNavController(requireActivity(), R.id.navHostFragment).navigate(R.id.notMenuMockAdmin);
                 return true;
             }
         });

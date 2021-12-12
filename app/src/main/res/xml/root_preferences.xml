@@ -14,7 +14,7 @@
             android:entries="@array/screen_mode_options"
             android:entryValues="@array/screen_mode_values"
             app:key="screenmode"
-            app:title="Darkmode"
+            app:title="Dark mode"
             app:useSimpleSummaryProvider="true"
             />
 

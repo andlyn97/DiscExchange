@@ -61,8 +61,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="12" />
-                            <option name="y" value="12" />
+                            <option name="x" value="-8" />
+                            <option name="y" value="-274" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -129,6 +129,18 @@
                     </value>
                   </entry>
                   <entry key="notMenuMockAdmin">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-254" />
+                            <option name="y" value="-72" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="notMenuUpdateAd">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
