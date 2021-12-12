@@ -31,6 +31,11 @@
         android:id="@+id/menuSettings"
         android:name="gr7.discexchange.SettingsFragment"
         android:label="Innstillinger" />
+    <fragment
+        android:id="@+id/menuShoppingCart"
+        android:name="gr7.discexchange.ShoppingcartFragment"
+        android:label="Handlekurv" />
+
 
 
 

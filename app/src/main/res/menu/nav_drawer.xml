@@ -27,7 +27,7 @@
 
     <item
         android:id="@+id/menuSettings"
-        android:title="Innstillinger" />
+        android:title="@string/innstillinger" />
 
 </menu>
 
