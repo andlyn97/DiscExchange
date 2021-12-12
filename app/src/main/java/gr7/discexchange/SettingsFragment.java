@@ -33,7 +33,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
 
-        boolean notifications = sp.getBoolean("notifications", true);
         String screenmode = sp.getString("screenmode", null);
 
         // Dark mode

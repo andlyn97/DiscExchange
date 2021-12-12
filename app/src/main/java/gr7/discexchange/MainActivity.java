@@ -34,6 +34,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.makeramen.roundedimageview.RoundedImageView;
 
@@ -59,18 +60,22 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
-        String mode = pref.getString("screenmode", null);
-
-        switch (mode) {
-            case "systemvalgt":
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
-                break;
-            case "lyst":
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                break;
-            case "morkt":
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                break;
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            String mode = pref.getString("screenmode", null);
+            switch (mode) {
+                case "systemvalgt":
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+                    break;
+                case "lyst":
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    break;
+                case "morkt":
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    break;
+                default:
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    break;
+            }
         }
 
         Log.d("Maome", "isConnected = " + isConnected());
@@ -139,15 +144,29 @@ public class MainActivity extends AppCompatActivity {
 
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> textTitle.setText(destination.getLabel()));
 
+        boolean notificationsEnabled = pref.getBoolean("notifications", true);
+        handleNotifications(notificationsEnabled);
 
+    }
+
+    private ListenerRegistration listenerRegistration = null;
+    private void handleNotifications(boolean enabled) {
+
+        if(!enabled) {
+            listenerRegistration.remove();
+            Log.d(TAG, "REMOVING LISTENER");
+            return;
+        }
 
         final String CHANNEL_ID = "AD_CHANNEL_ID";
         final String CHANNEL_NAME = "Ny annonse";
 
         createNotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
 
+
+
         Intent adForegroundServiceIntent = new Intent(this, AdForegroundService.class);
-        FirebaseFirestore.getInstance().collection("ad").addSnapshotListener(new EventListener<QuerySnapshot>() {
+        listenerRegistration = FirebaseFirestore.getInstance().collection("ad").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 if(error != null || adsViewModel.getAds().getValue() == null ) {
@@ -174,7 +193,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void createNotificationChannel(String channelId, String ChannelName, int importance) {
-
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(channelId, ChannelName, importance);
             channel.setLightColor(Color.GREEN);

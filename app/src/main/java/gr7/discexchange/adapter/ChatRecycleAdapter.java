@@ -83,7 +83,7 @@ public class ChatRecycleAdapter extends RecyclerView.Adapter<ChatRecycleAdapter.
         public void setRoom(MessageRoom room) {
             Glide.with(itemView.getContext()).load(room.getFromUser().getImageUrl()).into(userPicture);
             fromUser.setText(room.getFromUser().getName());
-            lastMessage.setText(room.getAdUid() + "Siste melding: " + room.getLastMessage().getMessage());
+            lastMessage.setText(room.getLastMessage().getMessage());
         }
 
         @Override

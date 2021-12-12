@@ -6,9 +6,6 @@
         <SwitchPreferenceCompat
             app:key="notifications"
             app:title="Notifikasjoner på" />
-        <Preference
-            app:key="testNotifications"
-            android:title="Test notifikasjoner" />
 
         <ListPreference
             android:entries="@array/screen_mode_options"
