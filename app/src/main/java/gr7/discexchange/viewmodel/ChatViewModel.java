@@ -171,6 +171,7 @@ public class ChatViewModel extends ViewModel {
                                 MessageRoom room = documentSnapshot.toObject(MessageRoom.class);
 
                                 room.setRoomUid(documentSnapshot.getId());
+                                room = getLastMessagesFromFirestore(room);
 
 
                                 for (User u : users) {
@@ -186,7 +187,7 @@ public class ChatViewModel extends ViewModel {
                                         room.setFromUser(user);
                                     }
                                 }
-                                room = getLastMessagesFromFirestore(room);
+
                                 fetchedRooms.add(room);
                             }
 

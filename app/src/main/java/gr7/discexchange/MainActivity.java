@@ -7,6 +7,7 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.navigation.NavController;
 import androidx.navigation.NavGraph;
 import androidx.navigation.Navigation;
@@ -43,6 +44,7 @@ import gr7.discexchange.model.Ad;
 import gr7.discexchange.service.AdForegroundService;
 import gr7.discexchange.service.InternetConnectionService;
 import gr7.discexchange.viewmodel.AdsViewModel;
+import gr7.discexchange.viewmodel.ChatViewModel;
 import gr7.discexchange.viewmodel.UserViewModel;
 
 public class MainActivity extends AppCompatActivity {
@@ -52,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     private RoundedImageView navImageProfilePic;
     private UserViewModel userViewModel;
     private AdsViewModel adsViewModel;
+    private ChatViewModel chatViewModel;
     private static final String TAG = MainActivity.class.getName();
     private static SharedPreferences preferences;
 
@@ -80,17 +83,16 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-
-
         setContentView(R.layout.activity_main);
 
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
         adsViewModel = new ViewModelProvider(this).get(AdsViewModel.class);
+        chatViewModel = new ViewModelProvider(this).get(ChatViewModel.class);
+
         if(userViewModel.getUser() == null) {
             Navigation.findNavController(this, R.id.navHostFragment).navigate(R.id.notMenuEditProfile);
         }
         drawerLayout = findViewById(R.id.drawer_layout);
-
 
         findViewById(R.id.imageMenu).setOnClickListener(view -> drawerLayout.openDrawer(GravityCompat.START));
 
@@ -98,20 +100,16 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView bottomNavView = findViewById(R.id.bottomNav);
         drawerNavView.setItemIconTintList(null);
 
-
         View headerView = drawerNavView.getHeaderView(0);
 
         navUserNameTextView = headerView.findViewById(R.id.navUserName);
         navAddressTextView = headerView.findViewById(R.id.navAddress);
         navImageProfilePic = headerView.findViewById(R.id.imageProfilePic);
 
-
-
         NavController navController = Navigation.findNavController(this, R.id.navHostFragment);
         NavGraph navGraph = navController.getNavInflater().inflate(R.navigation.main);
         navGraph.setStartDestination(R.id.menuFeed);
         navController.setGraph(navGraph);
-
 
         userViewModel.getUser().observe(this, user -> {
             if(user == null) {
@@ -140,10 +138,15 @@ public class MainActivity extends AppCompatActivity {
 
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> textTitle.setText(destination.getLabel()));
 
-        boolean notificationsEnabled = pref.getBoolean("notifications", true);
-        handleNotifications(notificationsEnabled);
-        startService(new Intent(MainActivity.this, InternetConnectionService.class));
-
+        Thread serviceTread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                startService(new Intent(MainActivity.this, InternetConnectionService.class));
+                boolean notificationsEnabled = pref.getBoolean("notifications", true);
+                handleNotifications(notificationsEnabled);
+            }
+        });
+        serviceTread.start();
     }
 
     private ListenerRegistration listenerRegistration = null;

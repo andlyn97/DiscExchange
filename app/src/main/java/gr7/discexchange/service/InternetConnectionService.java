@@ -37,9 +37,6 @@ public class InternetConnectionService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
-        Toast.makeText(this, "Service Started", Toast.LENGTH_LONG).show();
-
         IntentFilter iFilter = new IntentFilter(CONNECTIVITY_CHANGE);
         bReceiver = new BroadcastReceiver() {
             @Override
