@@ -1,20 +1,34 @@
 package gr7.discexchange.service;
 
+import android.app.Activity;
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.IBinder;
-import android.util.Log;
+
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.DialogCompat;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.SocketAddress;
+
 
 public class InternetConnectionService extends Service {
+
+    // Inspiration / stole from:
+    // https://stackoverflow.com/questions/41828490/check-internet-connection-in-background
+    // https://stackoverflow.com/questions/21073844/disable-app-interaction-with-user-on-internet-connection-lost-android
+    static final String CONNECTIVITY_CHANGE = "android.net.conn.CONNECTIVITY_CHANGE";
+    private BroadcastReceiver bReceiver;
+    private AlertDialog alertDialog;
+
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -24,13 +38,39 @@ public class InternetConnectionService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        if(hasInternet()) {
-            Log.d("hasInternet", "Connected");
-        } else {
-            Log.d("hasInternet", "Not connected");
-        }
+        Toast.makeText(this, "Service Started", Toast.LENGTH_LONG).show();
 
-        return Service.START_NOT_STICKY;
+        IntentFilter iFilter = new IntentFilter(CONNECTIVITY_CHANGE);
+        bReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context ctx, Intent i) {
+                String action = i.getAction();
+                if(!CONNECTIVITY_CHANGE.equals(action)) {
+                    return;
+                }
+                if(hasInternet()){
+                    Toast.makeText(ctx, "Internett er på", Toast.LENGTH_LONG).show();
+                    /*if(alertDialog == null) {
+                        return;
+                    }
+                    if(alertDialog != null || alertDialog.isShowing()) {
+                        alertDialog.dismiss();
+                    }*/
+                    return;
+                }
+                Toast.makeText(ctx, "Ingen forbindelse til internett", Toast.LENGTH_LONG).show();
+                /*if(alertDialog == null) {
+                    alertDialog = new AlertDialog.Builder(ctx)
+                            .setTitle("Ingen internett tilgang")
+                            .setMessage("Sjekk tilkoblingen din")
+                            .setCancelable(false)
+                            .create();
+                    alertDialog.show();
+                }*/
+            }
+        };
+        registerReceiver(bReceiver, iFilter);
+        return Service.START_STICKY;
     }
 
     private boolean hasInternet() {
@@ -38,4 +78,11 @@ public class InternetConnectionService extends Service {
         NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(bReceiver);
+    }
+
 }

@@ -25,6 +25,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -40,6 +41,7 @@ import com.makeramen.roundedimageview.RoundedImageView;
 
 import gr7.discexchange.model.Ad;
 import gr7.discexchange.service.AdForegroundService;
+import gr7.discexchange.service.InternetConnectionService;
 import gr7.discexchange.viewmodel.AdsViewModel;
 import gr7.discexchange.viewmodel.UserViewModel;
 
@@ -78,13 +80,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        Log.d("Maome", "isConnected = " + isConnected());
 
-        /*if (isConnected()) {
-            Log.d("Maome", "Er koblet til nettverk");
-        } else if (!isConnected()) {
-            Log.d("Maome", "Er ikke koblet til nettverk");
-        }*/
 
         setContentView(R.layout.activity_main);
 
@@ -146,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
 
         boolean notificationsEnabled = pref.getBoolean("notifications", true);
         handleNotifications(notificationsEnabled);
+        startService(new Intent(MainActivity.this, InternetConnectionService.class));
 
     }
 
@@ -204,14 +201,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public boolean isConnected() {
-        ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (cm.getActiveNetwork() == null ) {
-            return false;
-        }
 
-        return cm.getActiveNetworkInfo().isConnectedOrConnecting();
-
-    }
 
 }
