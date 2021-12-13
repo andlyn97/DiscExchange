@@ -36,7 +36,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
 
 
-        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.R) {
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
             findPreference("screenmode").setVisible(false);
         }
         // Dark mode
