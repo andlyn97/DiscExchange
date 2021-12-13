@@ -40,8 +40,6 @@ public class StoreViewModel extends ViewModel {
         return shoppingcart;
     }
 
-    // shoppingcart har fortsatt count/size 0 etter setShoppingcart har kjørt
-
     public void setShoppingcart(List<Ad> shoppingcartList) {
         shoppingcart.postValue(shoppingcartList);
     }
