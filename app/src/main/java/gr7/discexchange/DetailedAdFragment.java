@@ -67,7 +67,7 @@ public class DetailedAdFragment extends Fragment {
         from = getArguments().getString("from");
         posFeed = getArguments().getInt("positionFeed");
         posAds = getArguments().getInt("positionMyAds");
-        posStore = getArguments().getInt("positionStore");
+        posStore = getArguments().getInt("positionStoreAds");
 
         switch (from) {
             case "MyFeed":
