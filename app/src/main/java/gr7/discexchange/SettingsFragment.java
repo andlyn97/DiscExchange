@@ -2,6 +2,7 @@ package gr7.discexchange;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -35,6 +36,9 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
 
 
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+            findPreference("screenmode").setVisible(false);
+        }
         // Dark mode
         findPreference("screenmode").setOnPreferenceChangeListener((preference, newValue) -> {
             sp.edit().putString("screenmode", newValue.toString()).apply();
