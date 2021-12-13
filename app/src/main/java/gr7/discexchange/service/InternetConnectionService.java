@@ -17,6 +17,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.DialogCompat;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import gr7.discexchange.R;
 
 
 public class InternetConnectionService extends Service {
@@ -56,7 +57,7 @@ public class InternetConnectionService extends Service {
                     return;
                 }
                 Toast.makeText(ctx, "Ingen forbindelse til internett", Toast.LENGTH_LONG).show();
-                /*if(alertDialog == null) {
+                /*if(alertDialog == null || !alertDialog.isShowing()) {
                     alertDialog = new AlertDialog.Builder(ctx)
                             .setTitle("Ingen internett tilgang")
                             .setMessage("Sjekk tilkoblingen din")

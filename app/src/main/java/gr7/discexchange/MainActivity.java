@@ -138,13 +138,10 @@ public class MainActivity extends AppCompatActivity {
 
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> textTitle.setText(destination.getLabel()));
 
-        Thread serviceTread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                startService(new Intent(MainActivity.this, InternetConnectionService.class));
-                boolean notificationsEnabled = pref.getBoolean("notifications", true);
-                handleNotifications(notificationsEnabled);
-            }
+        Thread serviceTread = new Thread(() -> {
+            startService(new Intent(MainActivity.this, InternetConnectionService.class));
+            boolean notificationsEnabled = pref.getBoolean("notifications", true);
+            handleNotifications(notificationsEnabled);
         });
         serviceTread.start();
     }

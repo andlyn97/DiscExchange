@@ -187,14 +187,13 @@ public class EditProfileFragment extends Fragment {
         });
 
 
-        // TODO: FIKS, FUNKER IKKE
+        // FUNKER IKKE PÅ VÅR EMULATOR, FIREBASE TEST LAB FUNGERER DET PÅ
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
         findAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                         && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    Log.d("TAG", "-.-");
                     return;
                 }
                 fusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {

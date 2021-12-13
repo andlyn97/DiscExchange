@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import android.os.Bundle;
 
+import androidx.annotation.IdRes;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.testing.FragmentScenario;
 import androidx.lifecycle.Lifecycle;
@@ -14,6 +15,8 @@ import androidx.navigation.testing.TestNavHostController;
 import org.junit.Test;
 
 public class MyFeedFragmentTest {
+    @IdRes
+    private final int THEME = R.style.Theme_DiscExchange_NoActionBar;
 
     @Test
     public void onViewCreated() {
@@ -22,8 +25,7 @@ public class MyFeedFragmentTest {
     @Test
     public void onCardClick() {
         Bundle bundle = new Bundle();
-        FragmentScenario<MyFeedFragment> scenario = new FragmentScenario<>();
-        scenario.launchInContainer(MyFeedFragment.class, bundle, Lifecycle.State.STARTED);
+        FragmentScenario<MyFeedFragment> scenario = FragmentScenario.launchInContainer(MyFeedFragment.class, bundle, THEME,  Lifecycle.State.STARTED);
 
         scenario.onFragment(fragment -> {
            assertNotNull(fragment.getActivity());

@@ -1,5 +1,6 @@
 package gr7.discexchange.viewmodel;
 
+
 import org.junit.Test;
 
 public class StoreViewModelTest {
