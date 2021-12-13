@@ -1,11 +1,8 @@
 package gr7.discexchange.adapter;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,27 +45,9 @@ public class AdRecycleAdapter extends RecyclerView.Adapter<AdRecycleAdapter.AdVi
 
     }
 
-    /*public AdRecycleAdapter(Context context, List<Ad> adList, OnCardListener onCardListener, TabLayout.OnTabSelectedListener onTabSelectedListener) {
-        inflater = LayoutInflater.from(context);
-
-        this.adList = adList;
-        this.onCardListener = onCardListener;
-        this.onTabSelectedListener = onTabSelectedListener;
-    }*/
-
-    public AdRecycleAdapter(Context context, List<Ad> adList, TabLayout.OnTabSelectedListener onTabSelectedListener) {
-        inflater = LayoutInflater.from(context);
-
-        this.adList = adList;
-        this.onTabSelectedListener = onTabSelectedListener;
-    }
-
     @NonNull
     @Override
     public AdViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int position) {
-
-        Log.d(TAG, "onCreateViewModel");
-
         View itemView = inflater.inflate(R.layout.ad_list_item, parent, false);
 
         return new AdViewHolder(itemView, onCardListener);
@@ -77,9 +56,6 @@ public class AdRecycleAdapter extends RecyclerView.Adapter<AdRecycleAdapter.AdVi
     @Override
     public void onBindViewHolder(@NonNull AdViewHolder viewHolder, int position) {
         Ad adToDisplay = adList.get(position);
-
-        //Log.d(TAG, "onBindViewHolder " + adToDisplay.getType() + " - " + position);
-
         viewHolder.setAd(adToDisplay);
     }
 
@@ -134,7 +110,6 @@ public class AdRecycleAdapter extends RecyclerView.Adapter<AdRecycleAdapter.AdVi
                             })
                             .show()
                     ;
-
                     return true;
                 }
 
@@ -153,7 +128,6 @@ public class AdRecycleAdapter extends RecyclerView.Adapter<AdRecycleAdapter.AdVi
             } else if(adToDisplay.getPrice() == 0) {
                 wishTextView.setText("Ønsker: " + adToDisplay.getWish());
             }
-
 
             if(adToDisplay.getImageUrl() != null) {
                 Glide.with(thumbnailImageView.getContext())

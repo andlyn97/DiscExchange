@@ -22,10 +22,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
-
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authStateListener;
-
 
     private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
             new FirebaseAuthUIActivityResultContract(),
@@ -72,12 +70,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
         auth = FirebaseAuth.getInstance();
-
         createSignInIntent();
-
-
     }
 
     @Override

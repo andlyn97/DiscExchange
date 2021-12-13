@@ -1,16 +1,12 @@
 package gr7.discexchange.viewmodel;
 
-import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,51 +90,44 @@ public class AdsViewModel extends ViewModel {
                     .collection("ad")
                     .whereEqualTo("userUid", userUid)
                     .whereEqualTo("archived", null)
-                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                        @Override
-                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                            List<Ad> adList = new ArrayList<>();
+                    .addSnapshotListener((value, error) -> {
+                        List<Ad> adList = new ArrayList<>();
+                        if (error != null) {
+                            return;
+                        }
+                        for (QueryDocumentSnapshot document : value) {
                             if (error != null) {
                                 return;
                             }
-                            for (QueryDocumentSnapshot document : value) {
-                                if (error != null) {
-                                    return;
-                                }
 
-                                if (document != null) {
-                                    Ad ad = document.toObject(Ad.class);
-                                    ad.setUid(document.getId());
-                                    adList.add(ad);
-                                }
+                            if (document != null) {
+                                Ad ad = document.toObject(Ad.class);
+                                ad.setUid(document.getId());
+                                adList.add(ad);
                             }
-                            userAds.postValue(adList);
-
                         }
+                        userAds.postValue(adList);
                     });
         } else {
             firestore
                     .collection("ad")
                     .whereEqualTo("userUid", userUid)
                     .whereNotEqualTo("archived", null)
-                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                        @Override
-                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                            List<Ad> adList = new ArrayList<>();
+                    .addSnapshotListener((value, error) -> {
+                        List<Ad> adList = new ArrayList<>();
+                        if (error != null) {
+                            return;
+                        }
+                        for (QueryDocumentSnapshot document : value) {
                             if (error != null) {
                                 return;
                             }
-                            for (QueryDocumentSnapshot document : value) {
-                                if (error != null) {
-                                    return;
-                                }
 
-                                if (document != null) {
-                                    adList.add(document.toObject(Ad.class));
-                                }
+                            if (document != null) {
+                                adList.add(document.toObject(Ad.class));
                             }
-                            userAds.postValue(adList);
                         }
+                        userAds.postValue(adList);
                     });
         }
     }

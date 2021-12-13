@@ -1,6 +1,5 @@
 package gr7.discexchange.service;
 
-import android.app.Activity;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -17,9 +16,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.DialogCompat;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import gr7.discexchange.R;
-
-
 public class InternetConnectionService extends Service {
 
     // Inspiration / stole from:
@@ -28,7 +24,6 @@ public class InternetConnectionService extends Service {
     static final String CONNECTIVITY_CHANGE = "android.net.conn.CONNECTIVITY_CHANGE";
     private BroadcastReceiver bReceiver;
     private AlertDialog alertDialog;
-
 
     @Nullable
     @Override
@@ -42,6 +37,7 @@ public class InternetConnectionService extends Service {
         bReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context ctx, Intent i) {
+                // ctx does not have the right theme, so the app crashes when trying to make a alertDialog
                 String action = i.getAction();
                 if(!CONNECTIVITY_CHANGE.equals(action)) {
                     return;

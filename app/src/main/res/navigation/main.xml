@@ -35,17 +35,10 @@
         android:id="@+id/menuShoppingCart"
         android:name="gr7.discexchange.ShoppingcartFragment"
         android:label="Handlekurv" />
-
-
-
-
-
-
     <fragment
         android:id="@+id/notMenuDetailedAd"
         android:name="gr7.discexchange.DetailedAdFragment"
         android:label="Detaljert visning" />
-
     <fragment
         android:id="@+id/notMenuEditProfile"
         android:name="gr7.discexchange.EditProfileFragment"
@@ -66,8 +59,4 @@
         android:id="@+id/notMenuMockAdmin"
         android:name="gr7.discexchange.MockAdminFragment"
         android:label="Mock admin" />
-
-
-
-
 </navigation>

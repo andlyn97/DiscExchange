@@ -33,20 +33,10 @@ import gr7.discexchange.viewmodel.AdsViewModel;
 
 
 public class MyFeedFragment extends Fragment implements AdRecycleAdapter.OnCardListener {
-
-    private FirebaseFirestore firebaseFirestore;
-    private CollectionReference adCollectionReference;
-    private List<Ad> ads;
-    private List<String> adsUids;
-
     private RecyclerView adRecyclerView;
     private AdRecycleAdapter adAdapter;
-    private ListenerRegistration firestoreListenerRegistration;
-
     private AdsViewModel adsViewModel;
     private static final String TAG = MyFeedFragment.class.getName();
-
-
 
     public MyFeedFragment() {
         // Required empty public constructor
@@ -55,11 +45,6 @@ public class MyFeedFragment extends Fragment implements AdRecycleAdapter.OnCardL
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        firebaseFirestore = FirebaseFirestore.getInstance();
-        adCollectionReference = firebaseFirestore.collection("ad");
-        ads = new ArrayList<>();
-        adsUids = new ArrayList<>();
-
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_my_feed, container, false);
     }

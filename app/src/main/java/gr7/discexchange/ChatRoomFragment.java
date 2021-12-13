@@ -12,27 +12,19 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import gr7.discexchange.adapter.ChatRoomRecycleAdapter;
 import gr7.discexchange.model.Message;
 import gr7.discexchange.viewmodel.ChatViewModel;
 
 public class ChatRoomFragment extends Fragment {
-
     private ChatViewModel chatViewModel;
     private RecyclerView recyclerView;
     private ChatRoomRecycleAdapter adapter;
@@ -56,8 +48,6 @@ public class ChatRoomFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         chatViewModel = new ViewModelProvider(requireActivity()).get(ChatViewModel.class);
-
-
         recyclerView = view.findViewById(R.id.chatRoomRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
@@ -66,21 +56,14 @@ public class ChatRoomFragment extends Fragment {
 
         inputMessage = view.findViewById(R.id.chatRoomInputMessage);
         submitMessage = view.findViewById(R.id.chatRoomSubmitMessage);
-
-        submitMessage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Message message = new Message();
-                message.setMessage(inputMessage.getText().toString());
-                message.setSentAt(String.valueOf(System.currentTimeMillis()));
-                message.setFromUserUid(FirebaseAuth.getInstance().getUid());
-                message.setFromUser(chatViewModel.getUser().getValue());
-
-                chatViewModel.addMessage(message);
-
-                inputMessage.getText().clear();
-            }
+        submitMessage.setOnClickListener(v -> {
+            Message message = new Message();
+            message.setMessage(inputMessage.getText().toString());
+            message.setSentAt(String.valueOf(System.currentTimeMillis()));
+            message.setFromUserUid(FirebaseAuth.getInstance().getUid());
+            message.setFromUser(chatViewModel.getUser().getValue());
+            chatViewModel.addMessage(message);
+            inputMessage.getText().clear();
         });
 
         chatViewModel.getMessages().observe((LifecycleOwner) view.getContext(), x -> {

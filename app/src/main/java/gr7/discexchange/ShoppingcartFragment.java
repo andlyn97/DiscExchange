@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,7 +56,6 @@ public class ShoppingcartFragment extends Fragment {
         userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
 
         userViewModel.getUser().observe((LifecycleOwner) view.getContext(), x -> {
-
             currentStoreCredit.setText("Din saldo: " + formatDoubleToString(userViewModel.getUser().getValue().getStoreCredit()));
         });
 

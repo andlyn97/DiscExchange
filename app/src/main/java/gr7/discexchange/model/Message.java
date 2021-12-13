@@ -26,7 +26,6 @@ public class Message {
         this.fromUser = fromUser;
     }
 
-
     public String getMessage() {
         return message;
     }

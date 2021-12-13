@@ -1,21 +1,11 @@
 package gr7.discexchange.viewmodel;
 
-import android.util.Log;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,30 +42,26 @@ public class StoreViewModel extends ViewModel {
         }
         tempCart.add(newCartItem);
         setShoppingcart(tempCart);
-
     }
 
     private void getStoreAdsFromFirebase() {
         firestore
                 .collection("adStore")
                 .whereEqualTo("archived", null)
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                        if(error != null) {
-                            return;
-                        }
-                        List<Ad> fetchedStoreAds = new ArrayList<>();
-                        List<DocumentSnapshot> documentSnapshots = value.getDocuments();
-                        for (DocumentSnapshot documentSnapshot : documentSnapshots) {
-                            if (documentSnapshot != null) {
-                                Ad ad = documentSnapshot.toObject(Ad.class);
-                                ad.setUid(documentSnapshot.getId());
-                                fetchedStoreAds.add(ad);
-                            }
-                        }
-                        ads.postValue(fetchedStoreAds);
+                .addSnapshotListener((value, error) -> {
+                    if(error != null) {
+                        return;
                     }
+                    List<Ad> fetchedStoreAds = new ArrayList<>();
+                    List<DocumentSnapshot> documentSnapshots = value.getDocuments();
+                    for (DocumentSnapshot documentSnapshot : documentSnapshots) {
+                        if (documentSnapshot != null) {
+                            Ad ad = documentSnapshot.toObject(Ad.class);
+                            ad.setUid(documentSnapshot.getId());
+                            fetchedStoreAds.add(ad);
+                        }
+                    }
+                    ads.postValue(fetchedStoreAds);
                 });
     }
 
@@ -84,6 +70,5 @@ public class StoreViewModel extends ViewModel {
         for (Ad ad : cartItems) {
             firestore.collection("adStore").document(ad.getUid()).update("archived", currentTime);
         }
-
     }
 }

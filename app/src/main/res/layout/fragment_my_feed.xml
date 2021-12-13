@@ -7,7 +7,6 @@
             name="Ad"
             type="gr7.discexchange.model.Ad" />
     </data>
-
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -32,7 +31,5 @@
                 android:layout_margin="20dp"
                 app:srcCompat="@drawable/ic_baseline_add_24"
                 />
-
         </FrameLayout>
-
 </layout>

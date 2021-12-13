@@ -4,23 +4,18 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.navigation.Navigation;
-import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
 import com.firebase.ui.auth.AuthUI;
 
-import gr7.discexchange.service.ChatForegroundService;
-
 public class SettingsFragment extends PreferenceFragmentCompat {
-
     private static final String TAG = SettingsFragment.class.getName();
 
     @Override
@@ -33,8 +28,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         super.onViewCreated(view, savedInstanceState);
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-
-
 
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
             findPreference("screenmode").setVisible(false);

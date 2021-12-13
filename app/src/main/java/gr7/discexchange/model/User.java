@@ -1,7 +1,6 @@
 package gr7.discexchange.model;
 
 public class User {
-
     private String uid;
     private String name;
     private String address;
@@ -9,15 +8,6 @@ public class User {
     private double storeCredit;
     private String imageUrl;
     private String imageStorageRef;
-
-
-
-    public User(String name, String address, int feedback, double storeCredit) {
-        this.name = name;
-        this.address = address;
-        this.feedback = feedback;
-        this.storeCredit = storeCredit;
-    }
 
     public User() {
     }

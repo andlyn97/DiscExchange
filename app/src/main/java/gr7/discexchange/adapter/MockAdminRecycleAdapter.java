@@ -9,30 +9,21 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatRatingBar;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import gr7.discexchange.R;
-import gr7.discexchange.model.MessageRoom;
 import gr7.discexchange.model.User;
-import gr7.discexchange.viewmodel.ChatViewModel;
 
 public class MockAdminRecycleAdapter extends RecyclerView.Adapter<MockAdminRecycleAdapter.MockAdminViewHolder> {
     private LayoutInflater inflater;
     private List<User> users;
-
 
     public MockAdminRecycleAdapter(Context context, List<User> users) {
         this.inflater = LayoutInflater.from(context);
@@ -42,9 +33,7 @@ public class MockAdminRecycleAdapter extends RecyclerView.Adapter<MockAdminRecyc
     @NonNull
     @Override
     public MockAdminViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         View itemView = inflater.inflate(R.layout.mock_admin_list_item, parent, false);
-
         return new MockAdminViewHolder(itemView);
     }
 
@@ -62,15 +51,11 @@ public class MockAdminRecycleAdapter extends RecyclerView.Adapter<MockAdminRecyc
         return users.size();
     }
 
-
-
     public class MockAdminViewHolder extends RecyclerView.ViewHolder {
-
         private AppCompatButton button;
         private TextView name;
         private TextInputEditText storecredit;
         private AppCompatRatingBar rating;
-
 
         public MockAdminViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -78,18 +63,12 @@ public class MockAdminRecycleAdapter extends RecyclerView.Adapter<MockAdminRecyc
             name = itemView.findViewById(R.id.mockAdminItemName);
             storecredit = itemView.findViewById(R.id.mockAdminItemStorecredit);
             rating = itemView.findViewById(R.id.mockAdminItemRating);
-
-
         }
 
         public void setUser(User user) {
             name.setText(user.getName());
             storecredit.setText(String.valueOf(user.getStoreCredit()));
             rating.setRating(user.getFeedback());
-
-
-
-
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -105,10 +84,7 @@ public class MockAdminRecycleAdapter extends RecyclerView.Adapter<MockAdminRecyc
                 }
             });
         }
-
     }
-
-
 }
 
 

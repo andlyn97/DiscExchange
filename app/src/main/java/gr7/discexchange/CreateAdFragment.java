@@ -1,12 +1,8 @@
 package gr7.discexchange;
 
-import static android.content.ContentValues.TAG;
-
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -14,8 +10,6 @@ import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.NavGraph;
 import androidx.navigation.Navigation;
 
 import android.text.InputType;
@@ -23,18 +17,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -43,7 +33,6 @@ import java.io.File;
 
 import gr7.discexchange.model.Ad;
 import gr7.discexchange.viewmodel.AdsViewModel;
-
 
 public class CreateAdFragment extends Fragment {
 
@@ -120,20 +109,9 @@ public class CreateAdFragment extends Fragment {
             createWishLayout.setHint("Pris");
 
             createBtnCreate.setOnClickListener(view2 -> {
+                ad = handleCreateAd();
 
-                String name = textInputName.getEditableText().toString();
-                String brand = textInputBrand.getEditableText().toString();
-                int condition = Integer.parseInt(textInputCondition.getEditableText().toString());
-                String flight = textInputFlight.getEditableText().toString();
-                String color = textInputColor.getEditableText().toString();
-                String ink = textInputInk.getEditableText().toString();
-                String description = textInputDescription.getEditableText().toString();
-                double price = Double.valueOf(textInputWish.getEditableText().toString());
-                String published = String.valueOf(System.currentTimeMillis());
-
-                Ad ad = new Ad(name, brand, condition, flight, color, ink, description, price, published, "ADMIN");
-
-                StorageReference firebaseStorage = FirebaseStorage.getInstance().getReference().child("ad-images").child(published);
+                StorageReference firebaseStorage = FirebaseStorage.getInstance().getReference().child("ad-images").child(ad.getPublished());
                 firebaseStorage.putFile(currentUri).addOnCompleteListener(task -> {
                     firebaseStorage.getDownloadUrl().addOnSuccessListener(uri -> {
                         ad.setImageUrl(uri.toString());
@@ -147,7 +125,6 @@ public class CreateAdFragment extends Fragment {
 
             });
         }
-
 
         if (from.equals("Edit")) {
             ad = adsViewModel.getUserAds().getValue().get(pos);
@@ -186,7 +163,8 @@ public class CreateAdFragment extends Fragment {
                 if (count == 0) {
                     currentUri = Uri.parse(ad.getImageUrl());
                 }
-                updateAd(view, ad, pos);
+
+                updateAd(view, ad);
             });
         }
     }
@@ -239,8 +217,7 @@ public class CreateAdFragment extends Fragment {
         });
     }
 
-    private void updateAd(@NonNull View view, Ad ad, int pos) {
-        String uid = adsViewModel.getUserAds().getValue().get(pos).getUid();
+    private void updateAd(@NonNull View view, Ad ad) {
         StorageReference firebaseStorage = FirebaseStorage.getInstance().getReference().child("ad-images");
         CollectionReference collectionRef = FirebaseFirestore.getInstance().collection("ad");
 
@@ -257,10 +234,21 @@ public class CreateAdFragment extends Fragment {
             });
         }
 
-        collectionRef.document(ad.getUid()).set(ad).addOnSuccessListener(result -> {
-            Log.d(TAG, "Set ad: success");
-            Navigation.findNavController(view).popBackStack();
-        });
+        collectionRef.document(ad.getUid()).set(ad).addOnSuccessListener(result -> Navigation.findNavController(view).popBackStack());
+    }
+
+    private Ad handleCreateAd() {
+        String name = textInputName.getEditableText().toString();
+        String brand = textInputBrand.getEditableText().toString();
+        int condition = Integer.parseInt(textInputCondition.getEditableText().toString());
+        String flight = textInputFlight.getEditableText().toString();
+        String color = textInputColor.getEditableText().toString();
+        String ink = textInputInk.getEditableText().toString();
+        String description = textInputDescription.getEditableText().toString();
+        double price = Double.valueOf(textInputWish.getEditableText().toString());
+        String published = String.valueOf(System.currentTimeMillis());
+
+        return new Ad(name, brand, condition, flight, color, ink, description, price, published, "ADMIN");
     }
 
 

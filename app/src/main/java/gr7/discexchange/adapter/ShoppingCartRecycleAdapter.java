@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -38,7 +37,6 @@ public class ShoppingCartRecycleAdapter extends RecyclerView.Adapter<ShoppingCar
     @Override
     public ShoppingCartViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int position) {
         View itemView = layoutInflater.inflate(R.layout.cart_list_item, parent, false);
-
         return new ShoppingCartViewHolder(itemView);
     }
 
@@ -64,7 +62,6 @@ public class ShoppingCartRecycleAdapter extends RecyclerView.Adapter<ShoppingCar
 
         public ShoppingCartViewHolder(@NonNull View itemView) {
             super(itemView);
-
             roundedImageView = itemView.findViewById(R.id.shoppingCartImageView);
             discNameTV = itemView.findViewById(R.id.shoppingCartDiscName);
             discPriceTV = itemView.findViewById(R.id.shoppingCartItemPrice);
@@ -92,8 +89,5 @@ public class ShoppingCartRecycleAdapter extends RecyclerView.Adapter<ShoppingCar
             DecimalFormat format = new DecimalFormat("#.##");
             return format.format(num);
         }
-
-
     }
-
 }

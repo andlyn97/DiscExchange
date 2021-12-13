@@ -1,11 +1,9 @@
 package gr7.discexchange.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -36,9 +34,7 @@ public class ChatRecycleAdapter extends RecyclerView.Adapter<ChatRecycleAdapter.
     @NonNull
     @Override
     public ChatViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         View itemView = inflater.inflate(R.layout.room_list_item, parent, false);
-
         return new ChatRecycleAdapter.ChatViewHolder(itemView, onChatRoomListener);
     }
 
@@ -56,8 +52,6 @@ public class ChatRecycleAdapter extends RecyclerView.Adapter<ChatRecycleAdapter.
         return rooms.size();
     }
 
-
-
     public class ChatViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private RoundedImageView userPicture;
@@ -73,11 +67,8 @@ public class ChatRecycleAdapter extends RecyclerView.Adapter<ChatRecycleAdapter.
             fromUser = itemView.findViewById(R.id.roomListItemFromUser);
             lastMessage = itemView.findViewById(R.id.roomListItemLastMessage);
             this.onChatRoomListener = onChatRoomListener;
-
             itemView.setOnClickListener(this);
-
             chatViewModel = new ViewModelProvider((ViewModelStoreOwner) itemView.getContext()).get(ChatViewModel.class);
-
         }
 
         public void setRoom(MessageRoom room) {

@@ -2,7 +2,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory app:title="Diverse">
-
         <SwitchPreferenceCompat
             app:key="notifications"
             app:title="Notifikasjoner på" />
@@ -14,7 +13,6 @@
             app:title="Dark mode"
             app:useSimpleSummaryProvider="true"
             />
-
 
     </PreferenceCategory>
     <PreferenceCategory android:title="Simulert admin" >
@@ -30,7 +28,4 @@
             app:key="logout"
             android:title="Logg ut" />
     </PreferenceCategory>
-
-
-
 </PreferenceScreen>

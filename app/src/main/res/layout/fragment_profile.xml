@@ -10,18 +10,15 @@
             type="gr7.discexchange.model.User" />
     </data>
     <FrameLayout
-
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_horizontal"
             android:orientation="vertical">
-
 
             <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/profilePic"
@@ -82,7 +79,6 @@
                 android:gravity="center"
                 android:paddingTop="60dp"
                 android:text="@{`Butikk kredit: ` + String.valueOf(user.storeCredit)}" />
-
 
         </LinearLayout>
         <com.google.android.material.floatingactionbutton.FloatingActionButton

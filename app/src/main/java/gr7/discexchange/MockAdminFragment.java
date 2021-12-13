@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
@@ -15,9 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import gr7.discexchange.adapter.ChatRoomRecycleAdapter;
 import gr7.discexchange.adapter.MockAdminRecycleAdapter;
-import gr7.discexchange.viewmodel.ChatViewModel;
 import gr7.discexchange.viewmodel.UserViewModel;
 
 
@@ -38,7 +35,6 @@ public class MockAdminFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
-
 
         recyclerView = view.findViewById(R.id.mockAdminRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));

@@ -1,10 +1,6 @@
 package gr7.discexchange.service;
 
-import static android.app.Notification.FLAG_AUTO_CANCEL;
-import static android.app.Notification.PRIORITY_DEFAULT;
-
 import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.app.TaskStackBuilder;
@@ -13,7 +9,6 @@ import android.os.IBinder;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
 import gr7.discexchange.MainActivity;
 import gr7.discexchange.R;
@@ -32,14 +27,13 @@ public class AdForegroundService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
         Intent notificationIntent = new Intent(this, MainActivity.class);
 
-        TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(this);
-        taskStackBuilder.addNextIntentWithParentStack(notificationIntent);
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 123, notificationIntent, 0);
+        //TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(this);
+        //taskStackBuilder.addNextIntentWithParentStack(notificationIntent);
         //PendingIntent pendingIntent = taskStackBuilder.getPendingIntent(123, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 333, notificationIntent, 0);
+
 
         String message = intent.getStringExtra("EXTRA_ADNAME");
 
@@ -60,9 +54,7 @@ public class AdForegroundService extends Service {
 
         // When this code run
         // Can't discard notification
-        startForeground(123, notification);
-
-
+        startForeground(333, notification);
 
         return Service.START_NOT_STICKY;
     }

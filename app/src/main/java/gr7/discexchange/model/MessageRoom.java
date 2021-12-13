@@ -12,7 +12,6 @@ public class MessageRoom {
     private User fromUser;
     private String adUid;
 
-
     public MessageRoom() {
         usersUid = new ArrayList<>();
         users = new ArrayList<>();
@@ -75,7 +74,6 @@ public class MessageRoom {
     public void setAdUid(String adUid) {
         this.adUid = adUid;
     }
-
 
     public void addUser(User user) {
         users.add(user);

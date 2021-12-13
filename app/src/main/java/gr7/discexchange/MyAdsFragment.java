@@ -1,7 +1,5 @@
 package gr7.discexchange;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,7 +11,6 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,8 +37,6 @@ public class MyAdsFragment extends Fragment implements AdRecycleAdapter.OnCardLi
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         adsViewModel = new ViewModelProvider(requireActivity()).get(AdsViewModel.class);
-        //binding = DataBindingUtil.inflate(inflater, R.layout.fragment_my_ads, container, false);
-        //return binding.getRoot();
         return inflater.inflate(R.layout.fragment_my_ads, container, false);
     }
 
@@ -59,7 +54,6 @@ public class MyAdsFragment extends Fragment implements AdRecycleAdapter.OnCardLi
         });
 
         tabLayout = view.findViewById(R.id.tabLayout);
-
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -74,14 +68,10 @@ public class MyAdsFragment extends Fragment implements AdRecycleAdapter.OnCardLi
             }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
+            public void onTabUnselected(TabLayout.Tab tab) { }
 
             @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
+            public void onTabReselected(TabLayout.Tab tab) { }
         });
     }
 

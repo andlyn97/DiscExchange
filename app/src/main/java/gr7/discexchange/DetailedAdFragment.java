@@ -29,9 +29,6 @@ import gr7.discexchange.viewmodel.StoreViewModel;
 import gr7.discexchange.viewmodel.UserViewModel;
 
 public class DetailedAdFragment extends Fragment {
-
-
-
     private Ad ad;
     private UserViewModel userViewModel;
     private AdsViewModel adsViewModel;
@@ -45,8 +42,6 @@ public class DetailedAdFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_detailed_ad, container, false);
         return binding.getRoot();
     }
@@ -63,7 +58,6 @@ public class DetailedAdFragment extends Fragment {
 
         int posFeed, posAds, posStore;
         String from;
-
         from = getArguments().getString("from");
         posFeed = getArguments().getInt("positionFeed");
         posAds = getArguments().getInt("positionMyAds");
@@ -96,11 +90,8 @@ public class DetailedAdFragment extends Fragment {
         }
 
         binding.setAd(ad);
-
         Glide.with(view).load(ad.getImageUrl()).into(binding.imageView);
-
         chatWithBtn.setOnClickListener(v -> {
-
             if (from.equals("MyFeed")) {
                 AtomicBoolean fetchedMessages = new AtomicBoolean(false);
                 chatViewModel.getRooms().getValue().forEach(room -> {
@@ -118,11 +109,9 @@ public class DetailedAdFragment extends Fragment {
                 Navigation.findNavController(requireActivity(), R.id.navHostFragment).navigate(R.id.notMenuChatRoom);
             } else if (from.equals("StoreAds")) {
                 storeViewModel.addToShoppingcart(ad);
-                Log.d("Maome", "shoppingcart: " + storeViewModel.getShoppingcart());
                 Navigation.findNavController(requireActivity(), R.id.navHostFragment).navigate(R.id.menuShoppingCart);
             }
         });
-
 
         String loggedInUser = FirebaseAuth.getInstance().getUid();
         if(ad.getUserUid().equals(loggedInUser)) {

@@ -49,19 +49,20 @@ import gr7.discexchange.viewmodel.UserViewModel;
 
 public class MainActivity extends AppCompatActivity {
     public DrawerLayout drawerLayout;
+    private TextView textTitle;
     private TextView navUserNameTextView;
     private TextView navAddressTextView;
     private RoundedImageView navImageProfilePic;
     private UserViewModel userViewModel;
     private AdsViewModel adsViewModel;
     private ChatViewModel chatViewModel;
+    private ListenerRegistration listenerRegistration;
     private static final String TAG = MainActivity.class.getName();
-    private static SharedPreferences preferences;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        listenerRegistration = null;
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
@@ -120,7 +121,6 @@ public class MainActivity extends AppCompatActivity {
             Glide.with(getApplicationContext()).load(user.getImageUrl()).into(navImageProfilePic);
         });
 
-
         navImageProfilePic.setOnClickListener(view -> {
             navController.navigate(R.id.menuProfile);
             drawerLayout.closeDrawer(GravityCompat.START);
@@ -133,9 +133,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(drawerNavView, navController);
         NavigationUI.setupWithNavController(bottomNavView, navController);
 
-
-        final TextView textTitle = findViewById(R.id.textTitle);
-
+        textTitle = findViewById(R.id.textTitle);
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> textTitle.setText(destination.getLabel()));
 
         Thread serviceTread = new Thread(() -> {
@@ -146,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
         serviceTread.start();
     }
 
-    private ListenerRegistration listenerRegistration = null;
+
     private void handleNotifications(boolean enabled) {
 
         if(!enabled) {

@@ -5,36 +5,21 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import gr7.discexchange.adapter.ChatRecycleAdapter;
-import gr7.discexchange.model.Message;
-import gr7.discexchange.model.MessageRoom;
 import gr7.discexchange.viewmodel.ChatViewModel;
 
 public class ChatFragment extends Fragment implements ChatRecycleAdapter.OnChatRoomListener {
-
     private ChatViewModel chatViewModel;
     private RecyclerView recyclerView;
     private TextView emptyView;
@@ -62,9 +47,7 @@ public class ChatFragment extends Fragment implements ChatRecycleAdapter.OnChatR
 
         emptyView = view.findViewById(R.id.chatRoomsEmpty);
 
-
         chatViewModel.getRooms().observe(getViewLifecycleOwner(), x -> {
-
             // Inspiration source: https://stackoverflow.com/questions/28217436/how-to-show-an-empty-view-with-a-recyclerview
             if(chatViewModel.getRooms().getValue() != null) {
                 if(chatViewModel.getRooms().getValue().size() != 0) {
@@ -78,15 +61,11 @@ public class ChatFragment extends Fragment implements ChatRecycleAdapter.OnChatR
                 recyclerView.setVisibility(View.GONE);
                 emptyView.setVisibility(View.VISIBLE);
             }
-
             adapter = new ChatRecycleAdapter(view.getContext(), chatViewModel.getRooms().getValue(), this);
             recyclerView.setAdapter(adapter);
             adapter.notifyDataSetChanged();
         });
-
-
     }
-
 
     @Override
     public void onChatRoomClick(int pos) {

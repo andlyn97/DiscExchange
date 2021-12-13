@@ -25,10 +25,8 @@ import gr7.discexchange.model.User;
 import gr7.discexchange.viewmodel.UserViewModel;
 
 public class ProfileFragment extends Fragment {
-
     private UserViewModel viewModel;
     private FragmentProfileBindingImpl binding;
-
 
     public ProfileFragment() {
 
@@ -37,7 +35,6 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false);
         return binding.getRoot();
     }

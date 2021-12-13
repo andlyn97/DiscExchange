@@ -1,25 +1,5 @@
 package gr7.discexchange.model;
 
-import android.net.Uri;
-import android.util.Log;
-
-import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.Exclude;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import gr7.discexchange.R;
-
 public class Ad {
     private String uid;
     private String name;
@@ -93,8 +73,7 @@ public class Ad {
         this.brand = brand;
     }
 
-    public Ad() {
-    }
+
 
     public Ad(String name, String brand, int condition, String flight, String color, String ink, String description, double price, String published, String userUid) {
         this.name = name;
@@ -107,6 +86,9 @@ public class Ad {
         this.price = price;
         this.published = published;
         this.userUid = userUid;
+    }
+
+    public Ad() {
     }
 
     public String getUid() {
@@ -220,49 +202,4 @@ public class Ad {
     public void setUserUid(String userUid) {
         this.userUid = userUid;
     }
-
-    public static List<Ad> getData() {
-        List<Ad> ads = new ArrayList<>();
-
-        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-        CollectionReference adReference = firebaseFirestore.collection("ad");
-
-        adReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()) {
-                    for(QueryDocumentSnapshot adDocumentSnapshot : task.getResult()) {
-                        Ad ad = adDocumentSnapshot.toObject(Ad.class);
-                        ad.setUid(adDocumentSnapshot.getId());
-                        ads.add(ad);
-                    }
-                } else {
-                    Log.d("Debug12", "Error:" + task.getException());
-                }
-            }
-        });
-
-        return ads;
-    }
-
-    public static ArrayList<Ad> getPopular() {
-
-        ArrayList<Ad> popList = new ArrayList<>();
-
-
-        Ad one = new Ad("Firebird", "Innova");
-        Ad two = new Ad("Explorer", "Latitude 64");
-        Ad three = new Ad("Hydra", "Innova");
-        Ad four = new Ad("MOAB", "Hyzer Bomb");
-        Ad five = new Ad("Keystone", "Latitude 64");
-
-        popList.add(one);
-        popList.add(two);
-        popList.add(three);
-        popList.add(four);
-        popList.add(five);
-
-        return popList;
-    }
-
 }
