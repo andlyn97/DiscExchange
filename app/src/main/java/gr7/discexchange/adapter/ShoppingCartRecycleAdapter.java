@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.makeramen.roundedimageview.RoundedImageView;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import gr7.discexchange.R;
@@ -76,7 +77,7 @@ public class ShoppingCartRecycleAdapter extends RecyclerView.Adapter<ShoppingCar
                     .load(ad.getImageUrl())
                     .into(roundedImageView);
             discNameTV.setText(ad.getName());
-            discPriceTV.setText(String.valueOf(ad.getPrice()));
+            discPriceTV.setText(formatDoubleToString(ad.getPrice()));
             deleteItemBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -84,6 +85,12 @@ public class ShoppingCartRecycleAdapter extends RecyclerView.Adapter<ShoppingCar
                     storeViewModel.setShoppingcart(cartItems);
                 }
             });
+        }
+
+        private String formatDoubleToString(double num) {
+            // https://stackoverflow.com/questions/8895337/how-do-i-limit-the-number-of-decimals-printed-for-a-double
+            DecimalFormat format = new DecimalFormat("#.##");
+            return format.format(num);
         }
 
 

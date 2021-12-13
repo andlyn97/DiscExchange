@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import gr7.discexchange.adapter.AdRecycleAdapter;

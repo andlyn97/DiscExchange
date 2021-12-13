@@ -57,15 +57,14 @@ public class ShoppingcartFragment extends Fragment {
         userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
 
         userViewModel.getUser().observe((LifecycleOwner) view.getContext(), x -> {
-            // https://stackoverflow.com/questions/8895337/how-do-i-limit-the-number-of-decimals-printed-for-a-double
-            DecimalFormat storeCreditFormat = new DecimalFormat("#.##");
-            currentStoreCredit.setText("Din saldo: " + storeCreditFormat.format(userViewModel.getUser().getValue().getStoreCredit()));
+
+            currentStoreCredit.setText("Din saldo: " + formatDoubleToString(userViewModel.getUser().getValue().getStoreCredit()));
         });
 
         storeViewModel.getShoppingcart().observe((LifecycleOwner) view.getContext(), x -> {
             List<Ad> cartItems = storeViewModel.getShoppingcart().getValue();
             cartAdapter = new ShoppingCartRecycleAdapter(view.getContext(), cartItems);
-            cartPrice.setText("Totalt: " + calculateCartTotal());
+            cartPrice.setText("Totalt: " + formatDoubleToString(calculateCartTotal()));
             cartRV.setAdapter(cartAdapter);
             cartAdapter.notifyDataSetChanged();
 
@@ -101,6 +100,12 @@ public class ShoppingcartFragment extends Fragment {
             sum += ad.getPrice();
         }
         return sum;
+    }
+
+    private String formatDoubleToString(double num) {
+        // https://stackoverflow.com/questions/8895337/how-do-i-limit-the-number-of-decimals-printed-for-a-double
+        DecimalFormat format = new DecimalFormat("#.##");
+        return format.format(num);
     }
 
 }
