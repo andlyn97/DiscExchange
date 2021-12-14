@@ -2,4 +2,25 @@
     <string name="app_name">DiscExchange</string>
     <string name="a_disc">A Disc</string>
     <string name="a_disc_description">a disc</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="feed">Feed</string>
+    <string name="chat">Chat</string>
+    <string name="profil">Profil</string>
+    <string name="mine_annonser">Mine annonser</string>
+    <string name="popul_re">Populære</string>
+    <string name="butikk">Butikk</string>
+    <string name="handlekurv">Handlekurv</string>
+    <string name="logg_ut">Logg ut</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="innstillinger">Innstillinger</string>
+    <string name="navn">Navn: %s</string>
+    <string name="flight">Flight: %s</string>
+    <string name="tilstand">Tilstand: %s</string>
+    <string name="farge">Farge: %s</string>
+    <string name="ink">Ink: %s</string>
+    <string name="beskrivelse">Beskrivelse: %s</string>
 </resources>

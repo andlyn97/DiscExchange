@@ -1,35 +1,110 @@
 package gr7.discexchange.model;
 
-import android.media.Image;
-
-import java.util.ArrayList;
-import java.util.Date;
-
-import javax.xml.transform.Source;
-
-import gr7.discexchange.R;
-
 public class Ad {
-
+    private String uid;
     private String name;
-     private int image;
+    private String imageUrl;
     private String brand;
     private int condition;
     private String flight;
     private String color;
-    private boolean ink;
+    private String ink;
     private String description;
     private String wish;
     private double price;
-    private Date published;
-    private Date archived;
-    private User user;
+    private String published;
+    private String archived;
+    private String userUid;
 
-    public Ad(String name, String brand, String color, int image) {
+    public Ad(String uid, String name, String brand, int condition, String flight, String color, String ink, String description, String wish, double price, String published, String archived, String userUid) {
+        this.uid = uid;
         this.name = name;
         this.brand = brand;
+        this.condition = condition;
+        this.flight = flight;
         this.color = color;
-        this.image = image;
+        this.ink = ink;
+        this.description = description;
+        this.wish = wish;
+        this.price = price;
+        this.published = published;
+        this.archived = archived;
+        this.userUid = userUid;
+    }
+
+    public Ad(String name, String brand, int condition, String flight, String color, String ink, String description, String wish, String published, String userUid) {
+        this.name = name;
+        this.brand = brand;
+        this.condition = condition;
+        this.flight = flight;
+        this.color = color;
+        this.ink = ink;
+        this.description = description;
+        this.wish = wish;
+        this.published = published;
+        this.userUid = userUid;
+    }
+
+    public Ad(String name, String brand, int condition, String flight, String color, String ink, String description, String wish, double price, String published, String archived, String userUid) {
+        this.name = name;
+        this.brand = brand;
+        this.condition = condition;
+        this.flight = flight;
+        this.color = color;
+        this.ink = ink;
+        this.description = description;
+        this.wish = wish;
+        this.price = price;
+        this.published = published;
+        this.archived = archived;
+        this.userUid = userUid;
+    }
+
+    public Ad(String name, int condition, String color, String ink, String wish) {
+        this.name = name;
+        this.condition = condition;
+        this.color = color;
+        this.ink = ink;
+        this.wish = wish;
+    }
+
+    public Ad(String name, String brand) {
+        this.name = name;
+        this.brand = brand;
+    }
+
+
+
+    public Ad(String name, String brand, int condition, String flight, String color, String ink, String description, double price, String published, String userUid) {
+        this.name = name;
+        this.brand = brand;
+        this.condition = condition;
+        this.flight = flight;
+        this.color = color;
+        this.ink = ink;
+        this.description = description;
+        this.price = price;
+        this.published = published;
+        this.userUid = userUid;
+    }
+
+    public Ad() {
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public String getName() {
@@ -56,31 +131,75 @@ public class Ad {
         this.color = color;
     }
 
-    public int getImage() {
-        return image;
+    public int getCondition() {
+        return condition;
     }
 
-    public void setImage(int image) {
-        this.image = image;
+    public void setCondition(int condition) {
+        this.condition = condition;
     }
 
-    public static ArrayList<Ad> getData() {
-        ArrayList<Ad> adList = new ArrayList<>();
-
-        int imgId = R.drawable.firebird;
-
-
-        Ad one = new Ad("Firebird", "P2", "Green", imgId);
-        Ad two = new Ad("Firebird", "P2", "Green", imgId);
-        Ad three = new Ad("Firebird", "P2", "Green", imgId);
-        Ad four = new Ad("Firebird", "P2", "Green", imgId);
-
-        adList.add(one);
-        adList.add(two);
-        adList.add(three);
-        adList.add(four);
-
-        return adList;
+    public String getFlight() {
+        return flight;
     }
 
+    public void setFlight(String flight) {
+        this.flight = flight;
+    }
+
+    public String getInk() {
+        return ink;
+    }
+
+    public void setInk(String ink) {
+        this.ink = ink;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getWish() {
+        return wish;
+    }
+
+    public void setWish(String wish) {
+        this.wish = wish;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public String getPublished() {
+        return published;
+    }
+
+    public void setPublished(String published) {
+        this.published = published;
+    }
+
+    public String getArchived() {
+        return archived;
+    }
+
+    public void setArchived(String archived) {
+        this.archived = archived;
+    }
+
+    public String getUserUid() {
+        return userUid;
+    }
+
+    public void setUserUid(String userUid) {
+        this.userUid = userUid;
+    }
 }

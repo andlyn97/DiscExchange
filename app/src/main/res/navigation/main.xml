@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    app:startDestination="@id/menuFeed">
+
+    <fragment
+        android:id="@+id/menuFeed"
+        android:name="gr7.discexchange.MyFeedFragment"
+        android:label="Feed"
+        tools:layout="@layout/fragment_my_feed" />
+    <fragment
+        android:id="@+id/menuProfile"
+        android:name="gr7.discexchange.ProfileFragment"
+        android:label="Profil"
+        tools:layout="@layout/fragment_profile"/>
+    <fragment
+        android:id="@+id/menuStore"
+        android:name="gr7.discexchange.StoreFragment"
+        android:label="Butikk" />
+    <fragment
+        android:id="@+id/menuChat"
+        android:name="gr7.discexchange.ChatFragment"
+        android:label="Chat" />
+    <fragment
+        android:id="@+id/menuMyAds"
+        android:name="gr7.discexchange.MyAdsFragment"
+        android:label="Mine annonser" />
+    <fragment
+        android:id="@+id/menuSettings"
+        android:name="gr7.discexchange.SettingsFragment"
+        android:label="Innstillinger" />
+    <fragment
+        android:id="@+id/menuShoppingCart"
+        android:name="gr7.discexchange.ShoppingcartFragment"
+        android:label="Handlekurv" />
+    <fragment
+        android:id="@+id/notMenuDetailedAd"
+        android:name="gr7.discexchange.DetailedAdFragment"
+        android:label="Detaljert visning" />
+    <fragment
+        android:id="@+id/notMenuEditProfile"
+        android:name="gr7.discexchange.EditProfileFragment"
+        tools:layout="@layout/fragment_edit_profile" />
+    <fragment
+        android:id="@+id/notMenuCreateAd"
+        android:name="gr7.discexchange.CreateAdFragment"
+        android:label="Opprett annonse" />
+    <fragment
+        android:id="@+id/notMenuUpdateAd"
+        android:name="gr7.discexchange.CreateAdFragment"
+        android:label="Oppdater annonse" />
+    <fragment
+        android:id="@+id/notMenuChatRoom"
+        android:name="gr7.discexchange.ChatRoomFragment"
+        android:label="Chat" />
+    <fragment
+        android:id="@+id/notMenuMockAdmin"
+        android:name="gr7.discexchange.MockAdminFragment"
+        android:label="Mock admin" />
+</navigation>

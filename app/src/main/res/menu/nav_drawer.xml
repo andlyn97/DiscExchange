@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/menuFeed"
+        android:title="@string/feed"
+        android:icon="@drawable/ic_baseline_feed_24"/>
+
+    <item
+        android:id="@+id/menuChat"
+        android:title="@string/chat"
+        android:icon="@drawable/ic_baseline_chat_24"/>
+
+    <item
+        android:id="@+id/menuProfile"
+        android:title="@string/profil"
+        android:icon="@drawable/ic_baseline_person_24"/>
+
+    <item
+        android:id="@+id/menuMyAds"
+        android:title="@string/mine_annonser"
+        android:icon="@drawable/ic_baseline_feed_24"/>
+
+    <item
+        android:id="@+id/menuStore"
+        android:title="@string/butikk"
+        android:icon="@drawable/ic_baseline_storefront_24"/>
+
+    <item
+        android:id="@+id/menuShoppingCart"
+        android:title="@string/handlekurv"
+        android:icon="@drawable/ic_baseline_shopping_cart_24"/>
+
+    <item
+        android:id="@+id/menuSettings"
+        android:title="@string/innstillinger"
+        android:icon="@drawable/ic_baseline_settings_24"/>
+
+</menu>
+
