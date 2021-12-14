@@ -173,6 +173,7 @@ public class EditProfileFragment extends Fragment {
 
 
         // Not working in our code, but works for Firebase Test Lab
+        // Inspiration documentation and lectures.
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
         findAddress.setOnClickListener(v -> {
             if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED

@@ -91,6 +91,7 @@ public class CreateAdFragment extends Fragment {
 
         setOnClickListeners(view, handleGetContent, handleTakePicture);
 
+        // Inspiration: https://stackoverflow.com/questions/61941959/activityresultcontracts-takepicture/65526167
         File file = new File(getContext().getFilesDir(), "picFromCamera");
         currentUri = FileProvider.getUriForFile(view.getContext(), BuildConfig.APPLICATION_ID + ".provider", file );
 

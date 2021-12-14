@@ -45,6 +45,7 @@ public class AdsViewModel extends ViewModel {
             firestore
                     .collection("ad")
                     .whereNotEqualTo("userUid", userUid)
+                    .whereEqualTo("archived", null)
                     .addSnapshotListener((value1, error1) -> {
                         if (error1 != null) {
                             return;

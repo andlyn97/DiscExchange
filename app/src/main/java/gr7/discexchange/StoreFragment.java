@@ -22,8 +22,6 @@ import gr7.discexchange.adapter.AdRecycleAdapter;
 import gr7.discexchange.viewmodel.StoreViewModel;
 
 public class StoreFragment extends Fragment implements AdRecycleAdapter.OnCardListener{
-    private FirebaseFirestore firebaseFirestore;
-    private CollectionReference adCollectionReference;
     private RecyclerView adRecyclerView;
     private AdRecycleAdapter storeAdAdapter;
     private StoreViewModel storeViewModel;
@@ -35,8 +33,6 @@ public class StoreFragment extends Fragment implements AdRecycleAdapter.OnCardLi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        firebaseFirestore = FirebaseFirestore.getInstance();
-        adCollectionReference = firebaseFirestore.collection("adStore");
 
         return inflater.inflate(R.layout.fragment_store, container, false);
     }
